@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".SignUp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -109,15 +109,36 @@
             </EditText>
         </LinearLayout>
         <Button
+            android:id="@+id/login_button"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/lightred"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:text="@string/login"
-            android:textFontWeight="500">
-
+            android:textFontWeight="500"
+            android:textSize="20sp">
         </Button>
+        <TextView
+            android:fontFamily="@font/interfont"
+            android:textFontWeight="500"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_gravity="center"
+            android:text="@string/signup"
+            android:textColor="@color/black">
+        </TextView>
+        <TextView
+            android:fontFamily="@font/interfont"
+            android:textFontWeight="500"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_gravity="center"
+            android:text="@string/forget"
+            android:textColor="@color/black">
+        </TextView>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
