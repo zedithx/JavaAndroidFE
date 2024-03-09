@@ -19,8 +19,8 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("Pokemon", "testing123");
-                Intent logIn = new Intent(LogIn.this, Main.class);
-                startActivity(logIn);
+                Intent Main = new Intent(LogIn.this, Main.class);
+                startActivity(Main);
             }
                                        }
         );

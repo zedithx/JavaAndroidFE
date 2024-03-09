@@ -6,10 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".LogIn">
     <LinearLayout
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
@@ -121,7 +117,7 @@
             android:backgroundTint="@color/lightred"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            android:text="@string/login"
+            android:text="@string/login_value"
             android:textFontWeight="500"
             android:textSize="20sp">
         </Button>
