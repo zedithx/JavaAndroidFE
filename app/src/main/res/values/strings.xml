@@ -21,4 +21,6 @@
     <string name="group_buys_near">Group Buys Near</string>
     <string name="sutd">SUTD Campus</string>
     <string name="searchicon">searchicon</string>
+    <string name="left_arrow">left arrow</string>
+    <string name="right_arrow">right arrow</string>
 </resources>
