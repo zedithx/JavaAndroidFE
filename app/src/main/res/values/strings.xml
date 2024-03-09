@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">JavaAndroidApp</string>
     <string name="login_banner">Welcome</string>
-    <string name="text_below_logo">Sign-up/Login</string>
+    <string name="text_below_logo">Login</string>
     <string name="bulkify">Bulkify Logo</string>
     <string name="login_with">Login with Email/Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
+    <string name="login_value">Login</string>
+    <string name="signup_value">Signup</string>
     <string name="signup">Sign-up for a new account</string>
     <string name="forget">Forgot password</string>
+    <string name="typehere">Type Here</string>
 </resources>

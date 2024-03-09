@@ -8,18 +8,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-public class SignUp extends AppCompatActivity {
+public class LogIn extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signup);
+        setContentView(R.layout.login);
         Button loginbutton = (Button)findViewById(R.id.login_button);
         loginbutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Log.d("Pokemon", "testing123");
-                Intent logIn = new Intent(SignUp.this, Main.class);
+                Intent logIn = new Intent(LogIn.this, Main.class);
                 startActivity(logIn);
             }
                                        }
