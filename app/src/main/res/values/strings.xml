@@ -23,4 +23,11 @@
     <string name="searchicon">searchicon</string>
     <string name="left_arrow">left arrow</string>
     <string name="right_arrow">right arrow</string>
+    <string name="group_order">Group Order</string>
+    <string name="product_name">Placeholder Lorem Ipsum Kangol</string>
+    <string name="next_button">next button</string>
+    <string name="previous_button">previous button</string>
+    <string name="product_image_description">product images</string>
+    <string name="product_price">S$123.xx</string>
+
 </resources>
