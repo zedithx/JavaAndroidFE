@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-public class LogIn extends AppCompatActivity {
+public class LogInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,7 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("Pokemon", "testing123");
-                Intent Main = new Intent(LogIn.this, Main.class);
+                Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
                 startActivity(Main);
             }
                                        }
