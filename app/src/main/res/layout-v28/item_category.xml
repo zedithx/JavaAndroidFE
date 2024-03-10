@@ -6,7 +6,7 @@
     android:layout_marginHorizontal="6dp"
     android:paddingHorizontal="8dp"
     android:paddingVertical="4dp"
-    android:background="@drawable/categorybox"
+    android:background="@drawable/categorybox_gray"
     android:fontFamily="@font/interfont"
     android:textFontWeight="600"
     android:textSize="18sp"
