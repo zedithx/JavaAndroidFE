@@ -1,11 +1,13 @@
 package com.example.javaandroidapp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,7 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.*;
 
 public class LandingActivity extends AppCompatActivity {
-    public static class CategoryModel{
+    //testing btn to redirect to pdt page
+    public Button testBtn;
+
+    public static class CategoryModel {
         private String categoryName;
         private boolean isSelected;
 
@@ -41,6 +46,7 @@ public class LandingActivity extends AppCompatActivity {
             isSelected = selected;
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +65,18 @@ public class LandingActivity extends AppCompatActivity {
 
         CategoryAdapter adapter = new CategoryAdapter(categories);
         categoryRecyclerView.setAdapter(adapter);
+        //testing btn to redirect to pdt page
+        testBtn = findViewById(R.id.testButton);
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Main = new Intent(LandingActivity.this, ViewProductActivity.class);
+                startActivity(Main);
+            }
+        });
     }
 }
+
 class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private List<LandingActivity.CategoryModel> categories;
 

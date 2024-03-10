@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ViewProductActivity">
+
+    <TextView
+        android:id="@+id/topBanner"
+        style="@style/TopBanner"
+        android:text="@string/group_order" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageViewer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/product_image_description"
+                android:src="@drawable/test_kangol" />
+
+            <ImageButton
+                android:id="@+id/prevBtn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@null"
+                android:contentDescription="@string/previous_button"
+                app:srcCompat="@drawable/left_arrow" />
+
+            <ImageButton
+                android:id="@+id/nextBtn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:background="@null"
+                android:contentDescription="@string/next_button"
+                app:srcCompat="@drawable/right_arrow" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/productName"
+            style="@style/Header"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:text="@string/product_name" />
+        <ProgressBar
+            android:id="@+id/orderProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progressBackgroundTint="@color/lightgray"
+            android:progressTint="@color/lightred"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:max="100"
+            android:progress="1"
+            android:scaleY="5"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:textSize="23sp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/product_price"/>
+
+
+</LinearLayout>

@@ -24,7 +24,16 @@
         <activity
             android:name=".LandingActivity"
             android:exported="true">
+            <intent-filter> <!--testing button redirect to product page-->
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
+        <activity
+            android:name=".ViewProductActivity"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>
