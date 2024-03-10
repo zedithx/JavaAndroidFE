@@ -10,14 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.*;
 
-public class Main extends AppCompatActivity {
-    public class CategoryModel{
+public class LandingActivity extends AppCompatActivity {
+    public static class CategoryModel{
         private String categoryName;
         private boolean isSelected;
 
@@ -45,7 +44,7 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.landing);
         RecyclerView categoryRecyclerView = findViewById(R.id.categoryRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         categoryRecyclerView.setLayoutManager(layoutManager);
@@ -63,9 +62,9 @@ public class Main extends AppCompatActivity {
     }
 }
 class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
-    private List<Main.CategoryModel> categories;
+    private List<LandingActivity.CategoryModel> categories;
 
-    public CategoryAdapter(List<Main.CategoryModel> categories) {
+    public CategoryAdapter(List<LandingActivity.CategoryModel> categories) {
         this.categories = categories;
     }
 
@@ -101,12 +100,11 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
         }
 
 
-        public void bind(Main.CategoryModel category) {
+        public void bind(LandingActivity.CategoryModel category) {
             // Bind data to the views in the item layout
             categoryTextView.setText(category.getCategoryName());
             Log.d("Category", "test" + category.isSelected());
             if (category.isSelected()) {
-                int light_red = ContextCompat.getColor(itemView.getContext(), R.color.lightred);
                 categoryTextView.setBackgroundResource(R.drawable.categorybox_red);
                 categoryTextView.setTextColor(Color.WHITE);// Change to selected color
             }
