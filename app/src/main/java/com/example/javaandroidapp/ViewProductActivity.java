@@ -3,6 +3,7 @@ package com.example.javaandroidapp;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -14,13 +15,14 @@ import com.example.javaandroidapp.R;
 
 import java.util.ArrayList;
 
-public class Product_Page extends AppCompatActivity {
+public class ViewProductActivity extends AppCompatActivity {
 
     ArrayList<Integer> imageList;
-    Button prevBtn;
-    Button nextBtn;
+    ImageButton prevBtn;
+    ImageButton nextBtn;
     ImageView productImages;
     int count = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,19 +42,28 @@ public class Product_Page extends AppCompatActivity {
         ProgressBar orderProgressBar = (ProgressBar) findViewById(R.id.orderProgressBar);
         orderProgressBar.setMax(50); // set min required order
         int maxValue = orderProgressBar.getMax();
-        orderProgressBar.setProgress(40,false); //set current number of orders
+        orderProgressBar.setProgress(30, false); //set current number of orders
         int progressBarValue = orderProgressBar.getProgress();
-
-        prevBtn.setOnClickListener(new View.OnClickListener(){
+        prevBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View view){
-                int index = count;
-                count = count < imageList.size() ? count : 0;
-                int image_id = imageList.get(index);
+            public void onClick(View view) {
+
+                count = count <= 0 ? imageList.size() -1 : count - 1;
+                int image_id = imageList.get(count);
 
                 productImages.setImageResource(image_id);
             }
+        });
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                count = count < imageList.size() - 1 ? count + 1 : 0;
+                int image_id = imageList.get(count);
+                productImages.setImageResource(image_id);
+            }
+
+            ;
         });
     }
 }
