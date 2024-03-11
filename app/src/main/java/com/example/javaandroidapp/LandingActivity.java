@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,19 +63,23 @@ public class LandingActivity extends AppCompatActivity {
         CategoryAdapter adapter = new CategoryAdapter(categories);
         categoryRecyclerView.setAdapter(adapter);
         //testing btn to redirect to pdt page
-        testBtn = findViewById(R.id.testButton);
-        testBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent Main = new Intent(LandingActivity.this, ViewProductActivity.class);
-                startActivity(Main);
-            }
-        });
+//        testBtn = findViewById(R.id.testButton);
+//        testBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent Main = new Intent(LandingActivity.this, ViewProductActivity.class);
+//                startActivity(Main);
+//            }
+//        });
     }
 }
 
 class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
-    private List<LandingActivity.CategoryModel> categories;
+    private static List<LandingActivity.CategoryModel> categories;
+
+    public static List<LandingActivity.CategoryModel> getCategories() {
+        return categories;
+    }
 
     public CategoryAdapter(List<LandingActivity.CategoryModel> categories) {
         this.categories = categories;
@@ -97,8 +102,9 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
         return categories.size();
     }
 
-    static class CategoryViewHolder extends RecyclerView.ViewHolder {
+    class CategoryViewHolder extends RecyclerView.ViewHolder {
         private TextView categoryTextView;
+        private LandingActivity.CategoryModel selectedCategory = categories.get(0);
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,6 +112,19 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (selectedCategory != null) {
+                        selectedCategory.setSelected(false);
+                    }
+
+                    // Get the clicked category
+                    LandingActivity.CategoryModel clickedCategory = categories.get(getAdapterPosition());
+                    System.out.println(clickedCategory);
+                    // Update the selected category
+                    clickedCategory.setSelected(true);
+                    selectedCategory = clickedCategory;
+
+                    // Notify the adapter about the data change
+                    notifyDataSetChanged();
                     // TODO - Switch fragments based on what they click
                 }
             });
@@ -115,12 +134,14 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
         public void bind(LandingActivity.CategoryModel category) {
             // Bind data to the views in the item layout
             categoryTextView.setText(category.getCategoryName());
-            Log.d("Category", "test" + category.isSelected());
             if (category.isSelected()) {
                 categoryTextView.setBackgroundResource(R.drawable.categorybox_red);
                 categoryTextView.setTextColor(Color.WHITE);// Change to selected color
             }
+            else {
+                categoryTextView.setBackgroundResource(R.drawable.categorybox_gray);
+                categoryTextView.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.darkgray));
+            }
         }
     }
 }
-//
