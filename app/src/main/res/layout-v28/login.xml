@@ -78,18 +78,19 @@
                 android:layout_marginTop="40dp"
                 android:text="@string/email">
             </TextView>
+
             <EditText
+                android:id="@+id/loginEmail"
                 android:layout_width="280dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="4dp"
-                android:inputType="text"
-                android:background="@drawable/inputbox"
                 android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/inputbox"
                 android:ellipsize="start"
                 android:gravity="center"
                 android:hint="@string/typehere"
-                android:importantForAutofill="no">
-            </EditText>
+                android:importantForAutofill="no"
+                android:inputType="text"></EditText>
             <TextView
                 android:fontFamily="@font/interfont"
                 android:textFontWeight="500"
@@ -98,18 +99,19 @@
                 android:layout_marginTop="14dp"
                 android:text="@string/password">
             </TextView>
+
             <EditText
+                android:id="@+id/loginPassword"
                 android:layout_width="280dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="4dp"
-                android:inputType="textPassword"
-                android:background="@drawable/inputbox"
                 android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/inputbox"
                 android:ellipsize="start"
                 android:gravity="center"
                 android:hint="@string/typehere"
-                android:importantForAutofill="no">
-            </EditText>
+                android:importantForAutofill="no"
+                android:inputType="textPassword"></EditText>
         </LinearLayout>
         <Button
             android:id="@+id/login_button"
