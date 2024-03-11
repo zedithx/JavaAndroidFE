@@ -1,6 +1,9 @@
 package com.example.javaandroidapp;
 
 import java.util.*;
+import java.util.concurrent.Executor;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,29 +11,48 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LogInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         Button loginbutton = findViewById(R.id.login_button);
         TextView signupLink = findViewById(R.id.signup_link);
         TextView forgetLink = (TextView)findViewById(R.id.forget_link);
+        EditText loginEmail = findViewById(R.id.loginEmail);
+        EditText loginPassword = findViewById(R.id.loginPassword);
         loginbutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
-                startActivity(Main);
-                TestAdd.registerUser(db);
+                String email = loginEmail.getText().toString();
+                String password = loginPassword.getText().toString();
+                Task<AuthResult> signInResult = Users.signInUser(mAuth, email, password);
+                signInResult.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            System.out.println(user);
+                        } else {
+                            System.out.println("Failed logged in");
+                        }
+                    }
+                });
             }
-                                       }
-        );
+        });
         signupLink.setOnClickListener(new View.OnClickListener(){
            @Override
            public void onClick(View v) {

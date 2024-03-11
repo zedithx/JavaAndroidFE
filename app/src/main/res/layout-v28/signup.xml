@@ -93,6 +93,7 @@
             </TextView>
 
             <EditText
+                android:id="@+id/signupEmail"
                 android:layout_width="280dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
@@ -102,8 +103,7 @@
                 android:gravity="center"
                 android:hint="@string/typehere"
                 android:importantForAutofill="no"
-                android:inputType="text">
-            </EditText>
+                android:inputType="text"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -115,6 +115,7 @@
             </TextView>
 
             <EditText
+                android:id="@+id/signUpPassword"
                 android:layout_width="280dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
@@ -124,8 +125,7 @@
                 android:gravity="center"
                 android:hint="@string/typehere"
                 android:importantForAutofill="no"
-                android:inputType="textPassword">
-            </EditText>
+                android:inputType="textPassword"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -137,6 +137,7 @@
             </TextView>
 
             <EditText
+                android:id="@+id/signUpCfmPassword"
                 android:layout_width="280dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
@@ -146,12 +147,11 @@
                 android:gravity="center"
                 android:hint="@string/typehere"
                 android:importantForAutofill="no"
-                android:inputType="textPassword">
-            </EditText>
+                android:inputType="textPassword"></EditText>
         </LinearLayout>
 
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/signup_button"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
