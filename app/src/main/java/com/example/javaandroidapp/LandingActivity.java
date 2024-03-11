@@ -42,6 +42,14 @@ public class LandingActivity extends AppCompatActivity {
         public void setSelected(boolean selected) {
             isSelected = selected;
         }
+        @NonNull
+        @Override
+        public String toString() {
+            return "CategoryModel{" +
+                    "categoryName='" + categoryName + '\'' +
+                    ", isSelected=" + isSelected +
+                    '}';
+        }
     }
 
     @Override
@@ -101,11 +109,10 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
     public int getItemCount() {
         return categories.size();
     }
-
+//    public static LandingActivity.CategoryModel selectedCategory = categories.get(0);
+    public static LandingActivity.CategoryModel selectedCategory;
     class CategoryViewHolder extends RecyclerView.ViewHolder {
         private TextView categoryTextView;
-        private LandingActivity.CategoryModel selectedCategory = categories.get(0);
-
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryTextView = itemView.findViewById(R.id.categoryTextView);
@@ -115,14 +122,15 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
                     if (selectedCategory != null) {
                         selectedCategory.setSelected(false);
                     }
-
+                    else {
+                        categories.get(0).setSelected(false);
+                    }
+                    Log.d("categories", "category:" + categories);
                     // Get the clicked category
                     LandingActivity.CategoryModel clickedCategory = categories.get(getAdapterPosition());
-                    System.out.println(clickedCategory);
                     // Update the selected category
                     clickedCategory.setSelected(true);
                     selectedCategory = clickedCategory;
-
                     // Notify the adapter about the data change
                     notifyDataSetChanged();
                     // TODO - Switch fragments based on what they click

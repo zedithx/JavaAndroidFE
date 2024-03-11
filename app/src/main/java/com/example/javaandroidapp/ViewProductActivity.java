@@ -27,7 +27,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.javaandroidapp.R;
 
 import org.jetbrains.annotations.TestOnly;
-import org.junit.Test;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;

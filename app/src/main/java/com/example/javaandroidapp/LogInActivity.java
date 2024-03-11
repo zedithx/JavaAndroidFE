@@ -27,7 +27,7 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
                 startActivity(Main);
-                TestAdd.registerUser(db);
+//                TestAdd.registerUser(db);
             }
                                        }
         );
