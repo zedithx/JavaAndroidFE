@@ -51,6 +51,9 @@ public class LogInActivity extends AppCompatActivity {
                         }
                     }
                 });
+                Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
+                startActivity(Main);
+
             }
         });
         signupLink.setOnClickListener(new View.OnClickListener(){

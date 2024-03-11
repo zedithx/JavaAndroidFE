@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +41,14 @@ public class LandingActivity extends AppCompatActivity {
 
         public void setSelected(boolean selected) {
             isSelected = selected;
+        }
+        @NonNull
+        @Override
+        public String toString() {
+            return "CategoryModel{" +
+                    "categoryName='" + categoryName + '\'' +
+                    ", isSelected=" + isSelected +
+                    '}';
         }
     }
 
@@ -74,7 +83,11 @@ public class LandingActivity extends AppCompatActivity {
 }
 
 class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
-    private List<LandingActivity.CategoryModel> categories;
+    private static List<LandingActivity.CategoryModel> categories;
+
+    public static List<LandingActivity.CategoryModel> getCategories() {
+        return categories;
+    }
 
     public CategoryAdapter(List<LandingActivity.CategoryModel> categories) {
         this.categories = categories;
@@ -96,16 +109,30 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
     public int getItemCount() {
         return categories.size();
     }
-
-    static class CategoryViewHolder extends RecyclerView.ViewHolder {
+//    public static LandingActivity.CategoryModel selectedCategory = categories.get(0);
+    public static LandingActivity.CategoryModel selectedCategory;
+    class CategoryViewHolder extends RecyclerView.ViewHolder {
         private TextView categoryTextView;
-
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryTextView = itemView.findViewById(R.id.categoryTextView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (selectedCategory != null) {
+                        selectedCategory.setSelected(false);
+                    }
+                    else {
+                        categories.get(0).setSelected(false);
+                    }
+                    Log.d("categories", "category:" + categories);
+                    // Get the clicked category
+                    LandingActivity.CategoryModel clickedCategory = categories.get(getAdapterPosition());
+                    // Update the selected category
+                    clickedCategory.setSelected(true);
+                    selectedCategory = clickedCategory;
+                    // Notify the adapter about the data change
+                    notifyDataSetChanged();
                     // TODO - Switch fragments based on what they click
                 }
             });
@@ -115,12 +142,14 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
         public void bind(LandingActivity.CategoryModel category) {
             // Bind data to the views in the item layout
             categoryTextView.setText(category.getCategoryName());
-            Log.d("Category", "test" + category.isSelected());
             if (category.isSelected()) {
                 categoryTextView.setBackgroundResource(R.drawable.categorybox_red);
                 categoryTextView.setTextColor(Color.WHITE);// Change to selected color
             }
+            else {
+                categoryTextView.setBackgroundResource(R.drawable.categorybox_gray);
+                categoryTextView.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.darkgray));
+            }
         }
     }
 }
-//
