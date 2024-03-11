@@ -127,3 +127,4 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
         }
     }
 }
+//
