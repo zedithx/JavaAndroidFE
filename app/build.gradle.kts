@@ -34,7 +34,6 @@ android {
 
 dependencies {
     implementation("com.google.firebase:firebase-firestore:24.10.3")
-    implementation ("com.google.firebase:firebase-admin:9.2.0")
     val fragment_version = "1.6.2"
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
