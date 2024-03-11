@@ -38,10 +38,6 @@ public class LandingActivity extends AppCompatActivity {
             return isSelected;
         }
 
-        public void setCategoryName(String categoryName) {
-            this.categoryName = categoryName;
-        }
-
         public void setSelected(boolean selected) {
             isSelected = selected;
         }
