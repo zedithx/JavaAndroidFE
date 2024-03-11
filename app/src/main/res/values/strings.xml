@@ -28,6 +28,7 @@
     <string name="next_button">next button</string>
     <string name="previous_button">previous button</string>
     <string name="product_image_description">product images</string>
-    <string name="product_price">S$123.xx</string>
+    <string name="product_price_dollars">S$123</string>
+    <string name="product_price_cents">.80</string>
 
 </resources>
