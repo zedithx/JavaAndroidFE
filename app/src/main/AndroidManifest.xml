@@ -37,6 +37,10 @@
             android:name=".SignUpActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".ForgotPassActivity"
+            android:exported="true">
+        </activity>
 
     </application>
 

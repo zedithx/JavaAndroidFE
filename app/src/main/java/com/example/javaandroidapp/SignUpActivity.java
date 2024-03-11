@@ -16,13 +16,11 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.signup);
         ImageView backButton = findViewById(R.id.signup_back);
         backButton.setOnClickListener(new View.OnClickListener(){
-       @Override
-       public void onClick(View v) {
-           Intent Main = new Intent(SignUpActivity.this, LogInActivity.class);
-           startActivity(Main);
-       }
-   }
-        );
+           @Override
+           public void onClick(View v) {
+               Intent Main = new Intent(SignUpActivity.this, LogInActivity.class);
+               startActivity(Main);
+           }
+       });
     }
-
 }

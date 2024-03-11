@@ -34,6 +34,14 @@ public class LogInActivity extends AppCompatActivity {
            }
        }
         );
+        forgetLink.setOnClickListener(new View.OnClickListener(){
+              @Override
+              public void onClick(View v) {
+                  Intent Main = new Intent(LogInActivity.this, ForgotPassActivity.class);
+                  startActivity(Main);
+              }
+          }
+        );
     }
 
 }

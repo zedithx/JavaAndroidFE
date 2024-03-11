@@ -18,22 +18,22 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
-        <TextView
-            android:id="@+id/top_banner_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif"
-            android:text="@string/signup_banner"
-            android:textColor="@color/black"
-            android:textSize="14sp">
-        </TextView>
+            <TextView
+                android:id="@+id/top_banner_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:text="@string/signup_banner"
+                android:textColor="@color/black"
+                android:textSize="14sp">
+            </TextView>
         </LinearLayout>
     </LinearLayout>
 
     <ImageView
         app:layout_constraintTop_toBottomOf="@id/top_banner"
-        android:id="@+id/signup_back"
+        android:id="@+id/forgot_back"
         android:layout_marginStart="40dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -62,7 +62,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/interfont"
-            android:text="@string/text_below_logo_signup"
+            android:text="@string/text_below_logo_forgot"
             android:textColor="@color/black"
             android:textFontWeight="600"
             android:textSize="34sp">
@@ -71,9 +71,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:fontFamily="@font/interfont"
-            android:text="@string/signup_with"
+            android:text="@string/forgot_with"
             android:textColor="@color/lightblack"
             android:textFontWeight="600"
             android:textSize="14sp">
@@ -86,7 +86,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/interfont"
                 android:text="@string/email"
                 android:textFontWeight="500">
@@ -104,50 +104,6 @@
                 android:importantForAutofill="no"
                 android:inputType="text">
             </EditText>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:fontFamily="@font/interfont"
-                android:text="@string/password"
-                android:textFontWeight="500">
-            </TextView>
-
-            <EditText
-                android:layout_width="280dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/inputbox"
-                android:ellipsize="start"
-                android:gravity="center"
-                android:hint="@string/typehere"
-                android:importantForAutofill="no"
-                android:inputType="textPassword">
-            </EditText>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:fontFamily="@font/interfont"
-                android:text="@string/confirmpassword"
-                android:textFontWeight="500">
-            </TextView>
-
-            <EditText
-                android:layout_width="280dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/inputbox"
-                android:ellipsize="start"
-                android:gravity="center"
-                android:hint="@string/typehere"
-                android:importantForAutofill="no"
-                android:inputType="textPassword">
-            </EditText>
         </LinearLayout>
 
         <Button
@@ -155,9 +111,9 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             android:backgroundTint="@color/lightred"
-            android:text="@string/login_value"
+            android:text="@string/retrieve_password"
             android:textFontWeight="500"
             android:textSize="20sp">
         </Button>
