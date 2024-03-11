@@ -1,7 +1,10 @@
 package com.example.javaandroidapp;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -34,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewProductActivity extends AppCompatActivity {
-
+    ImageButton backBtn;
     ArrayList<Integer> imageList;
     ImageButton prevBtn;
     ImageButton nextBtn;
@@ -57,11 +60,25 @@ public class ViewProductActivity extends AppCompatActivity {
         prevBtn = findViewById(R.id.prevBtn);
         nextBtn = findViewById(R.id.nextBtn);
         productImages = findViewById(R.id.imageViewer);
+
+        // back button
+        backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                finish();
+            }
+        });
+
+        // progress bar
         ProgressBar orderProgressBar = (ProgressBar) findViewById(R.id.orderProgressBar);
+
         orderProgressBar.setMax(50); // set min required order
         int maxValue = orderProgressBar.getMax();
         orderProgressBar.setProgress(30, false); //set current number of orders
         int progressBarValue = orderProgressBar.getProgress();
+
+
         prevBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -93,16 +110,19 @@ public class ViewProductActivity extends AppCompatActivity {
         LinearLayout variationBtnParentLayout = findViewById(R.id.varBtns);
         // get arrayList of variation ids
         // get names, prices of each variation and store in name and price arraylists respectively
-        int varCount = 3; // testing with 3 variations
+        int varCount = 4; // testing with 3 variations
         ArrayList<String> varBtnName = new ArrayList<>();
         varBtnName.add("Small");
         varBtnName.add("Medium");
         varBtnName.add("Large");
+        varBtnName.add("Extra Large");
 
         ArrayList<String> varBtnPrice = new ArrayList<>();
         varBtnPrice.add("-");
         varBtnPrice.add("+0.50");
         varBtnPrice.add("+1.20");
+        varBtnPrice.add("+2.80");
+
 
         //btn layout params
 //        android:textColor="@color/black"
@@ -110,15 +130,12 @@ public class ViewProductActivity extends AppCompatActivity {
 //        android:layout_margin="15dp"
         LinearLayout.LayoutParams varBtnParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         varBtnParams.setMargins(15, 15, 15, 15);
+
         // map product variation details to variation buttons
         for (int i = 0; i < varCount; i++) {
             int btnId = i + 1;
-            Button newVarBtn = new Button(this);
+            RoundedButton newVarBtn = new RoundedButton(this);
             newVarBtn.setLayoutParams(varBtnParams);
-
-            newVarBtn.setBackgroundColor(Color.LTGRAY);
-            newVarBtn.setTextColor(Color.BLACK);
-
             newVarBtn.setId(btnId);
             String varText = varBtnName.get(i) + "\n" + varBtnPrice.get(i);
             newVarBtn.setText(varText);
@@ -127,57 +144,25 @@ public class ViewProductActivity extends AppCompatActivity {
     }
 }
 
-// btn variation carousel
-/*
-class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
-    private List<LandingActivity.CategoryModel> categories;
-
-    public CategoryAdapter(List<LandingActivity.CategoryModel> categories) {
-        this.categories = categories;
+class RoundedButton extends androidx.appcompat.widget.AppCompatButton {
+    public RoundedButton(Context context) {
+        super(context);
+        init();
     }
 
-    @NonNull
-    @Override
-    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
-        return new CategoryViewHolder(view);
+    private void init(){
+        GradientDrawable drawable = RoundedRect();
+        drawable.setColor(Color.LTGRAY);
+        setBackground(drawable);
+        setTextColor(Color.BLACK);
+        setPadding(5,0,0,5);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        holder.bind(categories.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return categories.size();
-    }
-
-    static class CategoryViewHolder extends RecyclerView.ViewHolder {
-        private TextView categoryTextView;
-
-        public CategoryViewHolder(@NonNull View itemView) {
-            super(itemView);
-            categoryTextView = itemView.findViewById(R.id.categoryTextView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO - Switch fragments based on what they click
-                }
-            });
-        }
-
-
-        public void bind(LandingActivity.CategoryModel category) {
-            // Bind data to the views in the item layout
-            categoryTextView.setText(category.getCategoryName());
-            Log.d("Category", "test" + category.isSelected());
-            if (category.isSelected()) {
-                categoryTextView.setBackgroundResource(R.drawable.categorybox_red);
-                categoryTextView.setTextColor(Color.WHITE);// Change to selected color
-            }
-        }
+    static GradientDrawable RoundedRect(){
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.RECTANGLE);
+        drawable.setCornerRadius(25);
+        return drawable;
     }
 }
 
- */
