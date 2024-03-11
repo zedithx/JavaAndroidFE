@@ -28,6 +28,7 @@ import com.example.javaandroidapp.R;
 
 import org.jetbrains.annotations.TestOnly;
 import org.junit.Test;
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
@@ -42,7 +43,10 @@ public class ViewProductActivity extends AppCompatActivity {
     ImageButton prevBtn;
     ImageButton nextBtn;
     ImageView productImages;
+    TextView priceDollars;
+    TextView priceCents;
     TextView productDescription;
+    LinearLayout descriptionLayout;
     int count = 0;
 
     @Override
@@ -102,12 +106,16 @@ public class ViewProductActivity extends AppCompatActivity {
 
             ;
         });
+        TextView minOrder = findViewById(R.id.numOrders2);
+        TextView currOrders = findViewById(R.id.numOrders1);
+        currOrders.setText("" + 15);
+        minOrder.setText("/" + 40);
+        priceDollars = findViewById(R.id.priceDollars);
+        priceCents = findViewById((R.id.priceCents));
+        // get price dynamically
+        priceDollars.setText("S$" + 123);
+        priceCents.setText("." + 80);
 
-        // TODO 2.1: init a layout object and assign the layout holding the variation buttons, using id
-        // TODO 2.2: get number of product variations, backend should have an ArrayList of variation ids
-        // TODO 2.3: map and generate new Button objects and .setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)), and assign id base on count number, .setId()
-        // TODO 2.4: and map each variation name to button text value, .setText()
-        // TODO 2.5: add button instance to layout object with .addView(btn1)
 
         LinearLayout variationBtnParentLayout = findViewById(R.id.varBtns);
         // get arrayList of variation ids
@@ -121,11 +129,11 @@ public class ViewProductActivity extends AppCompatActivity {
 
         ArrayList<String> varBtnPrice = new ArrayList<>();
         varBtnPrice.add("-");
-        varBtnPrice.add("+0.50");
-        varBtnPrice.add("+1.20");
-        varBtnPrice.add("+2.80");
+        varBtnPrice.add("+" + 0.50);
+        varBtnPrice.add("+" + 1.20);
+        varBtnPrice.add("+" + 2.80);
 
-        String description = "Officially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies...";
+        String description = "Officially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies.";
 
         //btn layout params
 //        android:textColor="@color/black"
@@ -147,7 +155,13 @@ public class ViewProductActivity extends AppCompatActivity {
         productDescription = findViewById(R.id.productDescription);
         productDescription.setText(description);
 
+        descriptionLayout = findViewById(R.id.descriptionLayout);
+        GradientDrawable descriptionBg = RoundedButton.RoundedRect(25);
+        descriptionBg.setColor(Color.argb(15, 10, 10, 10));
+        descriptionLayout.setBackground(descriptionBg);
     }
+
+
 }
 
 class RoundedButton extends androidx.appcompat.widget.AppCompatButton {
@@ -157,17 +171,17 @@ class RoundedButton extends androidx.appcompat.widget.AppCompatButton {
     }
 
     private void init() {
-        GradientDrawable drawable = RoundedRect();
-        drawable.setColor(Color.LTGRAY);
+        GradientDrawable drawable = RoundedRect(25);
+        drawable.setColor(Color.argb(15, 10, 10, 10));
         setBackground(drawable);
         setTextColor(Color.BLACK);
         setPadding(5, 0, 0, 5);
     }
 
-    static GradientDrawable RoundedRect() {
+    static GradientDrawable RoundedRect(int rad) {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setShape(GradientDrawable.RECTANGLE);
-        drawable.setCornerRadius(25);
+        drawable.setCornerRadius(rad);
         return drawable;
     }
 }
