@@ -71,14 +71,14 @@ public class LandingActivity extends AppCompatActivity {
         CategoryAdapter adapter = new CategoryAdapter(categories);
         categoryRecyclerView.setAdapter(adapter);
         //testing btn to redirect to pdt page
-//        testBtn = findViewById(R.id.testButton);
-//        testBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent Main = new Intent(LandingActivity.this, ViewProductActivity.class);
-//                startActivity(Main);
-//            }
-//        });
+        testBtn = findViewById(R.id.testButton);
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Main = new Intent(LandingActivity.this, ViewProductActivity.class);
+                startActivity(Main);
+            }
+        });
     }
 }
 
