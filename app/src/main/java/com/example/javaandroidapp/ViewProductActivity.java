@@ -42,6 +42,7 @@ public class ViewProductActivity extends AppCompatActivity {
     ImageButton prevBtn;
     ImageButton nextBtn;
     ImageView productImages;
+    TextView productDescription;
     int count = 0;
 
     @Override
@@ -61,11 +62,12 @@ public class ViewProductActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.nextBtn);
         productImages = findViewById(R.id.imageViewer);
 
+
         // back button
         backBtn = findViewById(R.id.backBtn);
-        backBtn.setOnClickListener(new View.OnClickListener(){
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 finish();
             }
         });
@@ -123,6 +125,7 @@ public class ViewProductActivity extends AppCompatActivity {
         varBtnPrice.add("+1.20");
         varBtnPrice.add("+2.80");
 
+        String description = "Officially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies...";
 
         //btn layout params
 //        android:textColor="@color/black"
@@ -141,6 +144,9 @@ public class ViewProductActivity extends AppCompatActivity {
             newVarBtn.setText(varText);
             variationBtnParentLayout.addView(newVarBtn);
         }
+        productDescription = findViewById(R.id.productDescription);
+        productDescription.setText(description);
+
     }
 }
 
@@ -150,15 +156,15 @@ class RoundedButton extends androidx.appcompat.widget.AppCompatButton {
         init();
     }
 
-    private void init(){
+    private void init() {
         GradientDrawable drawable = RoundedRect();
         drawable.setColor(Color.LTGRAY);
         setBackground(drawable);
         setTextColor(Color.BLACK);
-        setPadding(5,0,0,5);
+        setPadding(5, 0, 0, 5);
     }
 
-    static GradientDrawable RoundedRect(){
+    static GradientDrawable RoundedRect() {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setShape(GradientDrawable.RECTANGLE);
         drawable.setCornerRadius(25);
