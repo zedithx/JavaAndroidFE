@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -32,11 +33,13 @@ android {
 }
 
 dependencies {
-
+    implementation("com.google.firebase:firebase-firestore:24.10.3")
+    implementation ("com.google.firebase:firebase-admin:9.2.0")
+    val fragment_version = "1.6.2"
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("junit:junit:4.12")
+    implementation("androidx.fragment:fragment:$fragment_version")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

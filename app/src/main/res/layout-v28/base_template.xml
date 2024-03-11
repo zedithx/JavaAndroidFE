@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:orientation="horizontal"
+        android:background="@color/lightred">
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/back_arrow">
+        </ImageView>
+        <TextView
+            android:id="@+id/header_saved"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textFontWeight="600"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/interfont"
+            android:text="@string/saved">
+        </TextView>
+        <ImageView
+            android:id="@+id/search_saved"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/search_icon">
+        </ImageView>
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
