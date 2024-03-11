@@ -9,6 +9,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javaandroidapp/ViewProductActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javaandroidapp/ViewProductActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/layout-v28/product_page.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout-v28/product_page.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/styles.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
