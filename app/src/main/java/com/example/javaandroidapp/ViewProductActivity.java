@@ -1,19 +1,37 @@
 package com.example.javaandroidapp;
 
+import android.app.ActionBar;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.javaandroidapp.R;
 
+import org.jetbrains.annotations.TestOnly;
+import org.junit.Test;
+
+import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ViewProductActivity extends AppCompatActivity {
 
@@ -49,7 +67,7 @@ public class ViewProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                count = count <= 0 ? imageList.size() -1 : count - 1;
+                count = count <= 0 ? imageList.size() - 1 : count - 1;
                 int image_id = imageList.get(count);
 
                 productImages.setImageResource(image_id);
@@ -65,6 +83,101 @@ public class ViewProductActivity extends AppCompatActivity {
 
             ;
         });
+
+        // TODO 2.1: init a layout object and assign the layout holding the variation buttons, using id
+        // TODO 2.2: get number of product variations, backend should have an ArrayList of variation ids
+        // TODO 2.3: map and generate new Button objects and .setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)), and assign id base on count number, .setId()
+        // TODO 2.4: and map each variation name to button text value, .setText()
+        // TODO 2.5: add button instance to layout object with .addView(btn1)
+
+        LinearLayout variationBtnParentLayout = findViewById(R.id.varBtns);
+        // get arrayList of variation ids
+        // get names, prices of each variation and store in name and price arraylists respectively
+        int varCount = 3; // testing with 3 variations
+        ArrayList<String> varBtnName = new ArrayList<>();
+        varBtnName.add("Small");
+        varBtnName.add("Medium");
+        varBtnName.add("Large");
+
+        ArrayList<String> varBtnPrice = new ArrayList<>();
+        varBtnPrice.add("-");
+        varBtnPrice.add("+0.50");
+        varBtnPrice.add("+1.20");
+
+        //btn layout params
+//        android:textColor="@color/black"
+//        android:background="@color/lightgray"
+//        android:layout_margin="15dp"
+        LinearLayout.LayoutParams varBtnParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        varBtnParams.setMargins(15, 15, 15, 15);
+        // map product variation details to variation buttons
+        for (int i = 0; i < varCount; i++) {
+            int btnId = i + 1;
+            Button newVarBtn = new Button(this);
+            newVarBtn.setLayoutParams(varBtnParams);
+
+            newVarBtn.setBackgroundColor(Color.LTGRAY);
+            newVarBtn.setTextColor(Color.BLACK);
+
+            newVarBtn.setId(btnId);
+            String varText = varBtnName.get(i) + "\n" + varBtnPrice.get(i);
+            newVarBtn.setText(varText);
+            variationBtnParentLayout.addView(newVarBtn);
+        }
     }
 }
 
+// btn variation carousel
+/*
+class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
+    private List<LandingActivity.CategoryModel> categories;
+
+    public CategoryAdapter(List<LandingActivity.CategoryModel> categories) {
+        this.categories = categories;
+    }
+
+    @NonNull
+    @Override
+    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
+        return new CategoryViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
+        holder.bind(categories.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return categories.size();
+    }
+
+    static class CategoryViewHolder extends RecyclerView.ViewHolder {
+        private TextView categoryTextView;
+
+        public CategoryViewHolder(@NonNull View itemView) {
+            super(itemView);
+            categoryTextView = itemView.findViewById(R.id.categoryTextView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO - Switch fragments based on what they click
+                }
+            });
+        }
+
+
+        public void bind(LandingActivity.CategoryModel category) {
+            // Bind data to the views in the item layout
+            categoryTextView.setText(category.getCategoryName());
+            Log.d("Category", "test" + category.isSelected());
+            if (category.isSelected()) {
+                categoryTextView.setBackgroundResource(R.drawable.categorybox_red);
+                categoryTextView.setTextColor(Color.WHITE);// Change to selected color
+            }
+        }
+    }
+}
+
+ */
