@@ -3,6 +3,7 @@ package com.example.javaandroidapp;
 import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.javaandroidapp.R;
 
 import org.jetbrains.annotations.TestOnly;
+import org.junit.Test;
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
@@ -36,12 +39,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewProductActivity extends AppCompatActivity {
-    ImageButton backBtn;
+    ImageButton backBtn, prevBtn, nextBtn, addOrder, minusOrder;
     ArrayList<Integer> imageList;
-    ImageButton prevBtn;
-    ImageButton nextBtn;
+    ArrayList<RoundedButton> varBtnList;
     ImageView productImages;
+    TextView priceDollars, priceCents, productDescription, amtToOrder, strikePrice;
+    LinearLayout descriptionLayout;
     int count = 0;
+    int amt = 1;
+    int focusedBtnId = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,21 +66,25 @@ public class ViewProductActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.nextBtn);
         productImages = findViewById(R.id.imageViewer);
 
+
         // back button
         backBtn = findViewById(R.id.backBtn);
-        backBtn.setOnClickListener(new View.OnClickListener(){
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 finish();
             }
         });
 
         // progress bar
+        int minOrder = 40;
+        int currOrder = 23;
+
         ProgressBar orderProgressBar = (ProgressBar) findViewById(R.id.orderProgressBar);
 
-        orderProgressBar.setMax(50); // set min required order
+        orderProgressBar.setMax(minOrder); // set min required order
         int maxValue = orderProgressBar.getMax();
-        orderProgressBar.setProgress(30, false); //set current number of orders
+        orderProgressBar.setProgress(currOrder, false); //set current number of orders
         int progressBarValue = orderProgressBar.getProgress();
 
 
@@ -100,11 +110,20 @@ public class ViewProductActivity extends AppCompatActivity {
             ;
         });
 
-        // TODO 2.1: init a layout object and assign the layout holding the variation buttons, using id
-        // TODO 2.2: get number of product variations, backend should have an ArrayList of variation ids
-        // TODO 2.3: map and generate new Button objects and .setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)), and assign id base on count number, .setId()
-        // TODO 2.4: and map each variation name to button text value, .setText()
-        // TODO 2.5: add button instance to layout object with .addView(btn1)
+        TextView minOrdersView = findViewById(R.id.numOrders2);
+        TextView currOrdersView = findViewById(R.id.numOrders1);
+        currOrdersView.setText("" + currOrder);
+        minOrdersView.setText("/" + minOrder);
+        priceDollars = findViewById(R.id.priceDollars);
+        priceCents = findViewById((R.id.priceCents));
+        // get price dynamically
+        priceDollars.setText("S$" + 123);
+        priceCents.setText("." + 80);
+        String originalPrice = "140.30";
+        strikePrice = findViewById(R.id.originalPrice);
+        strikePrice.setText("S$" + originalPrice);
+        strikePrice.setPaintFlags(strikePrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
 
         LinearLayout variationBtnParentLayout = findViewById(R.id.varBtns);
         // get arrayList of variation ids
@@ -118,15 +137,15 @@ public class ViewProductActivity extends AppCompatActivity {
 
         ArrayList<String> varBtnPrice = new ArrayList<>();
         varBtnPrice.add("-");
-        varBtnPrice.add("+0.50");
-        varBtnPrice.add("+1.20");
-        varBtnPrice.add("+2.80");
+        varBtnPrice.add("+" + 0.50);
+        varBtnPrice.add("+" + 1.20);
+        varBtnPrice.add("+" + 2.80);
 
+        varBtnList = new ArrayList<>();
+
+        String description = "Officially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies.";
 
         //btn layout params
-//        android:textColor="@color/black"
-//        android:background="@color/lightgray"
-//        android:layout_margin="15dp"
         LinearLayout.LayoutParams varBtnParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         varBtnParams.setMargins(15, 15, 15, 15);
 
@@ -138,9 +157,49 @@ public class ViewProductActivity extends AppCompatActivity {
             newVarBtn.setId(btnId);
             String varText = varBtnName.get(i) + "\n" + varBtnPrice.get(i);
             newVarBtn.setText(varText);
+            varBtnList.add(newVarBtn);
+            newVarBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    focusedBtnId = newVarBtn.getId();
+                    for (RoundedButton btn : varBtnList) {
+                        GradientDrawable drawable = RoundedButton.RoundedRect(25);
+                        drawable.setColor((focusedBtnId == btn.getId() ? Color.argb(150, 255,30,7) : Color.argb(15, 10, 10, 10)));
+                        btn.setBackground(drawable);
+                    }
+                }
+            });
             variationBtnParentLayout.addView(newVarBtn);
         }
+        productDescription = findViewById(R.id.productDescription);
+        productDescription.setText(description);
+
+        descriptionLayout = findViewById(R.id.descriptionLayout);
+        GradientDrawable descriptionBg = RoundedButton.RoundedRect(25);
+        descriptionBg.setColor(Color.argb(15, 10, 10, 10));
+        descriptionLayout.setBackground(descriptionBg);
+
+        // Order amount
+        addOrder = findViewById(R.id.addOrder);
+        minusOrder = findViewById(R.id.minusOrder);
+        amtToOrder = findViewById(R.id.amtToOrder);
+        addOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                amt += 1;
+                amtToOrder.setText("" + amt);
+            }
+        });
+        minusOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                amt = amt > 1 ? amt - 1 : 1;
+                amtToOrder.setText("" + amt);
+            }
+        });
     }
+
+
 }
 
 class RoundedButton extends androidx.appcompat.widget.AppCompatButton {
@@ -149,18 +208,18 @@ class RoundedButton extends androidx.appcompat.widget.AppCompatButton {
         init();
     }
 
-    private void init(){
-        GradientDrawable drawable = RoundedRect();
-        drawable.setColor(Color.LTGRAY);
+    private void init() {
+        GradientDrawable drawable = RoundedRect(25);
+        drawable.setColor(Color.argb(15, 10, 10, 10));
         setBackground(drawable);
         setTextColor(Color.BLACK);
-        setPadding(5,0,0,5);
+        setPadding(5, 0, 0, 5);
     }
 
-    static GradientDrawable RoundedRect(){
+    static GradientDrawable RoundedRect(int rad) {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setShape(GradientDrawable.RECTANGLE);
-        drawable.setCornerRadius(25);
+        drawable.setCornerRadius(rad);
         return drawable;
     }
 }
