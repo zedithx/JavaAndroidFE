@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,15 +42,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewProductActivity extends AppCompatActivity {
-    ImageButton backBtn, prevBtn, nextBtn, addOrder, minusOrder;
+    ImageButton backBtn, prevBtn, nextBtn, addOrder, minusOrder, saveOrderBtn;
+    Button buyBtn;
     ArrayList<Integer> imageList;
     ArrayList<RoundedButton> varBtnList;
     ImageView productImages;
     TextView priceDollars, priceCents, productDescription, amtToOrder, strikePrice;
-    LinearLayout descriptionLayout, ownerLayout;
+    LinearLayout descriptionLayout, ownerLayout, buyPanelLayout;
     int count = 0;
     int amt = 1;
     int focusedBtnId = 1;
+    int currDollars, currCents;
+    boolean savedOrder = false;
+
+    String currPrice = "123.80";
+    String originalPrice = "140.30";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +127,8 @@ public class ViewProductActivity extends AppCompatActivity {
         priceDollars = findViewById(R.id.priceDollars);
         priceCents = findViewById((R.id.priceCents));
         // get price dynamically
-        priceDollars.setText("S$" + 123);
-        priceCents.setText("." + 80);
-        String originalPrice = "140.30";
+        priceDollars.setText("S$" + currPrice.split("\\.")[0]);
+        priceCents.setText("." + (currPrice.contains(".") ? currPrice.split("\\.")[1] : "00"));
         strikePrice = findViewById(R.id.originalPrice);
         strikePrice.setText("S$" + originalPrice);
         strikePrice.setPaintFlags(strikePrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -136,11 +144,11 @@ public class ViewProductActivity extends AppCompatActivity {
         varBtnName.add("Large");
         varBtnName.add("Extra Large");
 
-        ArrayList<String> varBtnPrice = new ArrayList<>();
-        varBtnPrice.add("-");
-        varBtnPrice.add("+" + 0.50);
-        varBtnPrice.add("+" + 1.20);
-        varBtnPrice.add("+" + 2.80);
+        ArrayList<Double> varBtnPrice = new ArrayList<>();
+        varBtnPrice.add(0.0);
+        varBtnPrice.add(0.50);
+        varBtnPrice.add(1.20);
+        varBtnPrice.add(2.80);
 
         varBtnList = new ArrayList<>();
 
@@ -156,7 +164,7 @@ public class ViewProductActivity extends AppCompatActivity {
             RoundedButton newVarBtn = new RoundedButton(this);
             newVarBtn.setLayoutParams(varBtnParams);
             newVarBtn.setId(btnId);
-            String varText = varBtnName.get(i) + "\n" + varBtnPrice.get(i);
+            String varText = varBtnName.get(i) + "\n" + (varBtnPrice.get(i) > 0 ? "+" + varBtnPrice.get(i) : "-");
             newVarBtn.setText(varText);
             varBtnList.add(newVarBtn);
             newVarBtn.setOnClickListener(new View.OnClickListener() {
@@ -165,8 +173,14 @@ public class ViewProductActivity extends AppCompatActivity {
                     focusedBtnId = newVarBtn.getId();
                     for (RoundedButton btn : varBtnList) {
                         GradientDrawable drawable = RoundedButton.RoundedRect(25);
-                        drawable.setColor((focusedBtnId == btn.getId() ? Color.argb(150, 255,30,7) : Color.argb(15, 10, 10, 10)));
+                        drawable.setColor((focusedBtnId == btn.getId() ? Color.argb(150, 255, 30, 7) : Color.argb(15, 10, 10, 10)));
                         btn.setBackground(drawable);
+                        double displayedPrice = Double.parseDouble(currPrice) + varBtnPrice.get(btnId - 1);
+                        int dollars = (int) displayedPrice;
+                        priceDollars.setText("S$" + ("" + displayedPrice).split("\\.")[0]);
+                        String cents = (""+displayedPrice).contains(".") ? ("" + displayedPrice).split("\\.")[1] : "00" ;
+                        priceCents.setText("." + (cents.length() > 1 ? cents : cents + "0"));
+
                     }
                 }
             });
@@ -202,6 +216,31 @@ public class ViewProductActivity extends AppCompatActivity {
                 amtToOrder.setText("" + amt);
             }
         });
+
+        // buy button panel pop up
+        buyPanelLayout = findViewById(R.id.buyPanelLayout);
+
+
+        // saved order button
+        saveOrderBtn = findViewById(R.id.saveBtn);
+        saveOrderBtn.setImageResource(savedOrder ? R.drawable.heart_filled : R.drawable.heart_empty);
+        saveOrderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                savedOrder = !savedOrder;
+                //post req to set savedOrder as true
+                saveOrderBtn.setImageResource(savedOrder ? R.drawable.heart_filled : R.drawable.heart_empty);
+            }
+        });
+
+    }
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 
 
@@ -227,5 +266,6 @@ class RoundedButton extends androidx.appcompat.widget.AppCompatButton {
         drawable.setCornerRadius(rad);
         return drawable;
     }
+
 }
 
