@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.text.Layout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,7 @@ public class ViewProductActivity extends AppCompatActivity {
     ArrayList<RoundedButton> varBtnList;
     ImageView productImages;
     TextView priceDollars, priceCents, productDescription, amtToOrder, strikePrice;
-    LinearLayout descriptionLayout;
+    LinearLayout descriptionLayout, ownerLayout;
     int count = 0;
     int amt = 1;
     int focusedBtnId = 1;
@@ -143,7 +144,7 @@ public class ViewProductActivity extends AppCompatActivity {
 
         varBtnList = new ArrayList<>();
 
-        String description = "Officially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies.";
+        String description = "Officially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies.\n\nOfficially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies.";
 
         //btn layout params
         LinearLayout.LayoutParams varBtnParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -178,6 +179,10 @@ public class ViewProductActivity extends AppCompatActivity {
         GradientDrawable descriptionBg = RoundedButton.RoundedRect(25);
         descriptionBg.setColor(Color.argb(15, 10, 10, 10));
         descriptionLayout.setBackground(descriptionBg);
+        productDescription.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        productDescription.setMaxLines(8);
+        ownerLayout = findViewById(R.id.productOwnerLayout);
+        ownerLayout.setBackground(descriptionBg);
 
         // Order amount
         addOrder = findViewById(R.id.addOrder);
