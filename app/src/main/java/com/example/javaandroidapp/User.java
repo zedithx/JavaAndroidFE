@@ -4,7 +4,10 @@ public class User {
     private int phoneNumber;
     private String address;
 
-    public User() {}
+    public User() {
+        this.phoneNumber = 0;
+        this.address = "";
+    }
 
     public User(int phoneNumber, String address) {
         this.phoneNumber = phoneNumber;

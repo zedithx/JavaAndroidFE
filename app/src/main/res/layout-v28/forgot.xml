@@ -93,6 +93,7 @@
             </TextView>
 
             <EditText
+                android:id="@+id/forgetEmail"
                 android:layout_width="280dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
@@ -102,12 +103,11 @@
                 android:gravity="center"
                 android:hint="@string/typehere"
                 android:importantForAutofill="no"
-                android:inputType="text">
-            </EditText>
+                android:inputType="text"></EditText>
         </LinearLayout>
 
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/forgetpass_button"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

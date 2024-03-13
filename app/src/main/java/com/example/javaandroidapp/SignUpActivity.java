@@ -42,15 +42,13 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = signUpEmail.getText().toString();
                 String password = signUpPassword.getText().toString();
-                Task<AuthResult> signUpResult  = Users.registerUser(mAuth, email, password);
-                signUpResult.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             System.out.println("Signed up");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            System.out.println(user.getUid());
-                            Users.registerUser1(db, user.getUid(), 97730877, "Bedok");
+                            Users.registerUser(db, user);
                         } else {
                             System.out.println("Failed signed up");
                         }
