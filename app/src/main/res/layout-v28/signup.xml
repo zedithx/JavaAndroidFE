@@ -86,7 +86,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="14dp"
                 android:fontFamily="@font/interfont"
                 android:text="@string/email"
                 android:textFontWeight="500">
