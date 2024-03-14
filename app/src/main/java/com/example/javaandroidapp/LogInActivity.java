@@ -46,6 +46,8 @@ public class LogInActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             System.out.println(user);
+                            Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
+                            startActivity(Main);
                         } else {
                             System.out.println("Failed logged in");
                         }
