@@ -96,6 +96,7 @@ public class LandingActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     categories.clear();
                     categories.add(new CategoryModel("All", true));
+                    categories.add(new CategoryModel("Popular", false));
                     for (QueryDocumentSnapshot document: task.getResult()) {
                         categories.add(new CategoryModel(document.getData().get("name").toString(), false));
                     }
