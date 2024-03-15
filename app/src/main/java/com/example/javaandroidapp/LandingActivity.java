@@ -18,6 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -64,11 +68,27 @@ public class LandingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = mAuth.getCurrentUser();
         setContentView(R.layout.landing);
+        TextView username = findViewById(R.id.username);
         RecyclerView categoryRecyclerView = findViewById(R.id.categoryRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         categoryRecyclerView.setLayoutManager(layoutManager);
         Query categories_query = Categories.getCategorySnapshot(db);
+        DocumentReference userNameRef = Users.getName(db, fbUser);
+        userNameRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        username.setText(String.format("Hi, %s!", document.getData().get("name").toString()));
+                    }
+                }
+            }
+        });
+
         CategoryAdapter adapter = new CategoryAdapter(categories);
         categories_query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
