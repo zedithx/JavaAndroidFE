@@ -16,11 +16,23 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.*;
 
 public class LandingActivity extends AppCompatActivity {
     //testing btn to redirect to pdt page
     public Button testBtn;
+    private List<CategoryModel> categories = new ArrayList<>();
 
     public static class CategoryModel {
         private String categoryName;
@@ -55,21 +67,62 @@ public class LandingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = mAuth.getCurrentUser();
         setContentView(R.layout.landing);
+        TextView username = findViewById(R.id.username);
         RecyclerView categoryRecyclerView = findViewById(R.id.categoryRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         categoryRecyclerView.setLayoutManager(layoutManager);
-
-        List<CategoryModel> categories = new ArrayList<>();
-        categories.add(new CategoryModel("All", true));
-        categories.add(new CategoryModel("Popular", false));
-        categories.add(new CategoryModel("Electronics", false));
-        categories.add(new CategoryModel("Consumables", false));
-        categories.add(new CategoryModel("Clothes", false));
-        categories.add(new CategoryModel("Bags", false));
+        Query categories_query = Categories.getCategorySnapshot(db);
+        DocumentReference userNameRef = Users.getName(db, fbUser);
+        Query listings = Listings.getAllListings(db, "A7jaBlyu12HMH32lTJri");
+        listings.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        System.out.println(document.getId() + " => " + document.getData());
+                        System.out.println(document.getData().get("name"));
+                    }
+                }
+            }
+        });
+        userNameRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        username.setText(String.format("Hi, %s!", document.getData().get("name").toString()));
+                    }
+                }
+            }
+        });
 
         CategoryAdapter adapter = new CategoryAdapter(categories);
-        categoryRecyclerView.setAdapter(adapter);
+        categories_query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    categories.clear();
+                    categories.add(new CategoryModel("All", true));
+                    categories.add(new CategoryModel("Popular", false));
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        categories.add(new CategoryModel(document.getData().get("name").toString(), false));
+                    }
+                    categoryRecyclerView.setAdapter(adapter);
+                }
+            }
+        });
+//        List<CategoryModel> categories = new ArrayList<>();
+//        categories.add(new CategoryModel("All", true));
+//        categories.add(new CategoryModel("Popular", false));
+//        categories.add(new CategoryModel("Electronics", false));
+//        categories.add(new CategoryModel("Consumables", false));
+//        categories.add(new CategoryModel("Clothes", false));
+//        categories.add(new CategoryModel("Bags", false));
         //testing btn to redirect to pdt page
         testBtn = findViewById(R.id.testButton);
         testBtn.setOnClickListener(new View.OnClickListener() {

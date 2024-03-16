@@ -2,25 +2,29 @@ package com.example.javaandroidapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
         ImageView backButton = findViewById(R.id.signup_back);
@@ -40,17 +44,25 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = signUpEmail.getText().toString();
                 String password = signUpPassword.getText().toString();
-                Task<AuthResult> signUpResult  = Users.registerUser(mAuth, email, password);
-                signUpResult.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            System.out.println("Signed up");
-                        } else {
-                            System.out.println("Failed signed up");
+                String cfmPassword = signUpCfmPassword.getText().toString();
+                if (!(email.equals("")) && !(password.equals("")) && (password.equals(cfmPassword)) && (email.endsWith("sutd.edu.sg"))) {
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(SignUpActivity.this, "Please verify your email before signing in!", Toast.LENGTH_SHORT).show();
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Users.registerUser(db, user);
+                                Intent Main = new Intent(SignUpActivity.this, LogInActivity.class);
+                                startActivity(Main);
+                            } else {
+                                Toast.makeText(SignUpActivity.this, ErrorHandles.signUpErrors(task), Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    Toast.makeText(SignUpActivity.this, "Testing", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
