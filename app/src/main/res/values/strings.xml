@@ -34,5 +34,7 @@
     <string name="product_amt_to_order">1</string>
     <string name="group_buy_leader">Group Buy Leader</string>
     <string name="buy">Join Order</string>
+    <string name="set_variation">Choose Variation</string>
+    <string name="order_amount">Order Amount</string>
 
 </resources>

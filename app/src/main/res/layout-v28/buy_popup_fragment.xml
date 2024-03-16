@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?><!-- res/layout/example_activity.xml -->
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:elevation="3dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            >
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="60dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/popupLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:id="@+id/chooseVarTextLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/H3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="15dp"
+                                android:text="@string/set_variation" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/chooseVarBtnLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="15dp"
+                            android:gravity="start"
+                            android:orientation="horizontal">
+
+                            <Spinner
+                                android:id="@+id/varSpinner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                            </Spinner>
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/amtLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                style="@style/H3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="15dp"
+                                android:text="@string/order_amount"
+                                android:textAlignment="textStart">
+
+                            </TextView>
+
+                            <LinearLayout
+                                android:id="@+id/setAmtBtnLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:id="@+id/chooseAmtLayout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="0.3"
+                                    android:gravity="end"
+                                    android:orientation="horizontal">
+
+                                    <ImageButton
+                                        android:id="@+id/minusOrder"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_margin="0dp"
+                                        android:layout_weight="0.3"
+                                        android:background="@null"
+                                        android:scaleX="1.5"
+                                        android:scaleY="1.5"
+                                        android:src="@drawable/minus" />
+
+                                    <TextView
+                                        android:id="@+id/amtToOrder"
+                                        style="@style/H3"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="0.5"
+                                        android:background="#EEEEEE"
+                                        android:text="@string/product_amt_to_order" />
+
+                                    <ImageButton
+                                        android:id="@+id/addOrder"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_margin="0dp"
+                                        android:layout_weight="0.3"
+                                        android:background="@null"
+                                        android:scaleX="1.5"
+                                        android:scaleY="1.5"
+                                        android:src="@drawable/add_plus" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/buyPanelLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_gravity="bottom"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <Button
+                            android:id="@+id/buyOrderBtn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:layout_weight="0.8"
+                            android:backgroundTint="@color/lightred"
+                            android:text="@string/buy"
+                            android:textSize="23sp" />
+
+                        <ImageButton
+                            android:id="@+id/saveBtn"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_margin="15dp"
+                            android:layout_weight="0.1"
+                            android:background="@null"
+                            android:src="@drawable/heart_empty" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/blankFillBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.3"
+            android:background="@color/black"
+            android:orientation="horizontal"
+            android:elevation="1dp"
+            android:visibility="gone">
+
+        </Button>
+    </LinearLayout>
+</RelativeLayout>
+

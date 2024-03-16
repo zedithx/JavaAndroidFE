@@ -1,38 +1,57 @@
 package com.example.javaandroidapp;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
+import android.media.Image;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ViewProductActivity extends AppCompatActivity {
-    ImageButton backBtn, addOrder, minusOrder, saveOrderBtn;
+    static ImageButton backBtn, addOrder, minusOrder;
     Button buyBtn;
     ArrayList<RoundedButton> varBtnList;
-    TextView priceDollars, priceCents, productDescription, amtToOrder, strikePrice;
-    LinearLayout descriptionLayout, ownerLayout, buyPanelLayout;
+    static TextView priceDollars, priceCents, productDescription, amtToOrder, strikePrice;
+    LinearLayout descriptionLayout, ownerLayout, buyPanelLayout, extendedBuyLayout;
     int count = 0;
-    int amt = 1;
-    int focusedBtnId = 1;
-    boolean savedOrder = false;
-
+    static int amt = 1;
+    static int focusedBtnId = 1;
+    static boolean savedOrder = false;
+    static boolean buyClicked = false;
+    static BuyFragment buyFrag;
 
     // get images for product id
-    int[] getImages = {R.drawable.test_kangol, R.drawable.test_goodluckbunch, R.drawable.test_springheads};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +60,9 @@ public class ViewProductActivity extends AppCompatActivity {
 
         // create new product instance
         Product product = Product.instantiateProduct();
+
+        buyFrag = new BuyFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         // back button
         backBtn = findViewById(R.id.backBtn);
@@ -61,7 +83,7 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
         //add images
-        loadImages(getImages);
+        loadImages(product.getImageList());
 
         TextView minOrdersView = findViewById(R.id.numOrders2);
         TextView currOrdersView = findViewById(R.id.numOrders1);
@@ -80,38 +102,16 @@ public class ViewProductActivity extends AppCompatActivity {
         // get arrayList of variation ids
         // get names, prices of each variation and store in name and price arraylists respectively
         int varCount = product.getVariationNames().size(); // testing with 3 variations
-        ArrayList<String> varBtnName = product.getVariationNames();
-        ArrayList<Double> varBtnPrice = product.getVariationAdditionalPrice();
 
-        varBtnList = new ArrayList<>();
+
+        ArrayList<String> varBtnName = product.getVariationNames();
+        ArrayList<Double> varBtnPrice = product.pdtInst.getVariationAdditionalPrice();
 
         //btn layout params
-        LinearLayout.LayoutParams varBtnParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        varBtnParams.setMargins(15, 15, 15, 15);
+        createBtnPanel(product, varBtnName, varBtnPrice, variationBtnParentLayout);
 
         // map product variation details to variation buttons
-        for (int i = 0; i < varCount; i++) {
-            int btnId = i + 1;
-            RoundedButton newVarBtn = new RoundedButton(this);
-            newVarBtn.setLayoutParams(varBtnParams);
-            newVarBtn.setId(btnId);
-            String varText = varBtnName.get(i) + "\n" + (varBtnPrice.get(i) > 0 ? "+" + varBtnPrice.get(i) : "-");
-            newVarBtn.setText(varText);
-            varBtnList.add(newVarBtn);
-            newVarBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    focusedBtnId = newVarBtn.getId();
-                    for (RoundedButton btn : varBtnList) {
-                        GradientDrawable drawable = RoundedButton.RoundedRect(25);
-                        drawable.setColor((focusedBtnId == btn.getId() ? Color.argb(150, 255, 30, 7) : Color.argb(15, 10, 10, 10)));
-                        btn.setBackground(drawable);
-                        setPrice(product.getCurrentPrice() + varBtnPrice.get(btnId - 1), priceDollars, priceCents);
-                    }
-                }
-            });
-            variationBtnParentLayout.addView(newVarBtn);
-        }
+
         productDescription = findViewById(R.id.productDescription);
         productDescription.setText(product.getProductDescription());
 
@@ -124,51 +124,134 @@ public class ViewProductActivity extends AppCompatActivity {
         ownerLayout = findViewById(R.id.productOwnerLayout);
         ownerLayout.setBackground(descriptionBg);
 
-        // Order amount
-        addOrder = findViewById(R.id.addOrder);
-        minusOrder = findViewById(R.id.minusOrder);
-        amtToOrder = findViewById(R.id.amtToOrder);
-        addOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                amt += 1;
-                amtToOrder.setText("" + amt);
-            }
-        });
-        minusOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                amt = amt > 1 ? amt - 1 : 1;
-                amtToOrder.setText("" + amt);
-            }
-        });
 
         // buy button panel pop up
-        buyPanelLayout = findViewById(R.id.buyPanelLayout);
+
+        ft.replace(R.id.buyFrameLayout, buyFrag);
+        ft.commit();
 
 
-        // saved order button
-        saveOrderBtn = findViewById(R.id.saveBtn);
-        saveOrderBtn.setImageResource(savedOrder ? R.drawable.heart_filled : R.drawable.heart_empty);
-        saveOrderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                savedOrder = !savedOrder;
-                //post req to set savedOrder as true
-                saveOrderBtn.setImageResource(savedOrder ? R.drawable.heart_filled : R.drawable.heart_empty);
+        RelativeLayout alphaRelative = findViewById(R.id.alphaRelative);
+//        alphaRelative.setOnTouchListener(new View.OnTouchListener(){
+//            public boolean onTouch(View v, MotionEvent e){
+//                if(e.getAction() == MotionEvent.ACTION_UP){
+//                    int x = (int) e.getX();
+//                    int y = (int) e.getY();
+//                    Rect r = new Rect ( 0, 0, 0, 0 );
+//                    buyFrag.getView().getHitRect(r);
+//                    boolean intersects = r.contains(x,y);
+//                    if ( !intersects ) {
+//                        Log.d(TAG, "pressed outside the buyFrag");
+//                        LinearLayout chooseVarTextLayout = buyFrag.getView().findViewById(R.id.chooseVarTextLayout);
+//                        chooseVarTextLayout.removeAllViewsInLayout();
+//                    }
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
+
+    }
+
+
+    public static class BuyFragment extends Fragment {
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+            {
+                return inflater.inflate(R.layout.buy_popup_fragment, parent, false);
             }
-        });
+        }
+        @Override
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+
+            ;
+
+            // saved order button
+            ImageButton saveOrderBtn = view.findViewById(R.id.saveBtn);
+            saveOrderBtn.setImageResource( savedOrder ? R.drawable.heart_filled : R.drawable.heart_empty);
+            saveOrderBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    savedOrder = !savedOrder;
+                    //post req to set savedOrder as true
+                    saveOrderBtn.setImageResource(savedOrder ? R.drawable.heart_filled : R.drawable.heart_empty);
+                }
+            });
+            Button joinBtn = view.findViewById(R.id.buyOrderBtn);
+
+            LinearLayout chooseVarBtnLayout = view.findViewById(R.id.chooseVarBtnLayout);
+            Button blankFillLayout = view.findViewById(R.id.blankFillBtn);
+            blankFillLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout popUpLayout = view.findViewById(R.id.popupLayout);
+                    popUpLayout.setVisibility(View.GONE);
+                    blankFillLayout.setVisibility(View.GONE);
+                }
+            });
+            TextView amtToOrder = view.findViewById(R.id.amtToOrder);
+            ImageButton addOrder = view.findViewById(R.id.addOrder);
+            ImageButton minusOrder = view.findViewById(R.id.minusOrder);
+            Product product = Product.pdtInst;
+
+            ArrayList<String> varBtnName = product.getVariationNames();
+            ArrayList<Double> varBtnPrice = product.getVariationAdditionalPrice();
+
+//            createBtnPanel(product, varBtnName, varBtnPrice, chooseVarBtnLayout);
+//            chooseVarBtnLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            Spinner varSpinner = view.findViewById(R.id.varSpinner);
+            ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, varBtnName);
+            varSpinner.setAdapter(adapter);
+            varSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    focusedBtnId = position;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            joinBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    buyClicked = true;
+                    LinearLayout popUpLayout = view.findViewById(R.id.popupLayout);
+                    popUpLayout.setVisibility(View.VISIBLE);
+                    blankFillLayout.setVisibility(View.VISIBLE);
+
+
+                    // variation btn panel
+
+
+
+                    // Order amount
+                    addOrder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            amt += 1;
+                            amtToOrder.setText("" + amt);
+                        }
+                    });
+                    minusOrder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            amt = amt > 1 ? amt - 1 : 1;
+                            amtToOrder.setText("" + amt);
+                        }
+                    });
+
+                }
+
+            });
+
+
+        }
 
     }
 
-    public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        long factor = (long) Math.pow(10, places);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
-    }
 
     static void setPrice(double displayedPrice, TextView priceDollars, TextView priceCents) {
         priceDollars.setText("S$" + ("" + displayedPrice).split("\\.")[0]);
@@ -176,7 +259,8 @@ public class ViewProductActivity extends AppCompatActivity {
         priceCents.setText("." + (cents.length() > 1 ? cents : cents + "0"));
     }
 
-    void loadImages(int[] getImages) {
+
+    void loadImages(ArrayList<Integer> getImages) {
 
         ArrayList<Integer> imageList = new ArrayList();
         for (int imageRes : getImages) {
@@ -206,38 +290,74 @@ public class ViewProductActivity extends AppCompatActivity {
 
             }
 
-            ;
+
         });
+
+
+        // bottom modal
+
+    }
+// onclick -> extendedBuyLayout -> fill parent
+    // generate all variation buttons
+    // ...
+
+    static void createBtnPanel(Product product, ArrayList<String> varBtnName, ArrayList<Double> varBtnPrice, LinearLayout variationBtnParentLayout) {
+
+        LinearLayout.LayoutParams varBtnParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        varBtnParams.setMargins(15, 15, 15, 15);
+        ArrayList<RoundedButton> varBtnList = new ArrayList<>();
+
+
+
+
+        for (int i = 0; i < varBtnName.size(); i++) {
+            int btnId = i + 1;
+            RoundedButton newVarBtn = new RoundedButton(variationBtnParentLayout.getContext());
+            newVarBtn.setLayoutParams(varBtnParams);
+            newVarBtn.setId(btnId);
+            String varText = varBtnName.get(i) + "\n" + (varBtnPrice.get(i) > 0 ? "+" + varBtnPrice.get(i) : "-");
+            newVarBtn.setText(varText);
+            varBtnList.add(newVarBtn);
+            newVarBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    focusedBtnId = newVarBtn.getId();
+                    for (RoundedButton btn : varBtnList) {
+                        GradientDrawable drawable = RoundedButton.RoundedRect(25);
+                        drawable.setColor((focusedBtnId == btn.getId() ? Color.argb(150, 255, 30, 7) : Color.argb(15, 10, 10, 10)));
+                        btn.setBackground(drawable);
+                        setPrice(product.getCurrentPrice() + varBtnPrice.get(btnId - 1), priceDollars, priceCents);
+                    }
+                }
+            });
+            variationBtnParentLayout.addView(newVarBtn);
+        }
+
+
     }
 
-    void getProductOwner() {
+    static class RoundedButton extends androidx.appcompat.widget.AppCompatButton {
+        public RoundedButton(Context context) {
+            super(context);
+            init();
+        }
 
+        private void init() {
+            GradientDrawable drawable = RoundedRect(25);
+            drawable.setColor(Color.argb(15, 10, 10, 10));
+            setBackground(drawable);
+            setTextColor(Color.BLACK);
+            setPadding(5, 0, 0, 5);
+        }
+
+        static GradientDrawable RoundedRect(int rad) {
+            GradientDrawable drawable = new GradientDrawable();
+            drawable.setShape(GradientDrawable.RECTANGLE);
+            drawable.setCornerRadius(rad);
+            return drawable;
+        }
     }
-
 }
-
-class RoundedButton extends androidx.appcompat.widget.AppCompatButton {
-    public RoundedButton(Context context) {
-        super(context);
-        init();
-    }
-
-    private void init() {
-        GradientDrawable drawable = RoundedRect(25);
-        drawable.setColor(Color.argb(15, 10, 10, 10));
-        setBackground(drawable);
-        setTextColor(Color.BLACK);
-        setPadding(5, 0, 0, 5);
-    }
-
-    static GradientDrawable RoundedRect(int rad) {
-        GradientDrawable drawable = new GradientDrawable();
-        drawable.setShape(GradientDrawable.RECTANGLE);
-        drawable.setCornerRadius(rad);
-        return drawable;
-    }
-}
-
 //
 
 class Product {
@@ -283,6 +403,7 @@ class Product {
             imageList.add(imageRes);
         }
     }
+
     public static Product instantiateProduct() { // singleton creator static method
         if (instanceCount == 0) {
             instanceCount = 1;
@@ -291,37 +412,51 @@ class Product {
         return pdtInst;
     }
 
-    int getProductId(){
+    int getProductId() {
         return productId;
     }
-    int getSellerId(){
+
+    int getSellerId() {
         return sellerId;
     }
-    double getCurrentPrice(){
+
+    double getCurrentPrice() {
         return currentPrice;
     }
-    double getOriginalPrice(){
+
+    double getOriginalPrice() {
         return originalPrice;
     }
-    int getCurrOrderAmt(){
+
+    int getCurrOrderAmt() {
         return currOrderAmt;
     }
-    int getMinOrderAmt(){
+
+    int getMinOrderAmt() {
         return minOrderAmt;
     }
-    String getProductName(){
+
+    String getProductName() {
         return productName;
     }
-    String getProductDescription(){
+
+    String getProductDescription() {
         return productDescription;
     }
-    ArrayList<String> getVariationNames(){
+
+    ArrayList<String> getVariationNames() {
         return variationNames;
     }
-    ArrayList<Integer> getImageList(){
+
+    ArrayList<Integer> getImageList() {
         return imageList;
     }
-    ArrayList<Double> getVariationAdditionalPrice(){
+
+    ArrayList<Double> getVariationAdditionalPrice() {
         return variationAdditionalPrice;
     }
+    boolean getSavedOrder(){
+        return savedOrder;
+    }
 }
+
