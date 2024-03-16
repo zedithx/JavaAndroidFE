@@ -39,6 +39,7 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = loginEmail.getText().toString();
                 String password = loginPassword.getText().toString();
+
                 Task<AuthResult> signInResult = Users.signInUser(mAuth, email, password);
                 signInResult.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override

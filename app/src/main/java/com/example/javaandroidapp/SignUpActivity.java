@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,18 +44,25 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = signUpEmail.getText().toString();
                 String password = signUpPassword.getText().toString();
-                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            System.out.println("Signed up");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Users.registerUser(db, user);
-                        } else {
-                            System.out.println("Failed signed up");
+                String cfmPassword = signUpCfmPassword.getText().toString();
+                if (!(email.equals("")) && !(password.equals("")) && (password.equals(cfmPassword)) && (email.endsWith("sutd.edu.sg"))) {
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(SignUpActivity.this, "Please verify your email before signing in!", Toast.LENGTH_SHORT).show();
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Users.registerUser(db, user);
+                                Intent Main = new Intent(SignUpActivity.this, LogInActivity.class);
+                                startActivity(Main);
+                            } else {
+                                Toast.makeText(SignUpActivity.this, ErrorHandles.signUpErrors(task), Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    Toast.makeText(SignUpActivity.this, "Testing", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
