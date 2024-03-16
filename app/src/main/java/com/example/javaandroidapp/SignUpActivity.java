@@ -2,10 +2,12 @@ package com.example.javaandroidapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,6 +34,10 @@ public class SignUpActivity extends AppCompatActivity {
         EditText signUpEmail = findViewById(R.id.signupEmail);
         EditText signUpPassword = findViewById(R.id.signUpPassword);
         EditText signUpCfmPassword = findViewById(R.id.signUpCfmPassword);
+//        LayoutInflater inflater = getLayoutInflater();
+//        View layout = inflater.inflate(R.layout.custom_toast, findViewById(R.id.toast_signup));
+
+// Customize the ImageView and TextView in the layout if needed
         backButton.setOnClickListener(new View.OnClickListener(){
            @Override
            public void onClick(View v) {
@@ -45,7 +51,26 @@ public class SignUpActivity extends AppCompatActivity {
                 String email = signUpEmail.getText().toString();
                 String password = signUpPassword.getText().toString();
                 String cfmPassword = signUpCfmPassword.getText().toString();
-                if (!(email.equals("")) && !(password.equals("")) && (password.equals(cfmPassword)) && (email.endsWith("sutd.edu.sg"))) {
+                if (email.equals("")){
+//                    TextView textView = layout.findViewById(R.id.toast_content);
+//                    textView.setText("test");
+//
+//                    Toast toast = new Toast(getApplicationContext());
+//                    toast.setDuration(Toast.LENGTH_SHORT);
+//                    toast.setView(layout);
+//                    toast.show();
+                    Toast.makeText(SignUpActivity.this, "Error: You entered an empty email", Toast.LENGTH_SHORT).show();
+                }
+                else if (password.equals("")){
+                    Toast.makeText(SignUpActivity.this, "Error: You entered an empty password", Toast.LENGTH_SHORT).show();
+                }
+                else if (!(password.equals(cfmPassword))){
+                    Toast.makeText(SignUpActivity.this, "Error: The passwords entered do not match", Toast.LENGTH_SHORT).show();
+                }
+                else if (!(email.endsWith("sutd.edu.sg"))) {
+                    Toast.makeText(SignUpActivity.this, "Error: This email does not belong to the SUTD organisation", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -60,8 +85,6 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         }
                     });
-                } else {
-                    Toast.makeText(SignUpActivity.this, "Testing", Toast.LENGTH_LONG).show();
                 }
             }
         });
