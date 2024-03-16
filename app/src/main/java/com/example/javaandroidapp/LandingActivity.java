@@ -77,6 +77,18 @@ public class LandingActivity extends AppCompatActivity {
         categoryRecyclerView.setLayoutManager(layoutManager);
         Query categories_query = Categories.getCategorySnapshot(db);
         DocumentReference userNameRef = Users.getName(db, fbUser);
+        Query listings = Listings.getAllListings(db, "A7jaBlyu12HMH32lTJri");
+        listings.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        System.out.println(document.getId() + " => " + document.getData());
+                        System.out.println(document.getData().get("name"));
+                    }
+                }
+            }
+        });
         userNameRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -96,6 +108,7 @@ public class LandingActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     categories.clear();
                     categories.add(new CategoryModel("All", true));
+                    categories.add(new CategoryModel("Popular", false));
                     for (QueryDocumentSnapshot document: task.getResult()) {
                         categories.add(new CategoryModel(document.getData().get("name").toString(), false));
                     }
