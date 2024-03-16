@@ -35,10 +35,12 @@ import androidx.fragment.app.FragmentTransaction;
 import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ViewProductActivity extends AppCompatActivity {
+    static DecimalFormat df = new DecimalFormat("#.00");
     static ImageButton backBtn, addOrder, minusOrder;
     Button buyBtn;
     ArrayList<RoundedButton> varBtnList;
@@ -50,6 +52,7 @@ public class ViewProductActivity extends AppCompatActivity {
     static boolean savedOrder = false;
     static boolean buyClicked = false;
     static BuyFragment buyFrag;
+    static double displayedPrice;
 
     // get images for product id
 
@@ -92,9 +95,10 @@ public class ViewProductActivity extends AppCompatActivity {
         priceDollars = findViewById(R.id.priceDollars);
         priceCents = findViewById((R.id.priceCents));
         // get price dynamically
-        setPrice(product.getCurrentPrice(), priceDollars, priceCents);
+        displayedPrice = product.getCurrentPrice();
+        setPrice(displayedPrice, priceDollars, priceCents);
         strikePrice = findViewById(R.id.originalPrice);
-        strikePrice.setText("S$" + product.getOriginalPrice());
+        strikePrice.setText("S$" + df.format(product.getOriginalPrice()));
         strikePrice.setPaintFlags(strikePrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
 
@@ -203,10 +207,17 @@ public class ViewProductActivity extends AppCompatActivity {
             Spinner varSpinner = view.findViewById(R.id.varSpinner);
             ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, varBtnName);
             varSpinner.setAdapter(adapter);
+            TextView subTotal = view.findViewById(R.id.subTotalText);
+            displayedPrice = product.getCurrentPrice() + varBtnPrice.get(focusedBtnId);
+            subTotal.setText("S$ "+ df.format(amt * displayedPrice));
+
             varSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     focusedBtnId = position;
+                    displayedPrice = product.getCurrentPrice() + varBtnPrice.get(focusedBtnId);
+                    subTotal.setText("S$ "+ df.format(amt * displayedPrice));
+
                 }
 
                 @Override
@@ -233,6 +244,8 @@ public class ViewProductActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             amt += 1;
                             amtToOrder.setText("" + amt);
+                            displayedPrice = product.getCurrentPrice() + varBtnPrice.get(focusedBtnId);
+                            subTotal.setText("S$ "+ df.format(amt * displayedPrice));
                         }
                     });
                     minusOrder.setOnClickListener(new View.OnClickListener() {
@@ -240,6 +253,9 @@ public class ViewProductActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             amt = amt > 1 ? amt - 1 : 1;
                             amtToOrder.setText("" + amt);
+                            displayedPrice = product.getCurrentPrice() + varBtnPrice.get(focusedBtnId);
+                            subTotal.setText("S$ "+ df.format(amt * displayedPrice));
+
                         }
                     });
 
@@ -326,7 +342,8 @@ public class ViewProductActivity extends AppCompatActivity {
                         GradientDrawable drawable = RoundedButton.RoundedRect(25);
                         drawable.setColor((focusedBtnId == btn.getId() ? Color.argb(150, 255, 30, 7) : Color.argb(15, 10, 10, 10)));
                         btn.setBackground(drawable);
-                        setPrice(product.getCurrentPrice() + varBtnPrice.get(btnId - 1), priceDollars, priceCents);
+                        displayedPrice = product.getCurrentPrice() + varBtnPrice.get(btnId - 1);
+                        setPrice(displayedPrice, priceDollars, priceCents);
                     }
                 }
             });

@@ -36,5 +36,6 @@
     <string name="buy">Join Order</string>
     <string name="set_variation">Choose Variation</string>
     <string name="order_amount">Order Amount</string>
+    <string name="sub_total">Subtotal:</string>
 
 </resources>
