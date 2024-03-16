@@ -41,19 +41,19 @@ public class LogInActivity extends AppCompatActivity {
                 String password = loginPassword.getText().toString();
 
                 Task<AuthResult> signInResult = Users.signInUser(mAuth, email, password);
-                signInResult.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            System.out.println(user);
-                            Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
-                            startActivity(Main);
-                        } else {
-                            System.out.println("Failed logged in");
-                        }
-                    }
-                });
+//                signInResult.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//                            System.out.println(user);
+//                            Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
+//                            startActivity(Main);
+//                        } else {
+//                            System.out.println("Failed logged in");
+//                        }
+//                    }
+//                });
                 Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
                 startActivity(Main);
 
