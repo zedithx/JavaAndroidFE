@@ -51,41 +51,15 @@ public class SignUpActivity extends AppCompatActivity {
                 String email = signUpEmail.getText().toString();
                 String password = signUpPassword.getText().toString();
                 String cfmPassword = signUpCfmPassword.getText().toString();
-                if (email.equals("")){
-//                    TextView textView = layout.findViewById(R.id.toast_content);
-//                    textView.setText("test");
-//
-//                    Toast toast = new Toast(getApplicationContext());
-//                    toast.setDuration(Toast.LENGTH_SHORT);
-//                    toast.setView(layout);
-//                    toast.show();
-                    Toast.makeText(SignUpActivity.this, "Error: You entered an empty email", Toast.LENGTH_SHORT).show();
-                }
-                else if (password.equals("")){
-                    Toast.makeText(SignUpActivity.this, "Error: You entered an empty password", Toast.LENGTH_SHORT).show();
-                }
-                else if (!(password.equals(cfmPassword))){
-                    Toast.makeText(SignUpActivity.this, "Error: The passwords entered do not match", Toast.LENGTH_SHORT).show();
-                }
-                else if (!(email.endsWith("sutd.edu.sg"))) {
-                    Toast.makeText(SignUpActivity.this, "Error: This email does not belong to the SUTD organisation", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(SignUpActivity.this, "Please verify your email before signing in!", Toast.LENGTH_SHORT).show();
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                Users.registerUser(db, user);
-                                Intent Main = new Intent(SignUpActivity.this, LogInActivity.class);
-                                startActivity(Main);
-                            } else {
-                                Toast.makeText(SignUpActivity.this, ErrorHandles.signUpErrors(task), Toast.LENGTH_LONG).show();
-                            }
+                Users.registerUser(mAuth, db, SignUpActivity.this, email, password, cfmPassword, new Callbacks() {
+                    @Override
+                    public void onResult(boolean isSuccess) {
+                        if (isSuccess) {
+                            Intent main = new Intent(SignUpActivity.this, LogInActivity.class);
+                            startActivity(main);
                         }
-                    });
-                }
+                    }
+                });
             }
         });
     }
