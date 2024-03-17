@@ -1,7 +1,5 @@
 package com.example.javaandroidapp;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,14 +21,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.*;
 
@@ -116,7 +111,7 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
 
-        CategoryAdapter adapter = new CategoryAdapter(categories);
+        CategoryAdapter adapter = new CategoryAdapter(categories, listings, db, adapter_listing);
         categories_query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -170,11 +165,6 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHold
     }
 
     class ListingViewHolder extends RecyclerView.ViewHolder {
-        //    String listing_price = (String) documentData.get("price");
-//    String listing_name = (String) documentData.get("name");
-//    String listing_minorder = (String) documentData.get("minorder");
-//    String listing_currentorder = (String) documentData.get("currentorder");
-//    Date listing_expirydate = (Date) documentData.get("expiry");
         private View listingView;
 
         public ListingViewHolder(@NonNull View itemView) {
@@ -196,33 +186,40 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHold
             TextView minorderTextView = itemView.findViewById(R.id.minorder);
             TextView currentorderTextView = itemView.findViewById(R.id.currentorder);
             ImageView productImageView = itemView.findViewById(R.id.product_image);
-//            TextView expiryTextView = itemView.findViewById(R.id.date);
+            TextView expiryTextView = itemView.findViewById(R.id.date);
             // Bind data to the views in the item layout
             String listing_price = listing.getPrice();
             String listing_name = listing.getName();
             String listing_minorder = listing.getMinOrder();
             String listing_currentorder = listing.getCurrentOrder();
-            System.out.println(storage.getReferenceFromUrl(listing.getImage()));
+            String listing_expirydate = listing.getExpiryCountdown();
             Glide.with(listingView).load(listing.getImage()).into(productImageView);
-//            Date listing_expirydate = (Date) listing.getExpiryDate();
             priceTextView.setText(String.format("$%s", listing_price));
             nameTextView.setText(listing_name);
             minorderTextView.setText(listing_minorder);
             currentorderTextView.setText(listing_currentorder);
-//            priceTextView.setText(listing_expirydate);
+            expiryTextView.setText(listing_expirydate);
         }
     }
 }
 
 class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private static List<LandingActivity.CategoryModel> categories;
+    private static List<Listing> listings;
+
+    private static FirebaseFirestore db;
+
+    private static ListingAdapter adapter_listing;
 
     public static List<LandingActivity.CategoryModel> getCategories() {
         return categories;
     }
 
-    public CategoryAdapter(List<LandingActivity.CategoryModel> categories) {
+    public CategoryAdapter(List<LandingActivity.CategoryModel> categories, List<Listing> listings, FirebaseFirestore db, ListingAdapter adapter_listing) {
         this.categories = categories;
+        this.listings = listings;
+        this.db = db;
+        this.adapter_listing = adapter_listing;
     }
 
     @NonNull
@@ -259,8 +256,19 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
                     Log.d("categories", "category:" + categories);
                     // Get the clicked category
                     LandingActivity.CategoryModel clickedCategory = categories.get(getAdapterPosition());
+                    Listings.getAllListings(db, clickedCategory.getCategoryName(), new CallbackAdapter() {
+                        @Override
+                        public void getList(List<Listing> listings_new) {
+                            listings.clear();
+                            if (listings_new.size() != 0) {
+                                listings.addAll(listings_new);
+                            }
+                            adapter_listing.notifyDataSetChanged();
+                        }
+                    });
                     // Update the selected category
                     clickedCategory.setSelected(true);
+
                     selectedCategory = clickedCategory;
                     // Notify the adapter about the data change
                     notifyDataSetChanged();

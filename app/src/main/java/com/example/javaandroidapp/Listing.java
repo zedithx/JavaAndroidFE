@@ -1,5 +1,7 @@
 package com.example.javaandroidapp;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 import java.util.Objects;
 
@@ -61,6 +63,20 @@ public class Listing {
     }
     public Date getExpiryDate() {
         return expiryDate;
+    }
+
+    public String getExpiryCountdown() {
+        // Convert the Date object to LocalDate
+        LocalDate localDate = expiryDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+        // Get today's date
+        LocalDate today = LocalDate.now();
+
+        // Calculate the period between the two dates
+        Period period = Period.between(today, localDate);
+
+        // Return the number of days in the period
+        return period.getDays() + " Days Left";
     }
 
     public void setExpiryDate(Date expiryDate) {

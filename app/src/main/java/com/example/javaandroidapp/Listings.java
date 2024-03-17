@@ -1,5 +1,7 @@
 package com.example.javaandroidapp;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,6 +18,7 @@ import java.util.List;
 public class Listings {
     public static void getAllListings(FirebaseFirestore db, String category, Callbacks callbacks) {
         Query item;
+        Log.d("listings", "retrieved" + category);
         if (category.equals("All")) {
             item =  db.collection("Listings");
         } else if (category.equals("Popular")) {
