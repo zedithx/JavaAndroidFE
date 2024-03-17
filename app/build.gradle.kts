@@ -36,6 +36,8 @@ android {
         implementation("com.google.firebase:firebase-firestore:24.10.3")
         implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
         implementation("com.google.firebase:firebase-auth")
+        implementation("com.github.bumptech.glide:glide:4.16.0")
+        implementation("com.google.firebase:firebase-storage:20.3.0")
         val fragment_version = "1.6.2"
         implementation("androidx.appcompat:appcompat:1.6.1")
         implementation("com.google.android.material:material:1.11.0")

@@ -1,5 +1,6 @@
 package com.example.javaandroidapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +29,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.*;
 
@@ -36,60 +41,6 @@ public class LandingActivity extends AppCompatActivity {
     private List<Listing> listings = new ArrayList<>();
 
     private QuerySnapshot listing_items;
-    public static class Listing {
-        private String price;
-        private String name;
-        private String minOrder;
-        private String currentOrder;
-        private Date expiryDate;
-
-        public Listing(String price, String name, String minOrder, String currentOrder, Date expiryDate) {
-            this.price = price;
-            this.name = name;
-            this.minOrder = minOrder;
-            this.currentOrder = currentOrder;
-            this.expiryDate = expiryDate;
-        }
-
-        public String getPrice() {
-            return price;
-        }
-
-        public void setPrice(String price) {
-            this.price = price;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getMinOrder() {
-            return minOrder;
-        }
-
-        public void setMinOrder(String minOrder) {
-            this.minOrder = minOrder;
-        }
-
-        public String getCurrentOrder() {
-            return currentOrder;
-        }
-
-        public void setCurrentOrder(String currentOrder) {
-            this.currentOrder = currentOrder;
-        }
-        public Date getExpiryDate() {
-            return expiryDate;
-        }
-
-        public void setExpiryDate(Date expiryDate) {
-            this.expiryDate = expiryDate;
-        }
-    }
     public static class CategoryModel {
         private String categoryName;
         private boolean isSelected;
@@ -144,25 +95,13 @@ public class LandingActivity extends AppCompatActivity {
         ListingAdapter adapter_listing = new ListingAdapter(listings);
         listingRecyclerView.setAdapter(adapter_listing);
         // Retrieve all listings
-        Query listings_query = Listings.getAllListings(db, "All");
-        listings_query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Listings.getAllListings(db, "All", new CallbackAdapter() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document: task.getResult()) {
-                        Log.d("document", "document:" + document);
-                        String listing_price = document.get("price").toString();
-                        String listing_name = document.getString("name");
-                        String listing_minorder = document.get("minorder").toString();
-                        String listing_currentorder = document.get("currentorder").toString();
-                        Date listing_expirydate = document.getDate("expiry");
-                        Listing listing = new Listing(listing_price, listing_name, listing_minorder,
-                                listing_currentorder, listing_expirydate);
-                        listings.add(listing);
-                        Log.d("listings", "listings:" + listings);
-                    }
-                    adapter_listing.notifyDataSetChanged();
+            public void getList(List<Listing> listings_new) {
+                if (listings_new.size() != 0) {
+                    listings.addAll(listings_new);
                 }
+                adapter_listing.notifyDataSetChanged();
             }
         });
 
@@ -206,9 +145,11 @@ public class LandingActivity extends AppCompatActivity {
 }
 
 class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHolder> {
-    private List<LandingActivity.Listing> listings;
+    private List<Listing> listings;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+
     //constructor
-    public ListingAdapter(List<LandingActivity.Listing> listings) {
+    public ListingAdapter(List<Listing> listings) {
         this.listings = listings;
     }
     @NonNull
@@ -249,17 +190,20 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHold
             });
         }
 
-        public void bind(LandingActivity.Listing listing) {
+        public void bind(Listing listing) {
             TextView priceTextView = itemView.findViewById(R.id.price);
             TextView nameTextView = itemView.findViewById(R.id.name);
             TextView minorderTextView = itemView.findViewById(R.id.minorder);
             TextView currentorderTextView = itemView.findViewById(R.id.currentorder);
+            ImageView productImageView = itemView.findViewById(R.id.product_image);
 //            TextView expiryTextView = itemView.findViewById(R.id.date);
             // Bind data to the views in the item layout
-            String listing_price = (String) listing.getPrice();
-            String listing_name = (String) listing.getName();
-            String listing_minorder = (String) listing.getMinOrder();
-            String listing_currentorder = (String) listing.getCurrentOrder();
+            String listing_price = listing.getPrice();
+            String listing_name = listing.getName();
+            String listing_minorder = listing.getMinOrder();
+            String listing_currentorder = listing.getCurrentOrder();
+            System.out.println(storage.getReferenceFromUrl(listing.getImage()));
+            Glide.with(listingView).load(listing.getImage()).into(productImageView);
 //            Date listing_expirydate = (Date) listing.getExpiryDate();
             priceTextView.setText(String.format("$%s", listing_price));
             nameTextView.setText(listing_name);
