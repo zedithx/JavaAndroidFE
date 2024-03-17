@@ -39,24 +39,15 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = loginEmail.getText().toString();
                 String password = loginPassword.getText().toString();
-
-                Task<AuthResult> signInResult = Users.signInUser(mAuth, email, password);
-//                signInResult.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//                            System.out.println(user);
-//                            Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
-//                            startActivity(Main);
-//                        } else {
-//                            System.out.println("Failed logged in");
-//                        }
-//                    }
-//                });
-                Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
-                startActivity(Main);
-
+                Users.signInUser(mAuth, LogInActivity.this, email, password, new Callbacks() {
+                    @Override
+                    public void onResult(boolean isSuccess) {
+                        if (isSuccess) {
+                            Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
+                            startActivity(Main);
+                        }
+                    }
+                });
             }
         });
         signupLink.setOnClickListener(new View.OnClickListener(){
