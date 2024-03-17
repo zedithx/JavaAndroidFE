@@ -39,7 +39,7 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = loginEmail.getText().toString();
                 String password = loginPassword.getText().toString();
-                Users.signInUser(mAuth, LogInActivity.this, email, password, new Callbacks() {
+                Users.signInUser(mAuth, LogInActivity.this, email, password, new CallbackAdapter() {
                     @Override
                     public void onResult(boolean isSuccess) {
                         if (isSuccess) {

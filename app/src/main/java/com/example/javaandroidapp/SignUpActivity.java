@@ -51,7 +51,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String email = signUpEmail.getText().toString();
                 String password = signUpPassword.getText().toString();
                 String cfmPassword = signUpCfmPassword.getText().toString();
-                Users.registerUser(mAuth, db, SignUpActivity.this, email, password, cfmPassword, new Callbacks() {
+                Users.registerUser(mAuth, db, SignUpActivity.this, email, password, cfmPassword, new CallbackAdapter() {
                     @Override
                     public void onResult(boolean isSuccess) {
                         if (isSuccess) {

@@ -140,7 +140,6 @@ public class LandingActivity extends AppCompatActivity {
         // Get all categories from firestore
         Query categories_query = Categories.getCategorySnapshot(db);
         // Get user's name
-        DocumentReference userNameRef = Users.getName(db, fbUser);
         TextView username = findViewById(R.id.username);
         ListingAdapter adapter_listing = new ListingAdapter(listings);
         listingRecyclerView.setAdapter(adapter_listing);
@@ -166,14 +165,14 @@ public class LandingActivity extends AppCompatActivity {
                 }
             }
         });
-        userNameRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+        Users.getName(db, fbUser, new CallbackAdapter() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        username.setText(String.format("Hi, %s!", document.getData().get("name").toString()));
-                    }
+            public void getResult(String result) {
+                if (!result.equals("")) {
+                    username.setText(String.format("Hi, %s!", result));
+                } else {
+                    username.setText("Hi, User!");
                 }
             }
         });
