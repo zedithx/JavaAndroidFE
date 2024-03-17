@@ -14,8 +14,27 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Users {
-    public static Task<AuthResult> signInUser(FirebaseAuth mAuth, String email, String password) {
-        return mAuth.signInWithEmailAndPassword(email, password);
+    public static void signInUser(FirebaseAuth mAuth, Context context, String email, String password, Callbacks callback) {
+        if (email.equals("")){
+            Toast.makeText(context, "Error: You entered an empty email", Toast.LENGTH_SHORT).show();
+            callback.onResult(false);
+        }
+        else if (password.equals("")){
+            Toast.makeText(context, "Error: You entered an empty password", Toast.LENGTH_SHORT).show();
+            callback.onResult(false);
+        } else {
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        callback.onResult(true);
+                    } else {
+                        Toast.makeText(context, ErrorHandles.signInErrors(task), Toast.LENGTH_LONG).show();
+                        callback.onResult(false);                    }
+                }
+            });
+        }
     }
 
     public static void registerUser(FirebaseAuth mAuth, FirebaseFirestore db, Context context, String email, String password, String cfmPassword, Callbacks callback) {
