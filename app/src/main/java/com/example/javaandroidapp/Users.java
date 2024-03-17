@@ -11,6 +11,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Users {
@@ -73,7 +74,19 @@ public class Users {
         }
     }
 
-    public static DocumentReference getName(FirebaseFirestore db, FirebaseUser fbUser) {
-        return db.collection("users").document(fbUser.getUid());
+    public static void getName(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
+        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        callback.getResult(document.getData().get("name").toString());
+                    } else {
+                        callback.getResult("");
+                    }
+                }
+            }
+        });
     }
 }
