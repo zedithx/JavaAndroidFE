@@ -88,6 +88,12 @@ public class LandingActivity extends AppCompatActivity {
         // Get user's name
         TextView username = findViewById(R.id.username);
         ListingAdapter adapter_listing = new ListingAdapter(listings);
+        Users.getSaved(db, fbUser, new CallbackAdapter() {
+            @Override
+            public void getList(List<Listing> listings) {
+                System.out.println(listings);
+            }
+        });
         listingRecyclerView.setAdapter(adapter_listing);
         // Retrieve all listings
         Listings.getAllListings(db, "All", new CallbackAdapter() {
