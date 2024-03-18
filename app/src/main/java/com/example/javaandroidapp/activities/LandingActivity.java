@@ -1,5 +1,6 @@
 package com.example.javaandroidapp.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -91,15 +93,38 @@ public class LandingActivity extends AppCompatActivity {
         listingRecyclerView.setLayoutManager(listingLayoutManager);
         // Get all categories from firestore
         Query categories_query = Categories.getCategorySnapshot(db);
-        // Get user's name
+        // Get name view to edit
         TextView username = findViewById(R.id.username);
-        ListingAdapter adapter_listing = new ListingAdapter(listings);
-        Users.getSaved(db, fbUser, new CallbackAdapter() {
+        // Retrieve user's name
+        Users.getName(db, fbUser, new CallbackAdapter() {
             @Override
-            public void getList(List<Listing> listings) {
-                System.out.println(listings);
+            public void getResult(String result) {
+                if (!result.equals("")) {
+                    username.setText(String.format("Hi, %s!", result));
+                } else {
+                    username.setText("Hi, User!");
+                }
             }
         });
+        // Get the order and saved buttons
+        LinearLayout saved_button = findViewById(R.id.saved_button);
+        saved_button.setOnClickListener(new View.OnClickListener(){
+             @Override
+             public void onClick(View v) {
+                 Intent Main = new Intent(LandingActivity.this, LandingSavedActivity.class);
+                 Main.putExtra("User", fbUser);
+                 startActivity(Main);
+             }
+        });
+        LinearLayout order_button = findViewById(R.id.order_button);
+        order_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent Main = new Intent(LandingActivity.this, LandingOrdersActivity.class);
+                startActivity(Main);
+            }
+        });
+        ListingAdapter adapter_listing = new ListingAdapter(listings);
         listingRecyclerView.setAdapter(adapter_listing);
         // Retrieve all listings
         Listings.getAllListings(db, "All", new CallbackAdapter() {
@@ -109,17 +134,6 @@ public class LandingActivity extends AppCompatActivity {
                     listings.addAll(listings_new);
                 }
                 adapter_listing.notifyDataSetChanged();
-            }
-        });
-
-        Users.getName(db, fbUser, new CallbackAdapter() {
-            @Override
-            public void getResult(String result) {
-                if (!result.equals("")) {
-                    username.setText(String.format("Hi, %s!", result));
-                } else {
-                    username.setText("Hi, User!");
-                }
             }
         });
 
@@ -138,22 +152,11 @@ public class LandingActivity extends AppCompatActivity {
                 }
             }
         });
-
-        //testing btn to redirect to pdt page
-//        testBtn = findViewById(R.id.testButton);
-//        testBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent Main = new Intent(LandingActivity.this, ViewProductActivity.class);
-//                startActivity(Main);
-//            }
-//        });
     }
 }
 
 class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHolder> {
     private List<Listing> listings;
-    FirebaseStorage storage = FirebaseStorage.getInstance();
 
     //constructor
     public ListingAdapter(List<Listing> listings) {

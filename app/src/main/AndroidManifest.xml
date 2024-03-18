@@ -41,7 +41,14 @@
             android:name=".activities.ForgotPassActivity"
             android:exported="true">
         </activity>
-
+        <activity
+            android:name=".activities.LandingOrdersActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".activities.LandingSavedActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

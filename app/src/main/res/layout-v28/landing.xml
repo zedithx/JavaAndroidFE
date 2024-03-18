@@ -42,7 +42,8 @@
                 android:orientation="vertical"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true">
+                android:layout_alignParentStart="true"
+                android:id="@+id/saved_button">
                 <ImageView
                     android:id="@+id/heart"
                     android:contentDescription="@string/hearticon"
@@ -66,7 +67,8 @@
                 android:orientation="vertical"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:id="@+id/order_button">
                 <ImageView
                     android:id="@+id/order"
                     android:contentDescription="@string/ordericon"

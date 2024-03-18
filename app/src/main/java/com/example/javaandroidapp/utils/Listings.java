@@ -53,7 +53,7 @@ public class Listings {
         });
     }
 
-    public static void getListings(List<DocumentReference> items, Callbacks callback) {
+    public static void getSavedListings(List<DocumentReference> items, Callbacks callback) {
         List<Listing> listings = new ArrayList<>();
         for (DocumentReference item: items) {
             item.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
