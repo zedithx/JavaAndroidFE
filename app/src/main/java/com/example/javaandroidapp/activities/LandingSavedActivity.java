@@ -53,7 +53,6 @@ public class LandingSavedActivity  extends AppCompatActivity {
             public void getList(List<Listing> listings_new) {
                 if (listings_new.size() != 0) {
                     listings.addAll(listings_new);
-                    System.out.println(listings);
                     adapter_listing.notifyDataSetChanged();
                 }
             }

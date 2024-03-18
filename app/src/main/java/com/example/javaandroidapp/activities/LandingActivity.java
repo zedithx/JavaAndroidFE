@@ -125,6 +125,15 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
         ListingAdapter adapter_listing = new ListingAdapter(listings);
+        adapter_listing.setOnItemClickListener(new ListingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Listing data) {
+                // Handle item click, e.g., start a new activity
+                Intent intent = new Intent(LandingActivity.this, ViewProductActivity.class);
+                intent.putExtra("listing", data);
+                startActivity(intent);
+            }
+        });
         listingRecyclerView.setAdapter(adapter_listing);
         // Retrieve all listings
         Listings.getAllListings(db, "All", new CallbackAdapter() {
@@ -155,8 +164,16 @@ public class LandingActivity extends AppCompatActivity {
     }
 }
 
-class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHolder> {
+class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHolder>{
     private List<Listing> listings;
+    public interface OnItemClickListener {
+        void onItemClick(Listing data);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.clickListener = listener;
+    }
+    private OnItemClickListener clickListener;
+
 
     //constructor
     public ListingAdapter(List<Listing> listings) {
@@ -171,7 +188,18 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ListingAdapter.ListingViewHolder holder, int position) {
-        holder.bind(listings.get(position));
+        final Listing data = listings.get(position);
+        holder.bind(data);
+
+        // Set click listener for the item view
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (clickListener != null) {
+                    clickListener.onItemClick(data);
+                }
+            }
+        });
     }
 
     @Override
@@ -185,14 +213,6 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHold
         public ListingViewHolder(@NonNull View itemView) {
             super(itemView);
             listingView = itemView.findViewById(R.id.listing);
-            listingView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Notify the adapter about the data change
-//                notifyDataSetChanged();
-                    // TODO - direct to product page
-                }
-            });
         }
 
         public void bind(Listing listing) {
@@ -287,7 +307,6 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
                     selectedCategory = clickedCategory;
                     // Notify the adapter about the data change
                     notifyDataSetChanged();
-                    // TODO - Switch fragments based on what they click
                 }
             });
         }

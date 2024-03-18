@@ -40,7 +40,6 @@ public class ForgotPassActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            System.out.println("Sent");
                         }
                     }
                 });

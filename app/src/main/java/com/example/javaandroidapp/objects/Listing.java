@@ -1,10 +1,11 @@
 package com.example.javaandroidapp.objects;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Date;
 
-public class Listing {
+public class Listing implements Serializable {
     private String price;
     private String name;
     private String minOrder;
