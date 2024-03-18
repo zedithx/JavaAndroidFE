@@ -54,7 +54,8 @@ public class ViewProductActivity extends AppCompatActivity {
         setContentView(R.layout.product_page);
 
         // create new product instance
-        Product product = Product.instantiateProduct(Double.valueOf(listing.getPrice()), Integer.valueOf(listing.getCurrentOrder()), Integer.valueOf(listing.getMinOrder()),
+        Product product = Product.instantiateProduct(Double.valueOf(listing.getPrice()),
+                Integer.valueOf(listing.getCurrentOrder()), Integer.valueOf(listing.getMinOrder()),
                 listing.getName());
 
         buyFrag = new BuyFragment();
@@ -388,15 +389,15 @@ class Product {
 
     private Product(double price, int currentorder, int minorder, String name) { // instantiate the product instance, there can be only one instance per ViewProduct activity
         // get product info from backend and populate attributes
-        String[] varNameList = {"Normal"};
-        double[] varPriceList = {price};
+        String[] varNameList = {"Small", "Normal", "Medium"};
+        double[] varPriceList = {price, price, price};
         int[] getImages = {R.drawable.test_kangol, R.drawable.test_goodluckbunch, R.drawable.test_springheads};
 
         ///
         productId = 1;
         sellerId = 10;
         currentPrice = price;
-        originalPrice = 140.30;
+        originalPrice = price + 10;
         currOrderAmt = currentorder;
         minOrderAmt = minorder;
         productName = name;
