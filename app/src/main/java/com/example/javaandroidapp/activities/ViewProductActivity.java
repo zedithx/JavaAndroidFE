@@ -1,25 +1,17 @@
-package com.example.javaandroidapp;
-
-import static android.content.ContentValues.TAG;
+package com.example.javaandroidapp.activities;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,12 +24,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import org.w3c.dom.Text;
+import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.objects.Listing;
 
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ViewProductActivity extends AppCompatActivity {
     static DecimalFormat df = new DecimalFormat("#.00");
@@ -58,12 +49,15 @@ public class ViewProductActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Listing listing = (Listing) getIntent().getSerializableExtra("listing");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_page);
         amt = 1;
 
         // create new product instance
-        Product product = Product.instantiateProduct();
+        Product product = Product.instantiateProduct(Double.valueOf(listing.getPrice()),
+                Integer.valueOf(listing.getCurrentOrder()), Integer.valueOf(listing.getMinOrder()),
+                listing.getName());
 
         buyFrag = new BuyFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -394,20 +388,20 @@ class Product {
     private ArrayList<Integer> imageList = new ArrayList<>();
     private boolean savedOrder;
 
-    private Product() { // instantiate the product instance, there can be only one instance per ViewProduct activity
+    private Product(double price, int currentorder, int minorder, String name) { // instantiate the product instance, there can be only one instance per ViewProduct activity
         // get product info from backend and populate attributes
-        String[] varNameList = {"Small", "Medium", "Large", "Extra Large"};
-        double[] varPriceList = {0.0, 0.5, 1.2, 2.8};
+        String[] varNameList = {"Small", "Normal", "Medium"};
+        double[] varPriceList = {price, price, price};
         int[] getImages = {R.drawable.test_kangol, R.drawable.test_goodluckbunch, R.drawable.test_springheads};
 
         ///
         productId = 1;
         sellerId = 10;
-        currentPrice = 123.80;
-        originalPrice = 140.30;
-        currOrderAmt = 23;
-        minOrderAmt = 40;
-        productName = "Kangol Tote Bag (S/M/L/XL)";
+        currentPrice = price;
+        originalPrice = price + 10;
+        currOrderAmt = currentorder;
+        minOrderAmt = minorder;
+        productName = name;
         productDescription = "Officially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies.\n\nOfficially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies.";
         savedOrder = false;
 
@@ -422,10 +416,10 @@ class Product {
         }
     }
 
-    public static Product instantiateProduct() { // singleton creator static method
+    public static Product instantiateProduct(double price, int currentorder, int minorder, String name) { // singleton creator static method
         if (instanceCount == 0) {
             instanceCount = 1;
-            pdtInst = new Product();
+            pdtInst = new Product(price, currentorder, minorder, name);
         }
         return pdtInst;
     }

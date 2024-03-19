@@ -1,4 +1,4 @@
-package com.example.javaandroidapp;
+package com.example.javaandroidapp.utils;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;

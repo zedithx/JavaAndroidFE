@@ -1,5 +1,6 @@
-package com.example.javaandroidapp;
+package com.example.javaandroidapp.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.javaandroidapp.adapters.CallbackAdapter;
+import com.example.javaandroidapp.utils.Categories;
+import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.utils.Listings;
+import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.utils.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -85,9 +93,47 @@ public class LandingActivity extends AppCompatActivity {
         listingRecyclerView.setLayoutManager(listingLayoutManager);
         // Get all categories from firestore
         Query categories_query = Categories.getCategorySnapshot(db);
-        // Get user's name
+        // Get name view to edit
         TextView username = findViewById(R.id.username);
+        // Retrieve user's name
+        Users.getName(db, fbUser, new CallbackAdapter() {
+            @Override
+            public void getResult(String result) {
+                if (!result.equals("")) {
+                    username.setText(String.format("Hi, %s!", result));
+                } else {
+                    username.setText("Hi, User!");
+                }
+            }
+        });
+        // Get the order and saved buttons
+        LinearLayout saved_button = findViewById(R.id.saved_button);
+        saved_button.setOnClickListener(new View.OnClickListener(){
+             @Override
+             public void onClick(View v) {
+                 Intent Main = new Intent(LandingActivity.this, LandingSavedActivity.class);
+                 Main.putExtra("User", fbUser);
+                 startActivity(Main);
+             }
+        });
+        LinearLayout order_button = findViewById(R.id.order_button);
+        order_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent Main = new Intent(LandingActivity.this, LandingOrdersActivity.class);
+                startActivity(Main);
+            }
+        });
         ListingAdapter adapter_listing = new ListingAdapter(listings);
+        adapter_listing.setOnItemClickListener(new ListingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Listing data) {
+                // Handle item click, e.g., start a new activity
+                Intent intent = new Intent(LandingActivity.this, ViewProductActivity.class);
+                intent.putExtra("listing", data);
+                startActivity(intent);
+            }
+        });
         listingRecyclerView.setAdapter(adapter_listing);
         // Retrieve all listings
         Listings.getAllListings(db, "All", new CallbackAdapter() {
@@ -97,17 +143,6 @@ public class LandingActivity extends AppCompatActivity {
                     listings.addAll(listings_new);
                 }
                 adapter_listing.notifyDataSetChanged();
-            }
-        });
-
-        Users.getName(db, fbUser, new CallbackAdapter() {
-            @Override
-            public void getResult(String result) {
-                if (!result.equals("")) {
-                    username.setText(String.format("Hi, %s!", result));
-                } else {
-                    username.setText("Hi, User!");
-                }
             }
         });
 
@@ -126,22 +161,19 @@ public class LandingActivity extends AppCompatActivity {
                 }
             }
         });
-
-        //testing btn to redirect to pdt page
-//        testBtn = findViewById(R.id.testButton);
-//        testBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent Main = new Intent(LandingActivity.this, ViewProductActivity.class);
-//                startActivity(Main);
-//            }
-//        });
     }
 }
 
-class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHolder> {
+class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHolder>{
     private List<Listing> listings;
-    FirebaseStorage storage = FirebaseStorage.getInstance();
+    public interface OnItemClickListener {
+        void onItemClick(Listing data);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.clickListener = listener;
+    }
+    private OnItemClickListener clickListener;
+
 
     //constructor
     public ListingAdapter(List<Listing> listings) {
@@ -156,7 +188,18 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ListingAdapter.ListingViewHolder holder, int position) {
-        holder.bind(listings.get(position));
+        final Listing data = listings.get(position);
+        holder.bind(data);
+
+        // Set click listener for the item view
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (clickListener != null) {
+                    clickListener.onItemClick(data);
+                }
+            }
+        });
     }
 
     @Override
@@ -170,14 +213,6 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHold
         public ListingViewHolder(@NonNull View itemView) {
             super(itemView);
             listingView = itemView.findViewById(R.id.listing);
-            listingView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Notify the adapter about the data change
-//                notifyDataSetChanged();
-                    // TODO - direct to product page
-                }
-            });
         }
 
         public void bind(Listing listing) {
@@ -272,7 +307,6 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
                     selectedCategory = clickedCategory;
                     // Notify the adapter about the data change
                     notifyDataSetChanged();
-                    // TODO - Switch fragments based on what they click
                 }
             });
         }

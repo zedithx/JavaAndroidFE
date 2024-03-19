@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
+        android:id="@+id/top_banner_landing"
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:orientation="horizontal"
@@ -46,4 +47,21 @@
         </ImageView>
 
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/top_banner_landing">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_saved"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:text="Saved Listings"
+            android:fontFamily="@font/interfont"
+            android:textColor="@color/black"
+            android:textSize="28dp"
+            android:textFontWeight="600">
+        </TextView>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

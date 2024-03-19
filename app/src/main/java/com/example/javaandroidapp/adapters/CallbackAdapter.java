@@ -1,4 +1,6 @@
-package com.example.javaandroidapp;
+package com.example.javaandroidapp.adapters;
+
+import com.example.javaandroidapp.objects.Listing;
 
 import java.util.List;
 

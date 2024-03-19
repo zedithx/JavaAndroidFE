@@ -1,4 +1,4 @@
-package com.example.javaandroidapp;
+package com.example.javaandroidapp.objects;
 
 public class User {
     private String name;

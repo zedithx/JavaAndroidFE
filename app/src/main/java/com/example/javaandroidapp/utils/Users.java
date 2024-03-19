@@ -1,10 +1,15 @@
-package com.example.javaandroidapp;
+package com.example.javaandroidapp.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.javaandroidapp.adapters.CallbackAdapter;
+import com.example.javaandroidapp.adapters.Callbacks;
+import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -13,6 +18,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Users {
     public static void signInUser(FirebaseAuth mAuth, Context context, String email, String password, Callbacks callback) {
@@ -84,6 +93,30 @@ public class Users {
                         callback.getResult(document.getData().get("name").toString());
                     } else {
                         callback.getResult("");
+                    }
+                }
+            }
+        });
+    }
+
+    public static void getSaved(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
+        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    List<DocumentReference> items = (List<DocumentReference>) document.getData().get("saved");
+                    if (items != null) {
+                        Listings.getSavedListings(items, new CallbackAdapter() {
+                            @Override
+                            public void getList(List<Listing> listings) {
+                                if (listings.size() != 0) {
+                                    callback.getList(listings);
+                                }
+                            }
+                        });
+                    } else {
+                        callback.getList(new ArrayList<Listing>());
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.example.javaandroidapp;
+package com.example.javaandroidapp.utils;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
