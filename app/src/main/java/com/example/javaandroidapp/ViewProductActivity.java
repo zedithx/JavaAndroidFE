@@ -47,7 +47,7 @@ public class ViewProductActivity extends AppCompatActivity {
     static TextView priceDollars, priceCents, productDescription, amtToOrder, strikePrice;
     LinearLayout descriptionLayout, ownerLayout, buyPanelLayout, extendedBuyLayout;
     int count = 0;
-    static int amt = 1;
+    static int amt;
     static int focusedBtnId = 1;
     static boolean savedOrder = false;
     static boolean buyClicked = false;
@@ -60,6 +60,7 @@ public class ViewProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_page);
+        amt = 1;
 
         // create new product instance
         Product product = Product.instantiateProduct();
