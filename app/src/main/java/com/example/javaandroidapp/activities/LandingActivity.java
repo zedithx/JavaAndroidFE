@@ -217,17 +217,17 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHold
             ImageView productImageView = itemView.findViewById(R.id.product_image);
             TextView expiryTextView = itemView.findViewById(R.id.date);
             // Bind data to the views in the item layout
-            String listing_price = listing.getPrice();
+            Double listing_price = listing.getPrice();
             String listing_name = listing.getName();
-            String listing_minorder = listing.getMinOrder();
-            String listing_currentorder = listing.getCurrentOrder();
+            Integer listing_minorder = listing.getMinorder();
+            Integer listing_currentorder = listing.getCurrentorder();
             String listing_expirydate = listing.getExpiryCountdown();
             Glide.with(listingView).load(listing.getImage()).into(productImageView);
-            priceTextView.setText(String.format("$%s", listing_price));
+            priceTextView.setText(String.format("$%s", listing_price.toString()));
             nameTextView.setText(listing_name);
-            minorderTextView.setText(listing_minorder);
-            currentorderTextView.setText(listing_currentorder);
-            expiryTextView.setText(listing_expirydate);
+            minorderTextView.setText(listing_minorder.toString());
+            currentorderTextView.setText(listing_currentorder.toString());
+            expiryTextView.setText(listing_expirydate.toString());
         }
     }
 }
