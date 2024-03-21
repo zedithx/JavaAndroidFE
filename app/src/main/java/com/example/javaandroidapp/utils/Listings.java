@@ -7,7 +7,10 @@ import androidx.annotation.NonNull;
 import com.example.javaandroidapp.adapters.Callbacks;
 import com.example.javaandroidapp.objects.Listing;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,18 +38,19 @@ public class Listings {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    List<Listing> listings = new ArrayList<>();
-                    for (QueryDocumentSnapshot document: task.getResult()) {
-                        String listing_price = document.get("price").toString();
-                        String listing_name = document.getString("name");
-                        String listing_minorder = document.get("minorder").toString();
-                        String listing_currentorder = document.get("currentorder").toString();
-                        String listing_image = document.get("image").toString();
-                        Date listing_expirydate = document.getDate("expiry");
-                        Listing listing = new Listing(listing_price, listing_name, listing_minorder,
-                                listing_currentorder, listing_expirydate, listing_image);
-                        listings.add(listing);
-                    }
+//                    List<Listing> listings = new ArrayList<>();
+                    List<Listing> listings = task.getResult().toObjects(Listing.class);
+//                    for (QueryDocumentSnapshot document: task.getResult()) {
+//                        String listing_price = document.get("price").toString();
+//                        String listing_name = document.getString("name");
+//                        String listing_minorder = document.get("minorder").toString();
+//                        String listing_currentorder = document.get("currentorder").toString();
+//                        String listing_image = document.get("image").toString();
+//                        Date listing_expirydate = document.getDate("expiry");
+//                        Listing listing = new Listing(listing_price, listing_name, listing_minorder,
+//                                listing_currentorder, listing_expirydate, listing_image);
+//                        listings.add(listing);
+//                    }
                     callbacks.getList(listings);
                 }
             }
@@ -61,19 +65,35 @@ public class Listings {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
-                        String listing_price = document.get("price").toString();
-                        String listing_name = document.getString("name");
-                        String listing_minorder = document.get("minorder").toString();
-                        String listing_currentorder = document.get("currentorder").toString();
-                        String listing_image = document.get("image").toString();
-                        Date listing_expirydate = document.getDate("expiry");
-                        Listing listing = new Listing(listing_price, listing_name, listing_minorder,
-                                listing_currentorder, listing_expirydate, listing_image);
+                        Listing listing = document.toObject(Listing.class);
+//                        String listing_price = document.get("price").toString();
+//                        String listing_name = document.getString("name");
+//                        String listing_minorder = document.get("minorder").toString();
+//                        String listing_currentorder = document.get("currentorder").toString();
+//                        String listing_image = document.get("image").toString();
+//                        Date listing_expirydate = document.getDate("expiry");
+//                        Listing listing = new Listing(listing_price, listing_name, listing_minorder,
+//                                listing_currentorder, listing_expirydate, listing_image);
                         listings.add(listing);
                         callback.getList(listings);
                     }
                 }
             });
         }
+    }
+
+    public static void addListing(FirebaseFirestore db, FirebaseUser fbUser, double price, String name, Integer minOrder, Integer currentOrder, Date expiryDate, String image, Callbacks callback) {
+        Listing listing = new Listing(price, name, minOrder, currentOrder, expiryDate, image);
+        db.collection("Listings").add(listing).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                callback.onResult(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onResult(false);
+            }
+        });
     }
 }

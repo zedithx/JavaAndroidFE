@@ -55,8 +55,8 @@ public class ViewProductActivity extends AppCompatActivity {
         setContentView(R.layout.product_page);
 
         // create new product instance
-        Product product = Product.instantiateProduct(Double.valueOf(listing.getPrice()),
-                Integer.valueOf(listing.getCurrentOrder()), Integer.valueOf(listing.getMinOrder()),
+        Product product = Product.instantiateProduct(listing.getPrice(),
+                listing.getCurrentorder(), listing.getMinorder(),
                 listing.getName());
 
         buyFrag = new BuyFragment();
