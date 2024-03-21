@@ -49,6 +49,7 @@ public class ViewProductActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get listing object from listing clicked
         Listing listing = (Listing) getIntent().getSerializableExtra("listing");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_page);
