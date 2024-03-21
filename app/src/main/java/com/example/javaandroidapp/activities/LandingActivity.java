@@ -92,7 +92,6 @@ public class LandingActivity extends AppCompatActivity {
         LinearLayoutManager listingLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listingRecyclerView.setLayoutManager(listingLayoutManager);
         // Get all categories from firestore
-        Query categories_query = Categories.getCategorySnapshot(db);
         // Get name view to edit
         TextView username = findViewById(R.id.username);
         // Retrieve user's name
@@ -147,16 +146,11 @@ public class LandingActivity extends AppCompatActivity {
         });
 
         CategoryAdapter adapter = new CategoryAdapter(categories, listings, db, adapter_listing);
-        categories_query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Categories.getCategorySnapshot(db, new CallbackAdapter() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    categories.clear();
-                    categories.add(new CategoryModel("All", true));
-                    categories.add(new CategoryModel("Popular", false));
-                    for (QueryDocumentSnapshot document: task.getResult()) {
-                        categories.add(new CategoryModel(document.getData().get("name").toString(), false));
-                    }
+            public void getCategory(List<CategoryModel> categories_new) {
+                if (categories_new.size() != 0) {
+                    categories.addAll(categories_new);
                     categoryRecyclerView.setAdapter(adapter);
                 }
             }

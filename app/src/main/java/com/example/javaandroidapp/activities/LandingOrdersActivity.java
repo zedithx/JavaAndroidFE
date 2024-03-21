@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LandingOrdersActivity extends AppCompatActivity {
-    private List<Orders> orders = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +45,10 @@ public class LandingOrdersActivity extends AppCompatActivity {
         });
         Orders.getOrdersBasedOnUser(db, fbUser, new CallbackAdapter() {
             @Override
-            public void getOrder(List<Order> orders) {
-                if (orders.size() != 0) {
-                    System.out.println(orders);
+            public void getOrder(List<Order> orders_new) {
+                if (orders_new.size() != 0) {
+                    System.out.println(orders_new);
+                    orders.addAll(orders_new);
                 }
             }
         });

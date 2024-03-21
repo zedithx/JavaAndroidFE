@@ -1,5 +1,6 @@
 package com.example.javaandroidapp.adapters;
 
+import com.example.javaandroidapp.activities.LandingActivity;
 import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.objects.Order;
 
@@ -10,4 +11,5 @@ public interface Callbacks {
     void getResult(String result);
     void getList(List<Listing> listings);
     void getOrder(List<Order> orders);
+    void getCategory(List<LandingActivity.CategoryModel> categories);
 }
