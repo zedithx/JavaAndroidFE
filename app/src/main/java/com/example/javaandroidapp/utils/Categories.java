@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.javaandroidapp.activities.LandingActivity;
 import com.example.javaandroidapp.adapters.Callbacks;
+import com.example.javaandroidapp.objects.CategoryModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,11 +23,11 @@ public class Categories {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    List<LandingActivity.CategoryModel> categories = new ArrayList<>();
-                    categories.add(new LandingActivity.CategoryModel("All", true));
-                    categories.add(new LandingActivity.CategoryModel("Popular", false));
+                    List<CategoryModel> categories = new ArrayList<>();
+                    categories.add(new CategoryModel("All", true));
+                    categories.add(new CategoryModel("Popular", false));
                     for (QueryDocumentSnapshot document: task.getResult()) {
-                        categories.add(new LandingActivity.CategoryModel(document.getData().get("name").toString(), false));
+                        categories.add(new CategoryModel(document.getData().get("name").toString(), false));
                     }
                     callback.getCategory(categories);
                 }

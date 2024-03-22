@@ -1,6 +1,7 @@
 package com.example.javaandroidapp.adapters;
 
 import com.example.javaandroidapp.activities.LandingActivity;
+import com.example.javaandroidapp.objects.CategoryModel;
 import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.objects.Order;
 
@@ -28,7 +29,7 @@ public class CallbackAdapter implements Callbacks{
     }
 
     @Override
-    public void getCategory(List<LandingActivity.CategoryModel> categories) {
+    public void getCategory(List<CategoryModel> categories) {
 
     }
 
