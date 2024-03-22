@@ -1,5 +1,7 @@
 package com.example.javaandroidapp.utils;
 
+import android.telecom.Call;
+
 import androidx.annotation.NonNull;
 
 import com.example.javaandroidapp.activities.LandingActivity;
@@ -28,6 +30,21 @@ public class Categories {
                         categories.add(new CategoryModel(document.getData().get("name").toString(), false));
                     }
                     callback.getCategory(categories);
+                }
+            }
+        });
+    }
+
+    public static void getCategoryString(FirebaseFirestore db, Callbacks callback) {
+        db.collection("categories").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<String> categories = new ArrayList<>();
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        categories.add(document.getData().get("name").toString());
+                    }
+                    callback.getListOfString(categories);
                 }
             }
         });
