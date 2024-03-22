@@ -1,76 +1,68 @@
 package com.example.javaandroidapp.objects;
 
 
-import com.google.firebase.firestore.DocumentReference;
-
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Listing implements Serializable {
     private String category;
-    private String created_by;
-    private Integer currentorder;
+    private String createdBy;
+    private Integer currentOrder;
     private String description;
     private Date expiry;
-    private String image;
-    private Integer minorder;
+    private Integer minOrder;
     private String name;
-    private Double old_price;
+    private Double oldPrice;
     private Double price;
+    //TODO - change to variant collection
+    private ArrayList<String> variationNames = new ArrayList<>();
+    private ArrayList<Double> variationAdditionalPrice = new ArrayList<>();
+    private ArrayList<String> imageList = new ArrayList<>();
 
     public Listing() {}
 
-    public Listing(Double price, String name, Integer minorder, Integer currentorder, Date expiry, String image) {
+    public Listing(Double price, String name, Integer minOrder, Integer currentOrder, Date expiry, ArrayList<String> imageList,
+                   String createdBy, String description, Double oldPrice, String category, ArrayList<String> variationNames, ArrayList<Double> variationAdditionalPrice) {
         this.price = price;
         this.name = name;
-        this.minorder = minorder;
-        this.currentorder = currentorder;
+        this.minOrder = minOrder;
+        this.currentOrder = currentOrder;
         this.expiry = expiry;
-        this.image = image;
-        this.description = "";
-        this.old_price = 123.1;
-        this.created_by = "asd";
-        this.category = "asd";
-    }
-
-    public Listing(Double price, String name, Integer minorder, Integer currentorder, Date expiry, String image, String created_by, String description, Double old_price, String category) {
-        this.price = price;
-        this.name = name;
-        this.minorder = minorder;
-        this.currentorder = currentorder;
-        this.expiry = expiry;
-        this.image = image;
+        this.imageList = imageList;
         this.description = description;
-        this.old_price = old_price;
-        this.created_by = created_by;
+        this.oldPrice = oldPrice;
+        this.createdBy = createdBy;
         this.category = category;
+        this.variationNames = variationNames;
+        this.variationAdditionalPrice = variationAdditionalPrice;
     }
 
-    public Double getOld_price() {
-        return this.old_price;
+    public Double getOldPrice() {
+        return this.oldPrice;
     }
 
     public Double getPrice() {
         return this.price;
     }
 
-    public Integer getCurrentorder() {
-        return this.currentorder;
+    public Integer getCurrentOrder() {
+        return this.currentOrder;
     }
 
-    public Integer getMinorder() {
-        return this.minorder;
+    public Integer getMinOrder() {
+        return this.minOrder;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public String getImage() {
-        return this.image;
+    public ArrayList<String> getImageList() {
+        return this.imageList;
     }
 
     public String getCategory() {
@@ -78,7 +70,7 @@ public class Listing implements Serializable {
     }
 
     public String getCreated_by() {
-        return this.created_by;
+        return this.createdBy;
     }
 
     public String getDescription() {
@@ -89,8 +81,8 @@ public class Listing implements Serializable {
         return  this.expiry;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageList(ArrayList<String> imageList) {
+        this.imageList = imageList;
     }
 
     public void setName(String name) {
@@ -105,12 +97,12 @@ public class Listing implements Serializable {
         this.category = category;
     }
 
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public void setCurrentorder(Integer currentorder) {
-        this.currentorder = currentorder;
+    public void setCurrentOrder(Integer currentOrder) {
+        this.currentOrder = currentOrder;
     }
 
     public void setDescription(String description) {
@@ -121,12 +113,12 @@ public class Listing implements Serializable {
         this.expiry = expiry;
     }
 
-    public void setMinorder(Integer minorder) {
-        this.minorder = minorder;
+    public void setMinOrder(Integer minOrder) {
+        this.minOrder = minOrder;
     }
 
-    public void setOld_price(Double old_price) {
-        this.old_price = old_price;
+    public void setOldPrice(Double oldPrice) {
+        this.oldPrice = oldPrice;
     }
 
     public String getExpiryCountdown() {
@@ -142,87 +134,24 @@ public class Listing implements Serializable {
     // Return the number of days in the period
     return period.getDays() + " Days Left";
     }
-}
 
-//public class Listing implements Serializable {
-//    private double price;
-//    private String name;
-//    private Integer minOrder;
-//    private Integer currentOrder;
-//    private String image;
-//    private Date expiryDate;
-//
-//    public Listing() {
-//
-//    }
-//
-//    public Listing(double price, String name, Integer minOrder, Integer currentOrder, Date expiryDate, String image) {
-//        this.price = price;
-//        this.name = name;
-//        this.minOrder = minOrder;
-//        this.currentOrder = currentOrder;
-//        this.expiryDate = expiryDate;
-//        this.image = image;
-//    }
-//
-//    public double getPrice() {
-//        return price;
-//    }
-//
-//    public void setPrice(double price) {
-//        this.price = price;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//
-//    public Integer getMinOrder() {
-//        return minOrder;
-//    }
-//
-//    public String getImage() {
-//        return image;
-//    }
-//
-//    public void setImage(String image) {
-//        this.image = image;
-//    }
-//
-//    public void setMinOrder(Integer minOrder) {
-//        this.minOrder = minOrder;
-//    }
-//
-//    public Integer getCurrentOrder() {
-//        return currentOrder;
-//    }
-//
-//    public void setCurrentOrder(Integer currentOrder) {
-//        this.currentOrder = currentOrder;
-//    }
-//    public Date getExpiryDate() {
-//        return expiryDate;
-//    }
-//
-//    public String getExpiryCountdown() {
-//        // Convert the Date object to LocalDate
-//        LocalDate localDate = expiryDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-//
-//        // Get today's date
-//        LocalDate today = LocalDate.now();
-//
-//        // Calculate the period between the two dates
-//        Period period = Period.between(today, localDate);
-//
-//        // Return the number of days in the period
-//        return period.getDays() + " Days Left";
-//    }
-//
-//    public void setExpiryDate(Date expiryDate) {
-//        this.expiryDate = expiryDate;
-//    }
-//}
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public ArrayList<String> getVariationNames() {
+        return variationNames;
+    }
+
+    public ArrayList<Double> getVariationAdditionalPrice() {
+        return variationAdditionalPrice;
+    }
+
+    public void setVariationNames(ArrayList<String> variationNames) {
+        this.variationNames = variationNames;
+    }
+
+    public void setVariationAdditionalPrice(ArrayList<Double> variationAdditionalPrice) {
+        this.variationAdditionalPrice = variationAdditionalPrice;
+    }
+}

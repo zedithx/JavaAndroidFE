@@ -38,19 +38,7 @@ public class Listings {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-//                    List<Listing> listings = new ArrayList<>();
                     List<Listing> listings = task.getResult().toObjects(Listing.class);
-//                    for (QueryDocumentSnapshot document: task.getResult()) {
-//                        String listing_price = document.get("price").toString();
-//                        String listing_name = document.getString("name");
-//                        String listing_minorder = document.get("minorder").toString();
-//                        String listing_currentorder = document.get("currentorder").toString();
-//                        String listing_image = document.get("image").toString();
-//                        Date listing_expirydate = document.getDate("expiry");
-//                        Listing listing = new Listing(listing_price, listing_name, listing_minorder,
-//                                listing_currentorder, listing_expirydate, listing_image);
-//                        listings.add(listing);
-//                    }
                     callbacks.getList(listings);
                 }
             }
@@ -66,14 +54,6 @@ public class Listings {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         Listing listing = document.toObject(Listing.class);
-//                        String listing_price = document.get("price").toString();
-//                        String listing_name = document.getString("name");
-//                        String listing_minorder = document.get("minorder").toString();
-//                        String listing_currentorder = document.get("currentorder").toString();
-//                        String listing_image = document.get("image").toString();
-//                        Date listing_expirydate = document.getDate("expiry");
-//                        Listing listing = new Listing(listing_price, listing_name, listing_minorder,
-//                                listing_currentorder, listing_expirydate, listing_image);
                         listings.add(listing);
                         callback.getList(listings);
                     }
@@ -81,9 +61,11 @@ public class Listings {
             });
         }
     }
-
-    public static void addListing(FirebaseFirestore db, FirebaseUser fbUser, double price, String name, Integer minOrder, Integer currentOrder, Date expiryDate, String image, Callbacks callback) {
-        Listing listing = new Listing(price, name, minOrder, currentOrder, expiryDate, image);
+    public static void addListing(FirebaseFirestore db, FirebaseUser fbUser, Double price, String name, Integer minOrder, Integer currentOrder, Date expiryDate,
+                                  ArrayList<String> imageList, String description, Double oldPrice, String category, ArrayList<String> variationNames,
+                                  ArrayList<Double> variationAdditionalPrice, Callbacks callback) {
+        Listing listing = new Listing(price, name, minOrder, currentOrder, expiryDate,
+                imageList, fbUser.getDisplayName(), description, oldPrice, category, variationNames, variationAdditionalPrice);
         db.collection("Listings").add(listing).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
