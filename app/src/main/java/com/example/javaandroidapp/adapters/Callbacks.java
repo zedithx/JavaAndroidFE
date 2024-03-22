@@ -12,4 +12,5 @@ public interface Callbacks {
     void getList(List<Listing> listings);
     void getOrder(List<Order> orders);
     void getCategory(List<LandingActivity.CategoryModel> categories);
+    void getListOfString(List<String> strings);
 }

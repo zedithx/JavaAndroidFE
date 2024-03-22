@@ -32,4 +32,9 @@ public class CallbackAdapter implements Callbacks{
 
     }
 
+    @Override
+    public void getListOfString(List<String> strings) {
+
+    }
+
 }
