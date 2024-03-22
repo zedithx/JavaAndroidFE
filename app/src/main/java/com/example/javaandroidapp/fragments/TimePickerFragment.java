@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TimePicker;
 
 import androidx.fragment.app.DialogFragment;
@@ -24,8 +25,8 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     @Override
     public void onTimeSet(TimePicker view, int hour, int min) {
-        Button button = getActivity().findViewById(R.id.addDate);
-        String date = (String) button.getText();
-        button.setText(String.format("%s %d:%d", date, hour, min));
+        EditText input = getActivity().findViewById(R.id.addTime);
+//        String date = (String) input.getText().toString();
+        input.setText(String.format("%d:%d", hour, min));
     }
 }

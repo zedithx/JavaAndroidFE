@@ -89,7 +89,8 @@ public class LandingActivity extends AppCompatActivity {
         order_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(LandingActivity.this, LandingOrdersActivity.class);
+                //TODO - change back after testing
+                Intent Main = new Intent(LandingActivity.this, AddListingActivity.class);
                 startActivity(Main);
             }
         });

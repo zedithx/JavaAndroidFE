@@ -29,7 +29,7 @@ public class Listings {
         if (category.equals("All")) {
             item =  db.collection("Listings");
         } else if (category.equals("Popular")) {
-            item = db.collection("Listings").orderBy("currentorder");
+            item = db.collection("Listings").orderBy("currentOrder");
         } else {
             item = db.collection("Listings").whereEqualTo("category", category);
         }

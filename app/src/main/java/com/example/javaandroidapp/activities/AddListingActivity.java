@@ -13,8 +13,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -81,14 +84,24 @@ public class AddListingActivity extends AppCompatActivity {
         setContentView(R.layout.add_listing);
         addImageButton = findViewById(R.id.addImageButton);
         addListingLayout = (LinearLayout) findViewById(R.id.addListingLayout);
-        Button addDateButton = findViewById(R.id.addDate);
+        ImageView addDateButton = findViewById(R.id.calender);
+        ImageView addTimeButton = findViewById(R.id.clock);
         EditText productName = findViewById(R.id.addProductName);
         EditText description = findViewById(R.id.addDescription);
         EditText oldPrice = findViewById(R.id.addOldPrice);
         EditText newPrice = findViewById(R.id.addNewPrice);
         EditText minOrder = findViewById(R.id.addMinOrder);
         Spinner category = findViewById(R.id.addCategory);
-        Button addListingButton = findViewById(R.id.addListingButton);
+        TextView addListingButton = findViewById(R.id.addListingButton);
+        ImageView back_arrow = findViewById(R.id.back_arrow);
+        back_arrow.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //TODO - change to profile page
+                Intent Main = new Intent(AddListingActivity.this, LandingActivity.class);
+                startActivity(Main);
+            }
+        });
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, com.google.android.material.R.layout.support_simple_spinner_dropdown_item, categories);
         category.setAdapter(adapter);
         Categories.getCategoryString(db, new CallbackAdapter() {
@@ -96,7 +109,6 @@ public class AddListingActivity extends AppCompatActivity {
             public void getListOfString(List<String> categories_new) {
                 categories.clear();
                 categories.addAll(categories_new);
-                System.out.println(categories);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -116,29 +128,39 @@ public class AddListingActivity extends AppCompatActivity {
             }
         });
 
-        addListingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        addTimeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new TimePickerFragment().show(getSupportFragmentManager(), "timePicker");
+                }
+            });
 
-                Images.addImages(image, storageRef, new CallbackAdapter() {
-                    @Override
-                    public void getResult(String uri) {
-                        String date =  addDateButton.getText().toString();
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy H:m");
-                        LocalDate parsedDateTime = LocalDate.parse(date, formatter);
-                        Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-                        Listings.addListing(db, fbUser, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(), Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, uri, description.getText().toString(), Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), new CallbackAdapter() {
-                            @Override
-                            public void onResult(boolean isSuccess) {
-                                if (isSuccess) {
-                                    Toast.makeText(getApplicationContext(), "Added Listing!", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-                    }
-                });
-
-            }
-        });
+//        addListingButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Images.addImages(image, storageRef, new CallbackAdapter() {
+//                    @Override
+//                    public void getResult(String uri) {
+//                        String date =  addDateButton.getText().toString();
+//                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy H:m");
+//                        LocalDate parsedDateTime = LocalDate.parse(date, formatter);
+//                        Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+//                        //TODO - add the additional fields
+//                        Listings.addListing(db, fbUser, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
+//                                Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, uri, description.getText().toString(),
+//                                Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), new CallbackAdapter() {
+//                            @Override
+//                            public void onResult(boolean isSuccess) {
+//                                if (isSuccess) {
+//                                    Toast.makeText(getApplicationContext(), "Added Listing!", Toast.LENGTH_LONG).show();
+//                                }
+//                            }
+//                        });
+//                    }
+//                });
+//
+//            }
+//        });
     }
 }
