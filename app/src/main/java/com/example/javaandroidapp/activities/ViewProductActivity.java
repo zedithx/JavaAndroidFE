@@ -79,10 +79,12 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
         //add images
-        loadImages(listing.getImageList());
+        loadImages(listing.getImageList()) ;
 
+        TextView productName = findViewById(R.id.productName);
         TextView minOrdersView = findViewById(R.id.numOrders2);
         TextView currOrdersView = findViewById(R.id.numOrders1);
+        productName.setText(listing.getName());
         currOrdersView.setText("" + listing.getCurrentOrder());
         minOrdersView.setText("/" + listing.getMinOrder());
         priceDollars = findViewById(R.id.priceDollars);
@@ -274,14 +276,14 @@ public class ViewProductActivity extends AppCompatActivity {
         ArrayList<String> imageList = new ArrayList<>(getImages);
         ImageView productImages = findViewById(R.id.imageViewer);
         RelativeLayout imageViewLayout = findViewById(R.id.imageViewLayout);
-
+        Glide.with(imageViewLayout).load(imageList.get(0)).into(productImages);
         ImageButton prevBtn = findViewById(R.id.prevBtn);
         ImageButton nextBtn = findViewById(R.id.nextBtn);
         prevBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
+                // TODO - probably change to swipe and remove arrows. Use the dots to represent
                 count = count <= 0 ? imageList.size() - 1 : count - 1;
                 String image = imageList.get(count);
                 Glide.with(imageViewLayout).load(image).into(productImages);
@@ -367,105 +369,3 @@ public class ViewProductActivity extends AppCompatActivity {
         }
     }
 }
-//
-
-//class Product {
-//    static Product pdtInst;
-//    private static int instanceCount = 0;
-//    private int productId;
-//    private int sellerId;
-//    private double currentPrice;
-//    private double originalPrice;
-//    private int currOrderAmt;
-//    private int minOrderAmt;
-//    private String productName;
-//    private String productDescription;
-//    private ArrayList<String> variationNames = new ArrayList<>();
-//    private ArrayList<Double> variationAdditionalPrice = new ArrayList<>();
-//    private ArrayList<Integer> imageList = new ArrayList<>();
-//    private boolean savedOrder;
-//
-//    private Product(double price, int currentorder, int minorder, String name) { // instantiate the product instance, there can be only one instance per ViewProduct activity
-//        // get product info from backend and populate attributes
-//        String[] varNameList = {"Small", "Normal", "Medium"};
-//        double[] varPriceList = {price, price, price};
-//        int[] getImages = {R.drawable.test_kangol, R.drawable.test_goodluckbunch, R.drawable.test_springheads};
-//
-//        ///
-//        productId = 1;
-//        sellerId = 10;
-//        currentPrice = price;
-//        originalPrice = price + 10;
-//        currOrderAmt = currentorder;
-//        minOrderAmt = minorder;
-//        productName = name;
-//        productDescription = "Officially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies.\n\nOfficially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies.";
-//        savedOrder = false;
-//
-//        for (String varName : varNameList) {
-//            variationNames.add(varName);
-//        }
-//        for (double varPrice : varPriceList) {
-//            variationAdditionalPrice.add(varPrice);
-//        }
-//        for (int imageRes : getImages) {
-//            imageList.add(imageRes);
-//        }
-//    }
-//
-//    public static Product instantiateProduct(double price, int currentorder, int minorder, String name) { // singleton creator static method
-//        if (instanceCount == 0) {
-//            instanceCount = 1;
-//            pdtInst = new Product(price, currentorder, minorder, name);
-//        }
-//        return pdtInst;
-//    }
-//
-//    int getProductId() {
-//        return productId;
-//    }
-//
-//    int getSellerId() {
-//        return sellerId;
-//    }
-//
-//    double getCurrentPrice() {
-//        return currentPrice;
-//    }
-//
-//    double getOriginalPrice() {
-//        return originalPrice;
-//    }
-//
-//    int getCurrOrderAmt() {
-//        return currOrderAmt;
-//    }
-//
-//    int getMinOrderAmt() {
-//        return minOrderAmt;
-//    }
-//
-//    String getProductName() {
-//        return productName;
-//    }
-//
-//    String getProductDescription() {
-//        return productDescription;
-//    }
-//
-//    ArrayList<String> getVariationNames() {
-//        return variationNames;
-//    }
-//
-//    ArrayList<Integer> getImageList() {
-//        return imageList;
-//    }
-//
-//    ArrayList<Double> getVariationAdditionalPrice() {
-//        return variationAdditionalPrice;
-//    }
-//    boolean getSavedOrder(){
-//        return savedOrder;
-//    }
-//}
-//

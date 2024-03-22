@@ -69,16 +69,30 @@ public class Listing implements Serializable {
         return this.category;
     }
 
-    public String getCreated_by() {
-        return this.createdBy;
-    }
-
     public String getDescription() {
         return this.description;
     }
 
     public Date getExpiry() {
         return  this.expiry;
+    }
+
+    public String getExpiryCountdown() {
+        // Convert the Date object to LocalDate
+        LocalDate localDate = expiry.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+        // Get today's date
+        LocalDate today = LocalDate.now();
+
+        // Calculate the period between the two dates
+        Period period = Period.between(today, localDate);
+
+        // Return the number of days in the period
+        return period.getDays() + " Days Left";
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
     }
 
     public void setImageList(ArrayList<String> imageList) {
@@ -119,24 +133,6 @@ public class Listing implements Serializable {
 
     public void setOldPrice(Double oldPrice) {
         this.oldPrice = oldPrice;
-    }
-
-    public String getExpiryCountdown() {
-    // Convert the Date object to LocalDate
-    LocalDate localDate = expiry.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-
-    // Get today's date
-    LocalDate today = LocalDate.now();
-
-    // Calculate the period between the two dates
-    Period period = Period.between(today, localDate);
-
-    // Return the number of days in the period
-    return period.getDays() + " Days Left";
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
     }
 
     public ArrayList<String> getVariationNames() {

@@ -42,6 +42,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -86,6 +88,8 @@ public class AddListingActivity extends AppCompatActivity {
         addListingLayout = (LinearLayout) findViewById(R.id.addListingLayout);
         ImageView addDateButton = findViewById(R.id.calender);
         ImageView addTimeButton = findViewById(R.id.clock);
+        EditText expiryDate = findViewById(R.id.addDate);
+        EditText expiryTime = findViewById(R.id.addTime);
         EditText productName = findViewById(R.id.addProductName);
         EditText description = findViewById(R.id.addDescription);
         EditText oldPrice = findViewById(R.id.addOldPrice);
@@ -135,32 +139,45 @@ public class AddListingActivity extends AppCompatActivity {
                 }
             });
 
-//        addListingButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Images.addImages(image, storageRef, new CallbackAdapter() {
-//                    @Override
-//                    public void getResult(String uri) {
-//                        String date =  addDateButton.getText().toString();
-//                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy H:m");
-//                        LocalDate parsedDateTime = LocalDate.parse(date, formatter);
-//                        Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-//                        //TODO - add the additional fields
-//                        Listings.addListing(db, fbUser, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
-//                                Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, uri, description.getText().toString(),
-//                                Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), new CallbackAdapter() {
-//                            @Override
-//                            public void onResult(boolean isSuccess) {
-//                                if (isSuccess) {
-//                                    Toast.makeText(getApplicationContext(), "Added Listing!", Toast.LENGTH_LONG).show();
-//                                }
-//                            }
-//                        });
-//                    }
-//                });
-//
-//            }
-//        });
+        addListingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Images.addImages(image, storageRef, new CallbackAdapter() {
+                    @Override
+                    public void getResult(String uri) {
+                        //TODO - change to list of Image
+                        ArrayList<String> uri_list = new ArrayList<>();
+                        uri_list.add(uri);
+                        //TODO - change to hashmap population from edittext
+                        ArrayList<String> variantNames = new ArrayList<>();
+                        variantNames.add("Small");
+                        variantNames.add("Medium");
+                        variantNames.add("Large");
+                        ArrayList<Double> variantAdditionalPrice = new ArrayList<>();
+                        variantAdditionalPrice.add(2.0);
+                        variantAdditionalPrice.add(4.0);
+                        variantAdditionalPrice.add(6.0);
+                        String datetime =  expiryDate.getText().toString() + " " + expiryTime.getText().toString();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy H:m");
+                        LocalDate parsedDateTime = LocalDate.parse(datetime, formatter);
+                        Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+                        Listings.addListing(db, fbUser, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
+                                Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, uri_list, description.getText().toString(),
+                                Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), variantNames, variantAdditionalPrice, new CallbackAdapter() {
+                            @Override
+                            public void onResult(boolean isSuccess) {
+                                if (isSuccess) {
+                                    Toast.makeText(getApplicationContext(), "Added Listing!", Toast.LENGTH_LONG).show();
+                                    Intent Main = new Intent(AddListingActivity.this, LandingActivity.class);
+                                    startActivity(Main);
+                                }
+                            }
+                        });
+                    }
+                });
+
+            }
+        });
     }
 }

@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:fillViewport="true">
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
             <RelativeLayout
@@ -279,7 +279,6 @@
                         android:src="@drawable/clock_icon"/>
                 </LinearLayout>
             </LinearLayout>
-
             <TextView
                 android:layout_marginVertical="40dp"
                 android:id="@+id/addListingButton"
