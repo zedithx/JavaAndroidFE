@@ -197,7 +197,7 @@
                     android:id="@+id/addMinOrder"
                     android:layout_width="100dp"
                     android:layout_height="48dp"
-                    android:importantForAutofill="no"cha
+                    android:importantForAutofill="no"
                     android:ellipsize="start"
                     android:gravity="center"
                     android:hint="Click to edit"

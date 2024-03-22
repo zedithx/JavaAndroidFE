@@ -11,12 +11,12 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
         >
-
+        <!-- TODO: Change the image container to rounded corners -->
         <ImageView
             android:id="@+id/product_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:srcCompat="@drawable/test_kangol"></ImageView>
+            app:srcCompat="@drawable/test_kangol"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,6 +64,7 @@
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/order_quota"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
