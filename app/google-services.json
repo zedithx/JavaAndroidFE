@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "576851333625",
+    "project_id": "bulkifydb",
+    "storage_bucket": "bulkifydb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:576851333625:android:48a18eab76c522209aed28",
+        "android_client_info": {
+          "package_name": "com.example.javaandroidapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6W4B9coaXoNJxWWnRZNsOcpplYq2HCRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

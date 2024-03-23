@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.objects.Listing;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -36,22 +39,24 @@ public class ViewProductActivity extends AppCompatActivity {
     static TextView priceDollars, priceCents, productDescription, amtToOrder, strikePrice;
     LinearLayout descriptionLayout, ownerLayout, buyPanelLayout, extendedBuyLayout;
     int count = 0;
-    static int amt = 1;
+    static int amt;
     static int focusedBtnId = 1;
     static boolean savedOrder = false;
     static boolean buyClicked = false;
     static BuyFragment buyFrag;
     static double displayedPrice;
 
+    public static Listing listing;
+
     // get images for product id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get listing object from listing clicked
+        listing = (Listing) getIntent().getSerializableExtra("listing");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_page);
-
-        // create new product instance
-        Product product = Product.instantiateProduct();
+        amt = 1;
 
         buyFrag = new BuyFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -68,45 +73,47 @@ public class ViewProductActivity extends AppCompatActivity {
         // progress bar
         ProgressBar orderProgressBar = (ProgressBar) findViewById(R.id.orderProgressBar);
 
-        orderProgressBar.setMax(product.getMinOrderAmt()); // set min required order
+        orderProgressBar.setMax(listing.getMinOrder()); // set min required order
         int maxValue = orderProgressBar.getMax();
-        orderProgressBar.setProgress(product.getCurrOrderAmt(), false); //set current number of orders
+        orderProgressBar.setProgress(listing.getCurrentOrder(), false); //set current number of orders
         int progressBarValue = orderProgressBar.getProgress();
 
 
         //add images
-        loadImages(product.getImageList());
+        loadImages(listing.getImageList()) ;
 
+        TextView productName = findViewById(R.id.productName);
         TextView minOrdersView = findViewById(R.id.numOrders2);
         TextView currOrdersView = findViewById(R.id.numOrders1);
-        currOrdersView.setText("" + product.getCurrOrderAmt());
-        minOrdersView.setText("/" + product.getMinOrderAmt());
+        productName.setText(listing.getName());
+        currOrdersView.setText("" + listing.getCurrentOrder());
+        minOrdersView.setText("/" + listing.getMinOrder());
         priceDollars = findViewById(R.id.priceDollars);
         priceCents = findViewById((R.id.priceCents));
         // get price dynamically
-        displayedPrice = product.getCurrentPrice();
+        displayedPrice = listing.getPrice();
         setPrice(displayedPrice, priceDollars, priceCents);
         strikePrice = findViewById(R.id.originalPrice);
-        strikePrice.setText("S$" + df.format(product.getOriginalPrice()));
+        strikePrice.setText("S$" + df.format(listing.getOldPrice()));
         strikePrice.setPaintFlags(strikePrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
 
         LinearLayout variationBtnParentLayout = findViewById(R.id.varBtns);
         // get arrayList of variation ids
         // get names, prices of each variation and store in name and price arraylists respectively
-        int varCount = product.getVariationNames().size(); // testing with 3 variations
+        int varCount = listing.getVariationNames().size(); // testing with 3 variations
 
 
-        ArrayList<String> varBtnName = product.getVariationNames();
-        ArrayList<Double> varBtnPrice = product.pdtInst.getVariationAdditionalPrice();
+        ArrayList<String> varBtnName = listing.getVariationNames();
+        ArrayList<Double> varBtnPrice = listing.getVariationAdditionalPrice();
 
         //btn layout params
-        createBtnPanel(product, varBtnName, varBtnPrice, variationBtnParentLayout);
+        createBtnPanel(listing, varBtnName, varBtnPrice, variationBtnParentLayout);
 
         // map product variation details to variation buttons
 
         productDescription = findViewById(R.id.productDescription);
-        productDescription.setText(product.getProductDescription());
+        productDescription.setText(listing.getDescription());
 
         descriptionLayout = findViewById(R.id.descriptionLayout);
         GradientDrawable descriptionBg = RoundedButton.RoundedRect(25);
@@ -125,25 +132,6 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
         RelativeLayout alphaRelative = findViewById(R.id.alphaRelative);
-//        alphaRelative.setOnTouchListener(new View.OnTouchListener(){
-//            public boolean onTouch(View v, MotionEvent e){
-//                if(e.getAction() == MotionEvent.ACTION_UP){
-//                    int x = (int) e.getX();
-//                    int y = (int) e.getY();
-//                    Rect r = new Rect ( 0, 0, 0, 0 );
-//                    buyFrag.getView().getHitRect(r);
-//                    boolean intersects = r.contains(x,y);
-//                    if ( !intersects ) {
-//                        Log.d(TAG, "pressed outside the buyFrag");
-//                        LinearLayout chooseVarTextLayout = buyFrag.getView().findViewById(R.id.chooseVarTextLayout);
-//                        chooseVarTextLayout.removeAllViewsInLayout();
-//                    }
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-
 
     }
 
@@ -186,10 +174,9 @@ public class ViewProductActivity extends AppCompatActivity {
             TextView amtToOrder = view.findViewById(R.id.amtToOrder);
             ImageButton addOrder = view.findViewById(R.id.addOrder);
             ImageButton minusOrder = view.findViewById(R.id.minusOrder);
-            Product product = Product.pdtInst;
 
-            ArrayList<String> varBtnName = product.getVariationNames();
-            ArrayList<Double> varBtnPrice = product.getVariationAdditionalPrice();
+            ArrayList<String> varBtnName = listing.getVariationNames();
+            ArrayList<Double> varBtnPrice = listing.getVariationAdditionalPrice();
 
 //            createBtnPanel(product, varBtnName, varBtnPrice, chooseVarBtnLayout);
 //            chooseVarBtnLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -197,14 +184,14 @@ public class ViewProductActivity extends AppCompatActivity {
             ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, varBtnName);
             varSpinner.setAdapter(adapter);
             TextView subTotal = view.findViewById(R.id.subTotalText);
-            displayedPrice = product.getCurrentPrice() + varBtnPrice.get(focusedBtnId);
+            displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
             subTotal.setText("S$ "+ df.format(amt * displayedPrice));
 
             varSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     focusedBtnId = position;
-                    displayedPrice = product.getCurrentPrice() + varBtnPrice.get(focusedBtnId);
+                    displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
                     subTotal.setText("S$ "+ df.format(amt * displayedPrice));
 
                 }
@@ -233,7 +220,7 @@ public class ViewProductActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             amt += 1;
                             amtToOrder.setText("" + amt);
-                            displayedPrice = product.getCurrentPrice() + varBtnPrice.get(focusedBtnId);
+                            displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
                             subTotal.setText("S$ "+ df.format(amt * displayedPrice));
                         }
                     });
@@ -242,7 +229,7 @@ public class ViewProductActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             amt = amt > 1 ? amt - 1 : 1;
                             amtToOrder.setText("" + amt);
-                            displayedPrice = product.getCurrentPrice() + varBtnPrice.get(focusedBtnId);
+                            displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
                             subTotal.setText("S$ "+ df.format(amt * displayedPrice));
 
                         }
@@ -265,33 +252,33 @@ public class ViewProductActivity extends AppCompatActivity {
     }
 
 
-    void loadImages(ArrayList<Integer> getImages) {
+    void loadImages(ArrayList<String> getImages) {
 
-        ArrayList<Integer> imageList = new ArrayList();
-        for (int imageRes : getImages) {
-            imageList.add(imageRes);
-        }// in pdt class
+        // in pdt class
+        ArrayList<String> imageList = new ArrayList<>(getImages);
         ImageView productImages = findViewById(R.id.imageViewer);
+        RelativeLayout imageViewLayout = findViewById(R.id.imageViewLayout);
+        Glide.with(imageViewLayout).load(imageList.get(0)).into(productImages);
         ImageButton prevBtn = findViewById(R.id.prevBtn);
         ImageButton nextBtn = findViewById(R.id.nextBtn);
         prevBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
+                // TODO - probably change to swipe and remove arrows. Use the dots to represent
                 count = count <= 0 ? imageList.size() - 1 : count - 1;
-                int image_id = imageList.get(count);
-
-                productImages.setImageResource(image_id);
+                String image = imageList.get(count);
+                Glide.with(imageViewLayout).load(image).into(productImages);
 
             }
         });
+
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 count = count < imageList.size() - 1 ? count + 1 : 0;
-                int image_id = imageList.get(count);
-                productImages.setImageResource(image_id);
+                String image = imageList.get(count);
+                Glide.with(imageViewLayout).load(image).into(productImages);
 
             }
 
@@ -306,7 +293,7 @@ public class ViewProductActivity extends AppCompatActivity {
     // generate all variation buttons
     // ...
 
-    static void createBtnPanel(Product product, ArrayList<String> varBtnName, ArrayList<Double> varBtnPrice, LinearLayout variationBtnParentLayout) {
+    static void createBtnPanel(Listing listing, ArrayList<String> varBtnName, ArrayList<Double> varBtnPrice, LinearLayout variationBtnParentLayout) {
 
         LinearLayout.LayoutParams varBtnParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         varBtnParams.setMargins(15, 15, 15, 15);
@@ -331,7 +318,7 @@ public class ViewProductActivity extends AppCompatActivity {
                         GradientDrawable drawable = RoundedButton.RoundedRect(25);
                         drawable.setColor((focusedBtnId == btn.getId() ? Color.argb(150, 255, 30, 7) : Color.argb(15, 10, 10, 10)));
                         btn.setBackground(drawable);
-                        displayedPrice = product.getCurrentPrice() + varBtnPrice.get(btnId - 1);
+                        displayedPrice = listing.getPrice() + varBtnPrice.get(btnId - 1);
                         setPrice(displayedPrice, priceDollars, priceCents);
                     }
                 }
@@ -364,105 +351,3 @@ public class ViewProductActivity extends AppCompatActivity {
         }
     }
 }
-//
-
-class Product {
-    static Product pdtInst;
-    private static int instanceCount = 0;
-    private int productId;
-    private int sellerId;
-    private double currentPrice;
-    private double originalPrice;
-    private int currOrderAmt;
-    private int minOrderAmt;
-    private String productName;
-    private String productDescription;
-    private ArrayList<String> variationNames = new ArrayList<>();
-    private ArrayList<Double> variationAdditionalPrice = new ArrayList<>();
-    private ArrayList<Integer> imageList = new ArrayList<>();
-    private boolean savedOrder;
-
-    private Product() { // instantiate the product instance, there can be only one instance per ViewProduct activity
-        // get product info from backend and populate attributes
-        String[] varNameList = {"Small", "Medium", "Large", "Extra Large"};
-        double[] varPriceList = {0.0, 0.5, 1.2, 2.8};
-        int[] getImages = {R.drawable.test_kangol, R.drawable.test_goodluckbunch, R.drawable.test_springheads};
-
-        ///
-        productId = 1;
-        sellerId = 10;
-        currentPrice = 123.80;
-        originalPrice = 140.30;
-        currOrderAmt = 23;
-        minOrderAmt = 40;
-        productName = "Kangol Tote Bag (S/M/L/XL)";
-        productDescription = "Officially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies.\n\nOfficially born in Cleator, Cumbria in the U.K., Kangol gained notoriety as a brand for providing berets to the British army in WWII, most notably for General Bernard Montgomery. The anglo tradition continued in the post war years as Kangol outfitted the English Olympic Team with berets for the 1948 opening ceremonies.";
-        savedOrder = false;
-
-        for (String varName : varNameList) {
-            variationNames.add(varName);
-        }
-        for (double varPrice : varPriceList) {
-            variationAdditionalPrice.add(varPrice);
-        }
-        for (int imageRes : getImages) {
-            imageList.add(imageRes);
-        }
-    }
-
-    public static Product instantiateProduct() { // singleton creator static method
-        if (instanceCount == 0) {
-            instanceCount = 1;
-            pdtInst = new Product();
-        }
-        return pdtInst;
-    }
-
-    int getProductId() {
-        return productId;
-    }
-
-    int getSellerId() {
-        return sellerId;
-    }
-
-    double getCurrentPrice() {
-        return currentPrice;
-    }
-
-    double getOriginalPrice() {
-        return originalPrice;
-    }
-
-    int getCurrOrderAmt() {
-        return currOrderAmt;
-    }
-
-    int getMinOrderAmt() {
-        return minOrderAmt;
-    }
-
-    String getProductName() {
-        return productName;
-    }
-
-    String getProductDescription() {
-        return productDescription;
-    }
-
-    ArrayList<String> getVariationNames() {
-        return variationNames;
-    }
-
-    ArrayList<Integer> getImageList() {
-        return imageList;
-    }
-
-    ArrayList<Double> getVariationAdditionalPrice() {
-        return variationAdditionalPrice;
-    }
-    boolean getSavedOrder(){
-        return savedOrder;
-    }
-}
-

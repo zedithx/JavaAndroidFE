@@ -45,5 +45,16 @@
     <string name="set_variation">Choose Variation</string>
     <string name="order_amount">Order Amount</string>
     <string name="sub_total">Subtotal:</string>
+    <string name="profile">Profile</string>
+    <string name="edit_info">Edit Info</string>
+    <string name="email_address_placeholder">Loading email..</string>
+    <string name="view_listing">View Listing</string>
+    <string name="add_listing">Add Listing</string>
+    <string name="menu_activity">MenuActivity</string>
+    <string name="payment_methods">Payment Methods</string>
+    <string name="logout">Logout</string>
+
+
+
 
 </resources>

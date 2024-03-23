@@ -1,6 +1,7 @@
 package com.example.javaandroidapp.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -106,11 +107,11 @@ public class Users {
                 if (document.exists()) {
                     List<DocumentReference> items = (List<DocumentReference>) document.getData().get("saved");
                     if (items != null) {
-                        Listings.getListings(items, new CallbackAdapter() {
+                        Listings.getSavedListings(items, new CallbackAdapter() {
                             @Override
                             public void getList(List<Listing> listings) {
                                 if (listings.size() != 0) {
-                                    System.out.println("here");
+                                    System.out.println("Here");
                                     callback.getList(listings);
                                 }
                             }
