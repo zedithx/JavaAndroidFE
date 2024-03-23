@@ -111,6 +111,7 @@ public class Users {
                             @Override
                             public void getList(List<Listing> listings) {
                                 if (listings.size() != 0) {
+                                    System.out.println("Here");
                                     callback.getList(listings);
                                 }
                             }

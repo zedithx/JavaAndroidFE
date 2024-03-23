@@ -379,7 +379,7 @@
                         android:background="@null"
                         android:contentDescription="Back button"
                         android:padding="15dp"
-                        android:src="@drawable/keyboard_arrow_back" />
+                        android:src="@drawable/back_arrow" />
 
 
                 </RelativeLayout>

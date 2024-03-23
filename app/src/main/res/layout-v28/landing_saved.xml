@@ -11,15 +11,16 @@
         <include
             layout="@layout/base_template"
             />
+
         <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listingRecyclerSavedView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
+            android:id="@+id/listingRecyclerSavedView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
+import com.example.javaandroidapp.objects.CategoryModel;
 import com.example.javaandroidapp.utils.Categories;
 import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.utils.Listings;
@@ -38,41 +39,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.*;
 
 public class LandingActivity extends AppCompatActivity {
-    //testing btn to redirect to pdt page
-    public Button testBtn;
     private List<CategoryModel> categories = new ArrayList<>();
     private List<Listing> listings = new ArrayList<>();
 
     private QuerySnapshot listing_items;
-    public static class CategoryModel {
-        private String categoryName;
-        private boolean isSelected;
-
-        public CategoryModel(String categoryName, boolean isSelected) {
-            this.categoryName = categoryName;
-            this.isSelected = isSelected;
-        }
-
-        public String getCategoryName() {
-            return categoryName;
-        }
-
-        public boolean isSelected() {
-            return isSelected;
-        }
-
-        public void setSelected(boolean selected) {
-            isSelected = selected;
-        }
-        @NonNull
-        @Override
-        public String toString() {
-            return "CategoryModel{" +
-                    "categoryName='" + categoryName + '\'' +
-                    ", isSelected=" + isSelected +
-                    '}';
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +62,6 @@ public class LandingActivity extends AppCompatActivity {
         LinearLayoutManager listingLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listingRecyclerView.setLayoutManager(listingLayoutManager);
         // Get all categories from firestore
-        Query categories_query = Categories.getCategorySnapshot(db);
         // Get name view to edit
         TextView username = findViewById(R.id.username);
         // Retrieve user's name
@@ -120,7 +89,8 @@ public class LandingActivity extends AppCompatActivity {
         order_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(LandingActivity.this, LandingOrdersActivity.class);
+                //TODO - change back after testing
+                Intent Main = new Intent(LandingActivity.this, AddListingActivity.class);
                 startActivity(Main);
             }
         });
@@ -147,16 +117,11 @@ public class LandingActivity extends AppCompatActivity {
         });
 
         CategoryAdapter adapter = new CategoryAdapter(categories, listings, db, adapter_listing);
-        categories_query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Categories.getCategorySnapshot(db, new CallbackAdapter() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    categories.clear();
-                    categories.add(new CategoryModel("All", true));
-                    categories.add(new CategoryModel("Popular", false));
-                    for (QueryDocumentSnapshot document: task.getResult()) {
-                        categories.add(new CategoryModel(document.getData().get("name").toString(), false));
-                    }
+            public void getCategory(List<CategoryModel> categories_new) {
+                if (categories_new.size() != 0) {
+                    categories.addAll(categories_new);
                     categoryRecyclerView.setAdapter(adapter);
                 }
             }
@@ -223,34 +188,34 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHold
             ImageView productImageView = itemView.findViewById(R.id.product_image);
             TextView expiryTextView = itemView.findViewById(R.id.date);
             // Bind data to the views in the item layout
-            String listing_price = listing.getPrice();
+            Double listing_price = listing.getPrice();
             String listing_name = listing.getName();
-            String listing_minorder = listing.getMinOrder();
-            String listing_currentorder = listing.getCurrentOrder();
-            String listing_expirydate = listing.getExpiryCountdown();
-            Glide.with(listingView).load(listing.getImage()).into(productImageView);
-            priceTextView.setText(String.format("$%s", listing_price));
+            Integer listingMinOrder = listing.getMinOrder();
+            Integer listingCurrentOrder = listing.getCurrentOrder();
+            String listingExpiryCountdown = listing.getExpiryCountdown();
+            Glide.with(listingView).load(listing.getImageList().get(0)).into(productImageView);
+            priceTextView.setText(String.format("$%s", listing_price.toString()));
             nameTextView.setText(listing_name);
-            minorderTextView.setText(listing_minorder);
-            currentorderTextView.setText(listing_currentorder);
-            expiryTextView.setText(listing_expirydate);
+            minorderTextView.setText(listingMinOrder.toString());
+            currentorderTextView.setText(listingCurrentOrder.toString());
+            expiryTextView.setText(listingExpiryCountdown);
         }
     }
 }
 
 class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
-    private static List<LandingActivity.CategoryModel> categories;
+    private static List<CategoryModel> categories;
     private static List<Listing> listings;
 
     private static FirebaseFirestore db;
 
     private static ListingAdapter adapter_listing;
 
-    public static List<LandingActivity.CategoryModel> getCategories() {
+    public static List<CategoryModel> getCategories() {
         return categories;
     }
 
-    public CategoryAdapter(List<LandingActivity.CategoryModel> categories, List<Listing> listings, FirebaseFirestore db, ListingAdapter adapter_listing) {
+    public CategoryAdapter(List<CategoryModel> categories, List<Listing> listings, FirebaseFirestore db, ListingAdapter adapter_listing) {
         this.categories = categories;
         this.listings = listings;
         this.db = db;
@@ -273,7 +238,7 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
     public int getItemCount() {
         return categories.size();
     }
-    public static LandingActivity.CategoryModel selectedCategory;
+    public static CategoryModel selectedCategory;
     class CategoryViewHolder extends RecyclerView.ViewHolder {
         private TextView categoryTextView;
         public CategoryViewHolder(@NonNull View itemView) {
@@ -290,7 +255,7 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
                     }
                     Log.d("categories", "category:" + categories);
                     // Get the clicked category
-                    LandingActivity.CategoryModel clickedCategory = categories.get(getAdapterPosition());
+                    CategoryModel clickedCategory = categories.get(getAdapterPosition());
                     Listings.getAllListings(db, clickedCategory.getCategoryName(), new CallbackAdapter() {
                         @Override
                         public void getList(List<Listing> listings_new) {
@@ -312,7 +277,7 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
         }
 
 
-        public void bind(LandingActivity.CategoryModel category) {
+        public void bind(CategoryModel category) {
             // Bind data to the views in the item layout
             categoryTextView.setText(category.getCategoryName());
             if (category.isSelected()) {
