@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,10 @@ import java.util.*;
 public class LandingActivity extends AppCompatActivity {
     //testing btn to redirect to pdt page
     public Button testBtn;
+    public ImageButton profileBtn;
+
+    public static final int REQUEST_CODE_1 = 1;
+    public static final int REQUEST_CODE_2 = 2;
 
     public static class CategoryModel {
         private String categoryName;
@@ -71,7 +77,15 @@ public class LandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent Main = new Intent(LandingActivity.this, ViewProductActivity.class);
-                startActivity(Main);
+                startActivityForResult(Main, REQUEST_CODE_1);
+            }
+        });
+        profileBtn = findViewById(R.id.avatar);
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Profile = new Intent(LandingActivity.this, MenuActivity.class);
+                startActivityForResult(Profile, REQUEST_CODE_2);
             }
         });
     }
