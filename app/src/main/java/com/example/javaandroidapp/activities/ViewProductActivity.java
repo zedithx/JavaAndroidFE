@@ -132,25 +132,6 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
         RelativeLayout alphaRelative = findViewById(R.id.alphaRelative);
-//        alphaRelative.setOnTouchListener(new View.OnTouchListener(){
-//            public boolean onTouch(View v, MotionEvent e){
-//                if(e.getAction() == MotionEvent.ACTION_UP){
-//                    int x = (int) e.getX();
-//                    int y = (int) e.getY();
-//                    Rect r = new Rect ( 0, 0, 0, 0 );
-//                    buyFrag.getView().getHitRect(r);
-//                    boolean intersects = r.contains(x,y);
-//                    if ( !intersects ) {
-//                        Log.d(TAG, "pressed outside the buyFrag");
-//                        LinearLayout chooseVarTextLayout = buyFrag.getView().findViewById(R.id.chooseVarTextLayout);
-//                        chooseVarTextLayout.removeAllViewsInLayout();
-//                    }
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-
 
     }
 
