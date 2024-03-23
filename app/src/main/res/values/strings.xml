@@ -51,6 +51,10 @@
     <string name="view_listing">View Listing</string>
     <string name="add_listing">Add Listing</string>
     <string name="menu_activity">MenuActivity</string>
+    <string name="payment_methods">Payment Methods</string>
+    <string name="logout">Logout</string>
+
+
 
 
 </resources>

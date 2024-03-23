@@ -21,6 +21,7 @@
             android:paddingBottom="30dp">
 
             <ImageButton
+                android:id="@+id/backBtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="bottom"
@@ -47,12 +48,16 @@
                     android:textSize="30sp" />
 
                 <TextView
+                    android:id="@+id/editInfoBtn"
                     style="@style/H4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_margin="0dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="0dp"
                     android:background="@null"
                     android:clickable="true"
                     android:text="@string/edit_info"
@@ -118,29 +123,31 @@
                 android:id="@+id/listingPanel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:elevation="0dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@null"
                 android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/viewListingMaterial"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    app:cardElevation="0dp"
-                    app:strokeColor="@color/lightred"
-                    android:layout_margin="15dp">
+                    android:layout_margin="15dp"
+                    app:strokeWidth="0dp"
+
+                    >
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/viewListingCard"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@null"
-                        android:clickable="true"
-                        app:cardElevation="0dp">
+                        android:clickable="true">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:background="@null"
                             android:orientation="vertical">
 
                             <ImageView
@@ -165,10 +172,11 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
                     android:background="@null"
                     app:cardElevation="0dp"
                     app:strokeColor="@color/lightred"
-                    android:layout_margin="15dp">
+                    app:strokeWidth="0dp">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/addListingCard"
@@ -208,7 +216,53 @@
                 android:id="@+id/paymentMethods"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="15dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/lightgray" />
+
+
+                <TextView
+                    android:id="@+id/paymentMethodsBtn"
+                    style="@style/H3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp"
+                    android:text="@string/payment_methods"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/lightred"
+                    android:clickable="true"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/lightgray" />
+
+                <TextView
+                    android:id="@+id/logoutBtn"
+                    style="@style/H3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="@string/logout"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/lightred"
+                    android:clickable="true"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/lightgray" />
 
             </LinearLayout>
 

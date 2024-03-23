@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.example.javaandroidapp.R;
 
@@ -25,24 +26,69 @@ public class MenuActivity extends AppCompatActivity {
         ImageView profileImageView = findViewById(R.id.profileImageView);
         TextView getUsernameTextView = findViewById(R.id.getUsernameTextView);
         TextView getUserEmailTextView = findViewById(R.id.getUserEmailTextView);
-//        ImageButton backBtn = findViewById(R.id.backBtn);
+        ImageButton backBtn = findViewById(R.id.backBtn);
 
         // set back button
-//        backBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // set profile image to display
         profileImageView.setImageResource(user.getProfileImage());
+
+        // set edit info button
+        TextView editInfoBtn = findViewById(R.id.editInfoBtn);
 
         // set name and email details
         getUsernameTextView.setText(user.getUsername());
         getUserEmailTextView.setText(user.getEmailAddress());
 
-        // get payment methods
+        // set add/view listing buttons
+        CardView addListing = findViewById(R.id.addListingCard);
+        CardView viewListing = findViewById(R.id.viewListingCard);
+        viewListing.setBackgroundResource(R.drawable.dotted);
+        addListing.setBackgroundResource(R.drawable.dotted);
+
+        // set payment/logout buttons
+        TextView paymentMethodBtn = findViewById(R.id.paymentMethodsBtn);
+        TextView logoutBtn = findViewById(R.id.logoutBtn);
+
+        editInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent editInfo = new Intent(MenuActivity.this, EditInfoActivity.class);
+            }
+        });
+
+        viewListing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent viewListingsIntent = new Intent(MenuActivity.this, ViewListing.class);
+            }
+        });
+        addListing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent addListingsIntent = new Intent(MenuActivity.this, AddListing.class);
+            }
+        });
+        paymentMethodBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent paymentMethods = new Intent(MenuActivity.this, PaymentMethodActivity.class);
+            }
+        });
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//            Intent logout = new Intent(MenuActivity.this, ... );
+            }
+        });
+
+
     }
 }
 
