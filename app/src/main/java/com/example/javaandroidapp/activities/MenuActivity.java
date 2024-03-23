@@ -1,7 +1,7 @@
 package com.example.javaandroidapp.activities;
 
+
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +24,7 @@ public class MenuActivity extends AppCompatActivity {
 
         // create new UserProfile instance
         UserProfile user = new UserProfile();
+
         ImageView profileImageView = findViewById(R.id.profileImageView);
         TextView getUsernameTextView = findViewById(R.id.getUsernameTextView);
         TextView getUserEmailTextView = findViewById(R.id.getUserEmailTextView);
@@ -99,26 +101,26 @@ class UserProfile {
 
     private int profileImage;
 
-    UserProfile(){
+    UserProfile() {
         username = "Kev Nguyen";
         emailAddress = "kev_nguyen@gmail.com";
         profileImage = R.drawable.profile_pic;
         paymentMethods.add("Stripe");
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return username;
     }
 
-    public String getEmailAddress(){
+    public String getEmailAddress() {
         return emailAddress;
     }
 
-    public int getProfileImage(){
+    public int getProfileImage() {
         return profileImage;
     }
 
-    public ArrayList getPaymentMethods(){
+    public ArrayList getPaymentMethods() {
         return paymentMethods;
     }
 }
