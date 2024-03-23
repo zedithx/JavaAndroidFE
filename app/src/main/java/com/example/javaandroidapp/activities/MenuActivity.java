@@ -1,23 +1,19 @@
-package com.example.javaandroidapp;
+package com.example.javaandroidapp.activities;
 
-import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.javaandroidapp.R;
 
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity {
-
-    ImageView profileImageView = findViewById(R.id.profileImageView);
-    TextView getUsernameTextView = findViewById(R.id.getUsernameTextView);
-    TextView getUserEmailTextView = findViewById(R.id.getUserEmailTextView);
-    ImageButton backBtn = findViewById(R.id.backBtn);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +22,18 @@ public class MenuActivity extends AppCompatActivity {
 
         // create new UserProfile instance
         UserProfile user = new UserProfile();
+        ImageView profileImageView = findViewById(R.id.profileImageView);
+        TextView getUsernameTextView = findViewById(R.id.getUsernameTextView);
+        TextView getUserEmailTextView = findViewById(R.id.getUserEmailTextView);
+//        ImageButton backBtn = findViewById(R.id.backBtn);
 
         // set back button
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        backBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
 
         // set profile image to display
         profileImageView.setImageResource(user.getProfileImage());

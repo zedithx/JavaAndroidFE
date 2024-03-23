@@ -101,8 +101,7 @@ public class AddListingActivity extends AppCompatActivity {
         back_arrow.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO - change to profile page
-                Intent Main = new Intent(AddListingActivity.this, LandingActivity.class);
+                Intent Main = new Intent(AddListingActivity.this, MenuActivity.class);
                 startActivity(Main);
             }
         });

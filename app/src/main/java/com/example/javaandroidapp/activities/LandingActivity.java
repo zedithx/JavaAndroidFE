@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,6 +76,16 @@ public class LandingActivity extends AppCompatActivity {
                 }
             }
         });
+        // Get the profile button
+        ImageButton profile_button = findViewById(R.id.avatar);
+        profile_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent Main = new Intent(LandingActivity.this, MenuActivity.class);
+                Main.putExtra("User", fbUser);
+                startActivity(Main);
+            }
+        });
         // Get the order and saved buttons
         LinearLayout saved_button = findViewById(R.id.saved_button);
         saved_button.setOnClickListener(new View.OnClickListener(){
@@ -90,7 +101,8 @@ public class LandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO - change back after testing
-                Intent Main = new Intent(LandingActivity.this, AddListingActivity.class);
+                Intent Main = new Intent(LandingActivity.this, LandingOrdersActivity.class);
+                Main.putExtra("User", fbUser);
                 startActivity(Main);
             }
         });

@@ -18,7 +18,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="20dp"
             android:layout_centerVertical="true"
-            app:srcCompat="@drawable/back_arrow">
+            app:srcCompat="@drawable/black_back_arrow">
         </ImageView>
         <TextView
             android:id="@+id/header_saved"
