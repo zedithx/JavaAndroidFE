@@ -1,16 +1,22 @@
 package com.example.javaandroidapp.activities;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.objects.Listing;
+import com.google.api.Distribution;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -23,6 +29,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.menu_profile_page);
 
         // create new UserProfile instance
+        FirebaseUser fbUser = (FirebaseUser) getIntent().getSerializableExtra("User");
         UserProfile user = new UserProfile();
 
         ImageView profileImageView = findViewById(R.id.profileImageView);
@@ -34,10 +41,11 @@ public class MenuActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent Main = new Intent(MenuActivity.this, AddListingActivity.class);
+                Main.putExtra("User", fbUser);
+                startActivity(Main);
             }
         });
-
         // set profile image to display
         profileImageView.setImageResource(user.getProfileImage());
 
@@ -74,7 +82,9 @@ public class MenuActivity extends AppCompatActivity {
         addListing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent addListingsIntent = new Intent(MenuActivity.this, AddListing.class);
+                Intent Main = new Intent(MenuActivity.this, AddListingActivity.class);
+                Main.putExtra("User", fbUser);
+                startActivity(Main);
             }
         });
         paymentMethodBtn.setOnClickListener(new View.OnClickListener() {
