@@ -236,6 +236,8 @@
                             <TextView
                                 android:id="@+id/originalPrice"
                                 style="@style/H4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:text="S$xxxx.xx"
                                 android:textColor="@color/lightred" />

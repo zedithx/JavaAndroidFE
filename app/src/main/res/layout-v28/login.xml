@@ -33,6 +33,12 @@
         android:orientation="vertical"
         android:layout_marginTop="120dp"
         >
+        <LinearLayout
+            android:id="@+id/logoTransitionLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:animateLayoutChanges="true">
         <ImageView
             android:id="@+id/bulkify_logo"
             android:contentDescription="@string/bulkify"
@@ -42,6 +48,7 @@
             app:srcCompat="@drawable/bulkify_logo"
             tools:layout_editor_absoluteX="287dp"
             tools:layout_editor_absoluteY="100dp" />
+        </LinearLayout>
         <TextView
             android:id="@+id/text_below_logo"
             android:fontFamily="@font/interfont"

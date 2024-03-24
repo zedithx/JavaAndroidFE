@@ -37,7 +37,7 @@ public class LogInActivity extends AppCompatActivity {
                     @Override
                     public void onResult(boolean isSuccess) {
                         if (isSuccess) {
-                            Intent Main = new Intent(LogInActivity.this, LandingActivity.class);
+                            Intent Main = new Intent(LogInActivity.this, SplashScreen.class);
                             startActivity(Main);
                         }
                     }

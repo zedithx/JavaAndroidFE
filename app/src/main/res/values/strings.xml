@@ -53,8 +53,8 @@
     <string name="menu_activity">MenuActivity</string>
     <string name="payment_methods">Payment Methods</string>
     <string name="logout">Logout</string>
-
-
+    <string name="payment_methods_subtitle">Add or remove payment methods.</string>
+    <string name="logout_subtitle">Logout of account on this device.</string>
 
 
 </resources>
