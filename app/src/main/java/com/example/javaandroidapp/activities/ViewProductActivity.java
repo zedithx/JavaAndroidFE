@@ -150,13 +150,13 @@ public class ViewProductActivity extends AppCompatActivity {
 
             // saved order button
             ImageButton saveOrderBtn = view.findViewById(R.id.saveBtn);
-            saveOrderBtn.setImageResource( savedOrder ? R.drawable.heart_filled : R.drawable.heart_empty);
+            saveOrderBtn.setImageResource( savedOrder ? R.drawable.filled_heart : R.drawable.unfilled_heart);
             saveOrderBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     savedOrder = !savedOrder;
                     //post req to set savedOrder as true
-                    saveOrderBtn.setImageResource(savedOrder ? R.drawable.heart_filled : R.drawable.heart_empty);
+                    saveOrderBtn.setImageResource(savedOrder ? R.drawable.filled_heart : R.drawable.unfilled_heart);
                 }
             });
             Button joinBtn = view.findViewById(R.id.buyOrderBtn);
@@ -246,8 +246,8 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
     static void setPrice(double displayedPrice, TextView priceDollars, TextView priceCents) {
-        priceDollars.setText("S$" + ("" + displayedPrice).split("\\.")[0]);
-        String cents = ("" + displayedPrice).contains(".") ? ("" + displayedPrice).split("\\.")[1] : "00";
+        priceDollars.setText("S$" + ("" + df.format(displayedPrice)).split("\\.")[0]);
+        String cents = df.format(displayedPrice).contains(".") ? df.format(displayedPrice).split("\\.")[1] : "00";
         priceCents.setText("." + (cents.length() > 1 ? cents : cents + "0"));
     }
 
