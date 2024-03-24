@@ -102,7 +102,6 @@ public class LandingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //TODO - change back after testing
                 Intent Main = new Intent(LandingActivity.this, LandingOrdersActivity.class);
-                Main.putExtra("User", fbUser);
                 startActivity(Main);
             }
         });

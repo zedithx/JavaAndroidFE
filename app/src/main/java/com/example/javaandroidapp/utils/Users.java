@@ -9,9 +9,11 @@ import androidx.annotation.NonNull;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.adapters.Callbacks;
 import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.objects.Order;
 import com.example.javaandroidapp.objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,11 +27,10 @@ import java.util.Map;
 
 public class Users {
     public static void signInUser(FirebaseAuth mAuth, Context context, String email, String password, Callbacks callback) {
-        if (email.equals("")){
+        if (email.equals("")) {
             Toast.makeText(context, "Error: You entered an empty email", Toast.LENGTH_SHORT).show();
             callback.onResult(false);
-        }
-        else if (password.equals("")){
+        } else if (password.equals("")) {
             Toast.makeText(context, "Error: You entered an empty password", Toast.LENGTH_SHORT).show();
             callback.onResult(false);
         } else {
@@ -41,26 +42,24 @@ public class Users {
                         callback.onResult(true);
                     } else {
                         Toast.makeText(context, ErrorHandles.signInErrors(task), Toast.LENGTH_LONG).show();
-                        callback.onResult(false);                    }
+                        callback.onResult(false);
+                    }
                 }
             });
         }
     }
 
     public static void registerUser(FirebaseAuth mAuth, FirebaseFirestore db, Context context, String email, String password, String cfmPassword, Callbacks callback) {
-        if (email.equals("")){
+        if (email.equals("")) {
             Toast.makeText(context, "Error: You entered an empty email", Toast.LENGTH_SHORT).show();
             callback.onResult(false);
-        }
-        else if (password.equals("")){
+        } else if (password.equals("")) {
             Toast.makeText(context, "Error: You entered an empty password", Toast.LENGTH_SHORT).show();
             callback.onResult(false);
-        }
-        else if (!(password.equals(cfmPassword))){
+        } else if (!(password.equals(cfmPassword))) {
             Toast.makeText(context, "Error: The passwords entered do not match", Toast.LENGTH_SHORT).show();
             callback.onResult(false);
-        }
-        else if (!(email.endsWith("sutd.edu.sg"))) {
+        } else if (!(email.endsWith("sutd.edu.sg"))) {
             Toast.makeText(context, "Error: This email does not belong to the SUTD organisation", Toast.LENGTH_SHORT).show();
             callback.onResult(false);
         } else {
@@ -123,4 +122,28 @@ public class Users {
             }
         });
     }
+    public static void getOrder(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
+        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    List<DocumentReference> items = (List<DocumentReference>) document.getData().get("orders");
+                    if (items != null) {
+                        Orders.getOrdersUser(items, new CallbackAdapter() {
+                            @Override
+                            public void getOrder(List<Order> orders) {
+                                if (orders.size() != 0) {
+                                    callback.getOrder(orders);
+                                }
+                            }
+                        });
+                    } else {
+                        callback.getOrder(new ArrayList<Order>());
+                    }
+                }
+            }
+        });
+    }
 }
+
