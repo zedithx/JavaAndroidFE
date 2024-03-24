@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.R;
@@ -37,8 +38,13 @@ public class LogInActivity extends AppCompatActivity {
                     @Override
                     public void onResult(boolean isSuccess) {
                         if (isSuccess) {
-                            Intent Main = new Intent(LogInActivity.this, SplashScreen.class);
-                            startActivity(Main);
+                            if (mAuth.getCurrentUser().isEmailVerified()) {
+                                Intent Main = new Intent(LogInActivity.this, SplashScreen.class);
+                                startActivity(Main);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Your email is not verified! Please verify it first.", Toast.LENGTH_LONG).show();
+                                mAuth.signOut();
+                            }
                         }
                     }
                 });
