@@ -16,6 +16,7 @@ import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.objects.Listing;
 import com.google.api.Distribution;
 import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
@@ -29,7 +30,8 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.menu_profile_page);
 
         // create new UserProfile instance
-        FirebaseUser fbUser = (FirebaseUser) getIntent().getSerializableExtra("User");
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = mAuth.getCurrentUser();
         UserProfile user = new UserProfile();
 
         ImageView profileImageView = findViewById(R.id.profileImageView);
@@ -41,8 +43,7 @@ public class MenuActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(MenuActivity.this, AddListingActivity.class);
-                Main.putExtra("User", fbUser);
+                Intent Main = new Intent(MenuActivity.this, LandingActivity.class);
                 startActivity(Main);
             }
         });
