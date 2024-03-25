@@ -71,7 +71,6 @@ public class LandingOrdersActivity extends AppCompatActivity {
         Users.getOrder(db, fbUser, new CallbackAdapter() {
             @Override
             public void getOrder(List<Order> orders_new) {
-//                Log.d("test", "orders" + orders_new);
                 orders.clear();
                 if (orders_new.size() != 0) {
                     orders.addAll(orders_new);

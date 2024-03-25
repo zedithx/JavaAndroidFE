@@ -70,6 +70,9 @@
             </intent-filter>
 
         </activity>
+        <activity android:name=".activities.MerchantListingActivity"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

@@ -125,7 +125,6 @@ public class Users {
                             @Override
                             public void getList(List<Listing> listings) {
                                 if (listings.size() != 0) {
-                                    System.out.println("Here");
                                     callback.getList(listings);
                                 }
                             }
@@ -155,6 +154,29 @@ public class Users {
                         });
                     } else {
                         callback.getOrder(new ArrayList<Order>());
+                    }
+                }
+            }
+        });
+    }
+    public static void getListingCreated(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
+        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    List<DocumentReference> items = (List<DocumentReference>) document.getData().get("listings");
+                    if (items != null) {
+                        Listings.getMerchantListings(items, new CallbackAdapter() {
+                            @Override
+                            public void getList(List<Listing> listings) {
+                                if (listings.size() != 0) {
+                                    callback.getList(listings);
+                                }
+                            }
+                        });
+                    } else {
+                        callback.getList(new ArrayList<Listing>());
                     }
                 }
             }

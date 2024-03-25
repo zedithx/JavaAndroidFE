@@ -78,4 +78,20 @@ public class Listings {
             }
         });
     }
+    public static void getMerchantListings(List<DocumentReference> items, Callbacks callback) {
+        List<Listing> listings = new ArrayList<>();
+        for (DocumentReference item: items) {
+            item.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        Listing listing = document.toObject(Listing.class);
+                        listings.add(listing);
+                        callback.getList(listings);
+                    }
+                }
+            });
+        }
+    }
 }
