@@ -68,20 +68,20 @@ public class LandingActivity extends AppCompatActivity {
         listingRecyclerView.setLayoutManager(listingLayoutManager);
         // Get all categories from firestore
         // Get name view to edit
-        TextView username = findViewById(R.id.username);
+//        TextView username = findViewById(R.id.username);
         // Retrieve user's name
-        Users.getName(db, fbUser, new CallbackAdapter() {
-            @Override
-            public void getResult(String result) {
-                if (!result.equals("")) {
-                    username.setText(String.format("Hi, %s!", result));
-                } else {
-                    username.setText("Hi, User!");
-                }
-            }
-        });
+//        Users.getName(db, fbUser, new CallbackAdapter() {
+//            @Override
+//            public void getResult(String result) {
+//                if (!result.equals("")) {
+//                    username.setText(String.format("Hi, %s!", result));
+//                } else {
+//                    username.setText("Hi, User!");
+//                }
+//            }
+//        });
         // Get the profile button
-        ImageButton profile_button = findViewById(R.id.avatar);
+        LinearLayout profile_button = findViewById(R.id.avatar);
         profile_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

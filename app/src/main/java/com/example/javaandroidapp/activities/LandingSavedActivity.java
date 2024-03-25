@@ -56,7 +56,6 @@ public class LandingSavedActivity  extends AppCompatActivity {
         Users.getSaved(db, fbUser, new CallbackAdapter() {
             @Override
             public void getList(List<Listing> listings_new) {
-                Log.d("test", "listings" + listings_new);
                 listings.clear();
                 if (listings_new.size() != 0) {
                     listings.addAll(listings_new);
