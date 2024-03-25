@@ -25,7 +25,6 @@ import java.util.List;
 public class Listings {
     public static void getAllListings(FirebaseFirestore db, String category, Callbacks callbacks) {
         Query item;
-        Log.d("listings", "retrieved" + category);
         if (category.equals("All")) {
             item =  db.collection("Listings");
         } else if (category.equals("Popular")) {
@@ -77,5 +76,21 @@ public class Listings {
                 callback.onResult(false);
             }
         });
+    }
+    public static void getMerchantListings(List<DocumentReference> items, Callbacks callback) {
+        List<Listing> listings = new ArrayList<>();
+        for (DocumentReference item: items) {
+            item.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        Listing listing = document.toObject(Listing.class);
+                        listings.add(listing);
+                        callback.getList(listings);
+                    }
+                }
+            });
+        }
     }
 }

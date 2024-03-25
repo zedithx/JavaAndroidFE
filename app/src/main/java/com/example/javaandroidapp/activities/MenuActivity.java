@@ -95,16 +95,15 @@ public class MenuActivity extends AppCompatActivity {
         viewListing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent viewListingsIntent = new Intent(MenuActivity.this, ViewListing.class);
+                Intent Main = new Intent(MenuActivity.this, MerchantListingActivity.class);
+                startActivity(Main);
             }
         });
         addListing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent Main = new Intent(MenuActivity.this, AddListingActivity.class);
-                Main.putExtra("User", fbUser);
                 startActivity(Main);
-//                Intent addListingsIntent = new Intent(MenuActivity.this, AddListing.class);
             }
         });
         paymentMethodBtn.setOnClickListener(new View.OnClickListener() {
