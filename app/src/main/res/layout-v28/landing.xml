@@ -5,200 +5,267 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.LandingActivity">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_height="match_parent"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="20dp"
-        >
-        <RelativeLayout
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="20dp">
-            <TextView
-                android:id="@+id/username"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:fontFamily="@font/interfont"
-                android:text="Hi, User!"
-                android:textColor="@color/lightred"
-                android:textFontWeight="600"
-                android:textSize="34sp">
-            </TextView>
-            <ImageButton
-                android:id="@+id/avatar"
-                android:contentDescription="@string/avatar"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:background="@null"
-                app:srcCompat="@drawable/avatar" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:id="@+id/saved_button">
-                <ImageView
-                    android:id="@+id/heart"
-                    android:contentDescription="@string/hearticon"
-                    android:layout_width="match_parent"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/heart" />
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp">
+
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
+                    android:layout_alignParentStart="true"
                     android:fontFamily="@font/interfont"
-                    android:layout_gravity="center"
+                    android:text="Hi, User!"
+                    android:textColor="@color/lightred"
                     android:textFontWeight="600"
-                    android:text="@string/saved">
-                </TextView>
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/order_button">
-                <ImageView
-                    android:id="@+id/order"
-                    android:contentDescription="@string/ordericon"
-                    android:layout_width="match_parent"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/order" />
+                    android:textSize="34sp"></TextView>
+
+                <ImageButton
+                    android:id="@+id/avatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@null"
+                    android:contentDescription="@string/avatar"
+                    app:srcCompat="@drawable/avatar" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="30dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
                     android:layout_marginTop="10dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
                     android:fontFamily="@font/interfont"
-                    android:layout_gravity="center"
+                    android:text="@string/group_buys_near"
+                    android:textColor="@color/black"
                     android:textFontWeight="600"
-                    android:text="@string/orders">
-                </TextView>
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true">
-                <ImageView
-                    android:id="@+id/chatbox"
-                    android:contentDescription="@string/chatboxicon"
-                    android:layout_width="match_parent"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/chatbox" />
+                    android:textSize="30sp"></TextView>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/interfont"
-                    android:layout_gravity="center"
+                    android:text="@string/sutd"
+                    android:textColor="@color/lightred"
                     android:textFontWeight="600"
-                    android:text="@string/chats">
-                </TextView>
-            </LinearLayout>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="30dp">
-            <TextView
+                    android:textSize="20sp"></TextView>
+
+                <ImageView
+                    android:id="@+id/search"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/searchicon"
+                    app:srcCompat="@drawable/search"></ImageView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/leftArrow"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/left_arrow"
+                    app:srcCompat="@drawable/pink_back_arrow" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/categoryRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
+
+                <ImageView
+                    android:id="@+id/rightArrow"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/right_arrow"
+                    app:srcCompat="@drawable/pink_right_arrow" />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listingRecyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textSize="30sp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/interfont"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:textFontWeight="600"
-                android:text="@string/group_buys_near">
-            </TextView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textSize="20sp"
-                android:textColor="@color/lightred"
-                android:fontFamily="@font/interfont"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
-                android:textFontWeight="600"
-                android:text="@string/sutd">
-            </TextView>
-            <ImageView
-                android:id="@+id/search"
-                android:contentDescription="@string/searchicon"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/search">
-            </ImageView>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-            <ImageView
-                android:id="@+id/leftArrow"
-                android:contentDescription="@string/left_arrow"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/pink_back_arrow"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categoryRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
+                android:paddingBottom="20dp"
                 android:scrollbars="none"
                 app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
-            <ImageView
-                android:id="@+id/rightArrow"
-                android:contentDescription="@string/right_arrow"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/pink_right_arrow"/>
-        </RelativeLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listingRecyclerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:paddingBottom="20dp"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
 
-<!--        <Button-->
-<!--            android:id="@+id/testButton"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Button"-->
-<!--            />-->
-    </LinearLayout>
+            <!--        <Button-->
+            <!--            android:id="@+id/testButton"-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:text="Button"-->
+            <!--            />-->
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="20dp"
+            app:cardElevation="20dp"
+            app:strokeWidth="0dp"
+            app:cardCornerRadius="20dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                app:cardElevation="20dp"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:gravity="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <LinearLayout
+                        android:id="@+id/saved_button"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/heart"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/hearticon"
+                                app:srcCompat="@drawable/heart" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/interfont"
+                                android:text="@string/saved"
+                                android:textColor="@color/black"
+                                android:textFontWeight="600"
+                                android:textSize="18sp"></TextView>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/order_button"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/order"
+                                android:layout_width="match_parent"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/ordericon"
+                                app:srcCompat="@drawable/order" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/interfont"
+                                android:text="@string/orders"
+                                android:textColor="@color/black"
+                                android:textFontWeight="600"
+                                android:textSize="18sp"></TextView>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/chatbox"
+                                android:layout_width="match_parent"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/chatboxicon"
+                                app:srcCompat="@drawable/chatbox" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/interfont"
+                                android:text="@string/chats"
+                                android:textColor="@color/black"
+                                android:textFontWeight="600"
+                                android:textSize="18sp"></TextView>
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
