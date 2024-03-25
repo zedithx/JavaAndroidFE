@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +45,24 @@ public class LandingActivity extends AppCompatActivity {
     private List<Listing> listings = new ArrayList<>();
 
     private QuerySnapshot listing_items;
+    private int calculateRecyclerViewHeight(RecyclerView listingRecyclerView) {
+        RecyclerView.Adapter adapter = listingRecyclerView.getAdapter();
+        if (adapter == null) {
+            return 0;
+        }
+        int itemCount = adapter.getItemCount();
+        View firstChild = listingRecyclerView.getChildAt(0);
+        int itemHeight = firstChild != null ? firstChild.getHeight() : 0;
+        return itemCount * itemHeight;
+    }
+
+    private int calculateAvailableSpace() {
+        View navigationBar = findViewById(R.id.navigation_bar);
+        int navigationBarHeight = navigationBar.getHeight();
+        ConstraintLayout constraintLayout = findViewById(R.id.constraintlayout);
+        int constraintLayoutHeight = constraintLayout.getHeight();
+        return constraintLayoutHeight - navigationBarHeight;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,22 +85,36 @@ public class LandingActivity extends AppCompatActivity {
         RecyclerView listingRecyclerView = findViewById(R.id.listingRecyclerView);
         LinearLayoutManager listingLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listingRecyclerView.setLayoutManager(listingLayoutManager);
-        // Get all categories from firestore
+//        int recyclerViewHeight = calculateRecyclerViewHeight(listingRecyclerView);
+//        int availableSpace = calculateAvailableSpace();
+//        if (recyclerViewHeight > availableSpace) {
+//            // Set RecyclerView height to availableSpace
+//            ViewGroup.LayoutParams layoutParams = listingRecyclerView.getLayoutParams();
+//            System.out.println("recyclerView:" + recyclerViewHeight);
+//            System.out.println("availablespace:" + availableSpace);
+//            layoutParams.height = availableSpace;
+//            listingRecyclerView.setLayoutParams(layoutParams);
+//        } else {
+//            // Set RecyclerView height to wrap_content
+//            ViewGroup.LayoutParams layoutParams = listingRecyclerView.getLayoutParams();
+//            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//            listingRecyclerView.setLayoutParams(layoutParams);
+//        }
         // Get name view to edit
-        TextView username = findViewById(R.id.username);
+//        TextView username = findViewById(R.id.username);
         // Retrieve user's name
-        Users.getName(db, fbUser, new CallbackAdapter() {
-            @Override
-            public void getResult(String result) {
-                if (!result.equals("")) {
-                    username.setText(String.format("Hi, %s!", result));
-                } else {
-                    username.setText("Hi, User!");
-                }
-            }
-        });
+//        Users.getName(db, fbUser, new CallbackAdapter() {
+//            @Override
+//            public void getResult(String result) {
+//                if (!result.equals("")) {
+//                    username.setText(String.format("Hi, %s!", result));
+//                } else {
+//                    username.setText("Hi, User!");
+//                }
+//            }
+//        });
         // Get the profile button
-        ImageButton profile_button = findViewById(R.id.avatar);
+        LinearLayout profile_button = findViewById(R.id.avatar);
         profile_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -142,6 +175,7 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
     }
+
 }
 
 class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHolder>{
@@ -306,3 +340,4 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
         }
     }
 }
+

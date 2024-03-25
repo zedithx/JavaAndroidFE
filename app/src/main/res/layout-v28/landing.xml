@@ -6,118 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".activities.LandingActivity">
     <LinearLayout
+        android:id="@+id/listingsLinearLayout"
         android:orientation="vertical"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="20dp"
         >
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="20dp">
-            <TextView
-                android:id="@+id/username"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:fontFamily="@font/interfont"
-                android:text="Hi, User!"
-                android:textColor="@color/lightred"
-                android:textFontWeight="600"
-                android:textSize="34sp">
-            </TextView>
-            <ImageButton
-                android:id="@+id/avatar"
-                android:contentDescription="@string/avatar"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:background="@null"
-                app:srcCompat="@drawable/avatar" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:id="@+id/saved_button">
-                <ImageView
-                    android:id="@+id/heart"
-                    android:contentDescription="@string/hearticon"
-                    android:layout_width="match_parent"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/heart" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/interfont"
-                    android:layout_gravity="center"
-                    android:textFontWeight="600"
-                    android:text="@string/saved">
-                </TextView>
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/order_button">
-                <ImageView
-                    android:id="@+id/order"
-                    android:contentDescription="@string/ordericon"
-                    android:layout_width="match_parent"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/order" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/interfont"
-                    android:layout_gravity="center"
-                    android:textFontWeight="600"
-                    android:text="@string/orders">
-                </TextView>
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true">
-                <ImageView
-                    android:id="@+id/chatbox"
-                    android:contentDescription="@string/chatboxicon"
-                    android:layout_width="match_parent"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/chatbox" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/interfont"
-                    android:layout_gravity="center"
-                    android:textFontWeight="600"
-                    android:text="@string/chats">
-                </TextView>
-            </LinearLayout>
-        </RelativeLayout>
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_marginTop="20dp">-->
+<!--            <TextView-->
+<!--                android:id="@+id/username"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:fontFamily="@font/interfont"-->
+<!--                android:text="Hi, User!"-->
+<!--                android:textColor="@color/lightred"-->
+<!--                android:textFontWeight="600"-->
+<!--                android:textSize="34sp">-->
+<!--            </TextView>-->
+<!--        </RelativeLayout>-->
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_marginTop="30dp">
+            android:layout_marginHorizontal="20dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -155,20 +69,22 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp">
             <ImageView
                 android:id="@+id/leftArrow"
                 android:contentDescription="@string/left_arrow"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
                 app:srcCompat="@drawable/pink_back_arrow"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categoryRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
+                android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
@@ -178,22 +94,154 @@
                 android:id="@+id/rightArrow"
                 android:contentDescription="@string/right_arrow"
                 android:layout_width="28dp"
+                android:layout_centerVertical="true"
                 android:layout_height="28dp"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 app:srcCompat="@drawable/pink_right_arrow"/>
         </RelativeLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listingRecyclerView"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/constraintlayout">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/navigation_bar"
+                app:layout_constraintTop_toTopOf="parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listingRecyclerView"
+                    android:paddingHorizontal="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
+            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/navigation_bar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:paddingBottom="20dp"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
-
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/border_top">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:id="@+id/saved_button">
+                <ImageView
+                    android:id="@+id/heart"
+                    android:contentDescription="@string/hearticon"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/heart" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/interfont"
+                    android:layout_gravity="center"
+                    android:textFontWeight="600"
+                    android:text="@string/saved">
+                </TextView>
+            </LinearLayout>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/order_button">
+                <ImageView
+                    android:id="@+id/order"
+                    android:contentDescription="@string/ordericon"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/order" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/interfont"
+                    android:layout_gravity="center"
+                    android:textFontWeight="600"
+                    android:text="@string/orders">
+                </TextView>
+            </LinearLayout>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+                <ImageView
+                    android:id="@+id/chatbox"
+                    android:contentDescription="@string/chatboxicon"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/chatbox" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/interfont"
+                    android:layout_gravity="center"
+                    android:textFontWeight="600"
+                    android:text="@string/chats">
+                </TextView>
+            </LinearLayout>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/avatar"
+                android:layout_alignParentEnd="true">
+                <ImageButton
+                    android:contentDescription="@string/avatar"
+                    android:layout_width="40dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    app:srcCompat="@drawable/avatar" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/interfont"
+                    android:layout_gravity="center"
+                    android:textFontWeight="600"
+                    android:text="Profile"/>
+            </LinearLayout>
+        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 <!--        <Button-->
 <!--            android:id="@+id/testButton"-->
 <!--            android:layout_width="match_parent"-->
@@ -201,4 +249,5 @@
 <!--            android:text="Button"-->
 <!--            />-->
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
