@@ -4,6 +4,7 @@ import com.example.javaandroidapp.activities.LandingActivity;
 import com.example.javaandroidapp.objects.CategoryModel;
 import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.objects.Order;
+import com.example.javaandroidapp.objects.User;
 
 import java.util.List;
 
@@ -35,6 +36,11 @@ public class CallbackAdapter implements Callbacks{
 
     @Override
     public void getListOfString(List<String> strings) {
+
+    }
+
+    @Override
+    public void getUser(User user) {
 
     }
 

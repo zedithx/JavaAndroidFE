@@ -10,12 +10,19 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.adapters.CallbackAdapter;
+import com.example.javaandroidapp.objects.User;
+import com.example.javaandroidapp.utils.Users;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity {
-
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +30,10 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.menu_profile_page);
 
         // create new UserProfile instance
-        UserProfile user = new UserProfile();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        System.out.println(mAuth.getCurrentUser());
+        FirebaseUser fbUser = mAuth.getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         ImageView profileImageView = findViewById(R.id.profileImageView);
         TextView getUsernameTextView = findViewById(R.id.getUsernameTextView);
@@ -37,16 +47,33 @@ public class MenuActivity extends AppCompatActivity {
                 finish();
             }
         });
+        Users.getUser(db, fbUser, new CallbackAdapter() {
+            @Override
+            public void getUser(User user_new) {
+                user = user_new;
+                if (user.getProfileImage().equals("")) {
+                    Glide.with(profileImageView).load(R.drawable.profile_pic).into(profileImageView);
+                } else {
+                    Glide.with(profileImageView).load(user.getProfileImage()).into(profileImageView);
+                    getUsernameTextView.setText(user.getName());
+                    getUserEmailTextView.setText(user.getUserRef().getEmail().toString());
+                }
+            }
+        });
 
         // set profile image to display
-        profileImageView.setImageResource(user.getProfileImage());
+//        if (user.getProfileImage().equals("")) {
+//            Glide.with(profileImageView).load(R.drawable.profile_pic).into(profileImageView);
+//        } else {
+//            Glide.with(profileImageView).load(user.getProfileImage()).into(profileImageView);
+//
+//        }
 
         // set edit info button
         TextView editInfoBtn = findViewById(R.id.editInfoBtn);
 
         // set name and email details
-        getUsernameTextView.setText(user.getUsername());
-        getUserEmailTextView.setText(user.getEmailAddress());
+
 
         // set add/view listing buttons
         CardView addListing = findViewById(R.id.addListingCard);
