@@ -28,11 +28,11 @@ public class Listings {
         Log.d("listings", "retrieved" + category);
         Date date = new Date();
         if (category.equals("All")) {
-            item =  db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date);
+            item = db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
         } else if (category.equals("Popular")) {
             item = db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("currentOrder", Query.Direction.DESCENDING);
         } else {
-            item = db.collection("Listings").whereEqualTo("category", category).whereGreaterThan("expiry", date);
+            item = db.collection("Listings").whereEqualTo("category", category).whereGreaterThan("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
         }
         item.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
