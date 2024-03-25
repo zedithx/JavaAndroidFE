@@ -25,14 +25,15 @@ import java.util.List;
 public class Listings {
     public static void getAllListings(FirebaseFirestore db, String category, Callbacks callbacks) {
         Query item;
+        Log.d("listings", "retrieved" + category);
+        Date date = new Date();
         if (category.equals("All")) {
-            item =  db.collection("Listings");
+            item =  db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date);
         } else if (category.equals("Popular")) {
-            item = db.collection("Listings").orderBy("currentOrder", Query.Direction.DESCENDING);
+            item = db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("currentOrder", Query.Direction.DESCENDING);
         } else {
-            item = db.collection("Listings").whereEqualTo("category", category);
+            item = db.collection("Listings").whereEqualTo("category", category).whereGreaterThan("expiry", date);
         }
-
         item.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
