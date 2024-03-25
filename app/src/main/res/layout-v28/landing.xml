@@ -76,15 +76,15 @@
                 android:contentDescription="@string/left_arrow"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
                 app:srcCompat="@drawable/pink_back_arrow"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categoryRecyclerView"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
+                android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
@@ -94,26 +94,31 @@
                 android:id="@+id/rightArrow"
                 android:contentDescription="@string/right_arrow"
                 android:layout_width="28dp"
+                android:layout_centerVertical="true"
                 android:layout_height="28dp"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 app:srcCompat="@drawable/pink_right_arrow"/>
         </RelativeLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listingRecyclerView"
-            android:paddingHorizontal="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:clipToPadding="false"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/navigation_bar"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
+            android:layout_height="match_parent"
+            android:id="@+id/constraintlayout">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/navigation_bar"
+                app:layout_constraintTop_toTopOf="parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listingRecyclerView"
+                    android:paddingHorizontal="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
+            </LinearLayout>
         <LinearLayout
             android:id="@+id/navigation_bar"
             android:layout_width="match_parent"
