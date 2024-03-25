@@ -38,6 +38,10 @@ public class CallbackAdapter implements Callbacks{
     public void getListOfString(List<String> strings) {
 
     }
+    @Override
+    public void getOrderList(Listing listing){
+
+    }
 
     @Override
     public void getUser(User user) {
