@@ -52,6 +52,10 @@ public class LandingActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
+        if (fbUser == null) {
+            Intent notSignedIn = new Intent(LandingActivity.this, LogInActivity.class);
+            startActivity(notSignedIn);
+        }
         // set landing page as view
         setContentView(R.layout.landing);
         // category horizontal carousel

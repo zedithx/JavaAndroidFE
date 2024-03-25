@@ -35,6 +35,11 @@ public class MenuActivity extends AppCompatActivity {
         FirebaseUser fbUser = mAuth.getCurrentUser();
         // create new UserProfile instance
 
+        if (fbUser == null) {
+            Intent notSignedIn = new Intent(MenuActivity.this, LogInActivity.class);
+            startActivity(notSignedIn);
+        }
+
         ImageView profileImageView = findViewById(R.id.profileImageView);
         TextView getUsernameTextView = findViewById(R.id.getUsernameTextView);
         TextView getUserEmailTextView = findViewById(R.id.getUserEmailTextView);
@@ -111,7 +116,10 @@ public class MenuActivity extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//            Intent logout = new Intent(MenuActivity.this, ... );
+                mAuth.signOut();
+                Intent logout = new Intent(MenuActivity.this, LogInActivity.class);
+                startActivity(logout);
+
             }
         });
 

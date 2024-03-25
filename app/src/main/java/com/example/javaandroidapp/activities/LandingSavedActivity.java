@@ -28,6 +28,13 @@ public class LandingSavedActivity  extends AppCompatActivity {
     private List<Listing> listings = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = mAuth.getCurrentUser();
+        if (fbUser == null) {
+            Intent notSignedIn = new Intent(LandingSavedActivity.this, LogInActivity.class);
+            startActivity(notSignedIn);
+        }
         super.onCreate(savedInstanceState);
         // set page as view
         setContentView(R.layout.landing_saved);
@@ -40,9 +47,6 @@ public class LandingSavedActivity  extends AppCompatActivity {
             }
         });
         // Okay to do this since it embraces singleton design principle
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser fbUser = mAuth.getCurrentUser();
         // initialise adapters to bind the listings to
         RecyclerView listingRecyclerSavedView = findViewById(R.id.listingRecyclerSavedView);
         LinearLayoutManager listingLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

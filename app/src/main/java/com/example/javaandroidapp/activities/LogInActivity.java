@@ -14,6 +14,7 @@ import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.utils.Users;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LogInActivity extends AppCompatActivity {
@@ -22,6 +23,11 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser fbUser = mAuth.getCurrentUser();
+        if (fbUser != null) {
+            Intent signedIn = new Intent(LogInActivity.this, LandingActivity.class);
+            startActivity(signedIn);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         Button loginbutton = findViewById(R.id.login_button);
