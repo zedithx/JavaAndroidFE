@@ -28,11 +28,11 @@ public class Listings {
         Log.d("listings", "retrieved" + category);
         Date date = new Date();
         if (category.equals("All")) {
-            item =  db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
+            item =  db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date);
         } else if (category.equals("Popular")) {
             item = db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("currentOrder", Query.Direction.DESCENDING);
         } else {
-            item = db.collection("Listings").whereEqualTo("category", category).whereGreaterThan("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
+            item = db.collection("Listings").whereEqualTo("category", category).whereGreaterThan("expiry", date);
         }
         item.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -77,6 +77,23 @@ public class Listings {
                 callback.onResult(false);
             }
         });
+    }
+
+    public static void getMerchantListings(List<DocumentReference> items, Callbacks callback) {
+        List<Listing> listings = new ArrayList<>();
+        for (DocumentReference item: items) {
+            item.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        Listing listing = document.toObject(Listing.class);
+                        listings.add(listing);
+                        callback.getList(listings);
+                    }
+                }
+            });
+        }
     }
 
     public static void searchListing(FirebaseFirestore db, String search, Callbacks callback) {
