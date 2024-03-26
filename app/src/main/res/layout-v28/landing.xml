@@ -110,7 +110,7 @@
                 app:layout_constraintTop_toTopOf="parent">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listingRecyclerView"
-                    android:paddingHorizontal="20dp"
+                    android:paddingHorizontal="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"

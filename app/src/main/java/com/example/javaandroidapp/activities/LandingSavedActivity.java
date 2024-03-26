@@ -63,5 +63,14 @@ public class LandingSavedActivity  extends AppCompatActivity {
                 }
             }
         });
+        adapter_listing.setOnItemClickListener(new ListingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Listing data) {
+                // Handle item click, e.g., start a new activity
+                Intent intent = new Intent(LandingSavedActivity.this, ViewProductActivity.class);
+                intent.putExtra("listing", data);
+                startActivity(intent);
+            }
+        });
     }
 }
