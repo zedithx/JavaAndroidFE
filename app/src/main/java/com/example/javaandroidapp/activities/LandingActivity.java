@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
+import com.example.javaandroidapp.fragments.SearchFragment;
 import com.example.javaandroidapp.objects.CategoryModel;
 import com.example.javaandroidapp.utils.AlgoliaHelper;
 import com.example.javaandroidapp.utils.Categories;
@@ -79,21 +80,6 @@ public class LandingActivity extends AppCompatActivity {
         RecyclerView listingRecyclerView = findViewById(R.id.listingRecyclerView);
         LinearLayoutManager listingLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listingRecyclerView.setLayoutManager(listingLayoutManager);
-//        int recyclerViewHeight = calculateRecyclerViewHeight(listingRecyclerView);
-//        int availableSpace = calculateAvailableSpace();
-//        if (recyclerViewHeight > availableSpace) {
-//            // Set RecyclerView height to availableSpace
-//            ViewGroup.LayoutParams layoutParams = listingRecyclerView.getLayoutParams();
-//            System.out.println("recyclerView:" + recyclerViewHeight);
-//            System.out.println("availablespace:" + availableSpace);
-//            layoutParams.height = availableSpace;
-//            listingRecyclerView.setLayoutParams(layoutParams);
-//        } else {
-//            // Set RecyclerView height to wrap_content
-//            ViewGroup.LayoutParams layoutParams = listingRecyclerView.getLayoutParams();
-//            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-//            listingRecyclerView.setLayoutParams(layoutParams);
-//        }
         // Get name view to edit
 //        TextView username = findViewById(R.id.username);
         // Retrieve user's name
@@ -107,6 +93,18 @@ public class LandingActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
+        // Get the search button
+        ImageView search_button = findViewById(R.id.search);
+        search_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right)
+                        .replace(R.id.listingsFrameLayout, new SearchFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
         // Get the profile button
         LinearLayout profile_button = findViewById(R.id.avatar);
 
