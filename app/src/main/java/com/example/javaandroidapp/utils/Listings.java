@@ -28,11 +28,11 @@ public class Listings {
         Log.d("listings", "retrieved" + category);
         Date date = new Date();
         if (category.equals("All")) {
-            item =  db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date);
+            item = db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
         } else if (category.equals("Popular")) {
             item = db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("currentOrder", Query.Direction.DESCENDING);
         } else {
-            item = db.collection("Listings").whereEqualTo("category", category).whereGreaterThan("expiry", date);
+            item = db.collection("Listings").whereEqualTo("category", category).whereGreaterThan("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
         }
         item.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -78,6 +78,7 @@ public class Listings {
             }
         });
     }
+
     public static void getMerchantListings(List<DocumentReference> items, Callbacks callback) {
         List<Listing> listings = new ArrayList<>();
         for (DocumentReference item: items) {
@@ -93,5 +94,18 @@ public class Listings {
                 }
             });
         }
+    }
+
+    public static void searchListing(FirebaseFirestore db, String search, Callbacks callback) {
+        Date date = new Date();
+        db.collection("Listings").whereGreaterThanOrEqualTo("name", search).whereLessThanOrEqualTo("name", search + "\uf8ff").whereGreaterThanOrEqualTo("expiry", date).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<Listing> listings = task.getResult().toObjects(Listing.class);
+                    callback.getList(listings);
+                }
+            }
+        });
     }
 }
