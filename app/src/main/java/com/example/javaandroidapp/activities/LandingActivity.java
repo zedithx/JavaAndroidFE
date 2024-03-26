@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.fragments.SearchFragment;
 import com.example.javaandroidapp.objects.CategoryModel;
+import com.example.javaandroidapp.utils.AlgoliaHelper;
 import com.example.javaandroidapp.utils.Categories;
 import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.utils.Listings;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class LandingActivity extends AppCompatActivity {
     private List<CategoryModel> categories = new ArrayList<>();
@@ -105,6 +107,13 @@ public class LandingActivity extends AppCompatActivity {
         });
         // Get the profile button
         LinearLayout profile_button = findViewById(R.id.avatar);
+
+        AlgoliaHelper.searchListings("Xu Kai", new CallbackAdapter() {
+            @Override
+            public void getList(List<Listing> item) {
+                System.out.println(item);
+            }
+        });
         profile_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
