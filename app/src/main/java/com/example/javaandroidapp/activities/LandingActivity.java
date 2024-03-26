@@ -244,7 +244,13 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHold
             String listingExpiryCountdown = listing.getExpiryCountdown();
             Glide.with(listingView).load(listing.getImageList().get(0)).into(productImageView);
             priceTextView.setText(String.format("$%s", listing_price.toString()));
-            nameTextView.setText(listing_name);
+            if (listing_name.length() < 24){
+                nameTextView.setText(listing_name);
+            }
+            else {
+                String shortened_name = listing_name.substring(0, 20) + "...";
+                nameTextView.setText(shortened_name);
+            }
             minorderTextView.setText(listingMinOrder.toString());
             currentorderTextView.setText(listingCurrentOrder.toString());
             expiryTextView.setText(listingExpiryCountdown);

@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginVertical="10dp">
             <ImageView
                 android:id="@+id/leftArrow"
                 android:contentDescription="@string/left_arrow"
@@ -110,7 +110,7 @@
                 app:layout_constraintTop_toTopOf="parent">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listingRecyclerView"
-                    android:paddingHorizontal="20dp"
+                    android:paddingHorizontal="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -40,7 +41,7 @@
                 android:fontFamily="@font/interfont"
                 android:textColor="@color/listing"
                 android:textFontWeight="600"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 >
             </TextView>
             <TextView
@@ -77,13 +78,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="end"
         android:layout_alignParentEnd="true">
         <LinearLayout
             android:id="@+id/ordernumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_gravity="end"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
@@ -121,13 +122,13 @@
             </TextView>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             >
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right">
+                android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
