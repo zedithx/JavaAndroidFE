@@ -97,7 +97,7 @@ public class LandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_top_right, R.anim.slide_out_bottom_left)
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right)
                         .replace(R.id.listingsFrameLayout, new SearchFragment())
                         .addToBackStack(null)
                         .commit();

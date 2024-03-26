@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
     <androidx.cardview.widget.CardView
@@ -19,14 +19,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="8dp">
+            android:paddingVertical="14dp">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true">
                 <ImageView
-                    android:layout_width="24dp"
+                    android:id="@+id/back_search"
+                    android:layout_width="18dp"
                     android:layout_height="24dp"
                     android:layout_marginStart="10dp"
                     android:src="@drawable/white_back_arrow"
@@ -35,41 +36,32 @@
                 <EditText
                     android:id="@+id/searchEditText"
                     android:layout_gravity="center"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="20dp"
-                    android:layout_width="200dp"
+                    android:layout_width="220dp"
                     android:background="@drawable/white_input_box"
                     android:ellipsize="start"
-                    android:gravity="center"
+                    android:paddingLeft="20dp"
                     android:hint="Search"
-                    android:textSize="14sp"
+                    android:textSize="18sp"
                     android:importantForAutofill="no"
-                    android:inputType="textPassword"/>
+                    android:inputType="text"/>
             </LinearLayout>
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="14dp"
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                app:cardCornerRadius="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Search"
-                    android:fontFamily="@font/interfont"
-                    android:textSize="12sp"
-                    android:paddingVertical="6dp"
-                    android:paddingHorizontal="10dp"
-                    android:textFontWeight="600"
-                    android:textColor="@color/lightred"/>
-            </androidx.cardview.widget.CardView>
+                android:src="@drawable/white_search_icon"
+                />
         </RelativeLayout>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"
-                android:layout_marginVertical="20dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="20dp"
                 android:layout_marginHorizontal="10dp"
                 android:background="@color/white">
                 <LinearLayout

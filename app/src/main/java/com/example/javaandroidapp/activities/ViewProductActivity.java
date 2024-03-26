@@ -58,8 +58,9 @@ public class ViewProductActivity extends AppCompatActivity {
         setContentView(R.layout.product_page);
         amt = 1;
 
-        buyFrag = new BuyFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
+                .replace(R.id.buyFrameLayout, new BuyFragment()).commit();
 
         // back button
         backBtn = findViewById(R.id.backBtn);
@@ -125,10 +126,6 @@ public class ViewProductActivity extends AppCompatActivity {
         ownerLayout.setBackground(descriptionBg);
 
 
-        // buy button panel pop up
-
-        ft.replace(R.id.buyFrameLayout, buyFrag);
-        ft.commit();
 
 
         RelativeLayout alphaRelative = findViewById(R.id.alphaRelative);
