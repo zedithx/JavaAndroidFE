@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,21 +20,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
+import com.example.javaandroidapp.fragments.SearchFragment;
 import com.example.javaandroidapp.objects.CategoryModel;
 import com.example.javaandroidapp.utils.Categories;
 import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.utils.Listings;
 import com.example.javaandroidapp.R;
-import com.example.javaandroidapp.utils.Users;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.*;
 
@@ -85,21 +78,6 @@ public class LandingActivity extends AppCompatActivity {
         RecyclerView listingRecyclerView = findViewById(R.id.listingRecyclerView);
         LinearLayoutManager listingLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listingRecyclerView.setLayoutManager(listingLayoutManager);
-//        int recyclerViewHeight = calculateRecyclerViewHeight(listingRecyclerView);
-//        int availableSpace = calculateAvailableSpace();
-//        if (recyclerViewHeight > availableSpace) {
-//            // Set RecyclerView height to availableSpace
-//            ViewGroup.LayoutParams layoutParams = listingRecyclerView.getLayoutParams();
-//            System.out.println("recyclerView:" + recyclerViewHeight);
-//            System.out.println("availablespace:" + availableSpace);
-//            layoutParams.height = availableSpace;
-//            listingRecyclerView.setLayoutParams(layoutParams);
-//        } else {
-//            // Set RecyclerView height to wrap_content
-//            ViewGroup.LayoutParams layoutParams = listingRecyclerView.getLayoutParams();
-//            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-//            listingRecyclerView.setLayoutParams(layoutParams);
-//        }
         // Get name view to edit
 //        TextView username = findViewById(R.id.username);
         // Retrieve user's name
@@ -113,6 +91,18 @@ public class LandingActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
+        // Get the search button
+        ImageView search_button = findViewById(R.id.search);
+        search_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_top_right, R.anim.slide_out_bottom_left)
+                        .replace(R.id.listingsFrameLayout, new SearchFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
         // Get the profile button
         LinearLayout profile_button = findViewById(R.id.avatar);
         profile_button.setOnClickListener(new View.OnClickListener(){

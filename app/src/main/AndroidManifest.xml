@@ -61,7 +61,7 @@
             android:name=".activities.AddListingActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".activities.SplashScreen"
+        <activity android:name=".activities.SplashScreenActivity"
             android:exported="true">
 
             <intent-filter>

@@ -45,7 +45,7 @@ public class LogInActivity extends AppCompatActivity {
                     public void onResult(boolean isSuccess) {
                         if (isSuccess) {
                             if (mAuth.getCurrentUser().isEmailVerified()) {
-                                Intent Main = new Intent(LogInActivity.this, SplashScreen.class);
+                                Intent Main = new Intent(LogInActivity.this, SplashScreenActivity.class);
                                 startActivity(Main);
                             } else {
                                 Toast.makeText(getApplicationContext(), "Your email is not verified! Please verify it first.", Toast.LENGTH_LONG).show();

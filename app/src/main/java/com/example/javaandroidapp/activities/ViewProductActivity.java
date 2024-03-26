@@ -41,7 +41,7 @@ public class ViewProductActivity extends AppCompatActivity {
     int count = 0;
     static int amt;
     static int focusedBtnId = 1;
-    static boolean savedOrder = false;
+    static boolean savedListing = false;
     static boolean buyClicked = false;
     static BuyFragment buyFrag;
     static double displayedPrice;
@@ -149,14 +149,15 @@ public class ViewProductActivity extends AppCompatActivity {
             ;
 
             // saved order button
-            ImageButton saveOrderBtn = view.findViewById(R.id.saveBtn);
-            saveOrderBtn.setImageResource( savedOrder ? R.drawable.filled_heart : R.drawable.unfilled_heart);
-            saveOrderBtn.setOnClickListener(new View.OnClickListener() {
+            ImageButton saveListingBtn = view.findViewById(R.id.saveBtn);
+            saveListingBtn.setImageResource( savedListing ? R.drawable.filled_heart : R.drawable.unfilled_heart);
+            saveListingBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    savedOrder = !savedOrder;
-                    //post req to set savedOrder as true
-                    saveOrderBtn.setImageResource(savedOrder ? R.drawable.filled_heart : R.drawable.unfilled_heart);
+                    savedListing = !savedListing;
+                    // add to save attribute array in firebase
+//                    Users.saveListing
+                    saveListingBtn.setImageResource(savedListing ? R.drawable.filled_heart : R.drawable.unfilled_heart);
                 }
             });
             Button joinBtn = view.findViewById(R.id.buyOrderBtn);
@@ -214,7 +215,7 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
 
-                    // Order amount
+                    // Change order amounts and change price
                     addOrder.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
