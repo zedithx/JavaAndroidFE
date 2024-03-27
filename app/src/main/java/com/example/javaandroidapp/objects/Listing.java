@@ -1,6 +1,8 @@
 package com.example.javaandroidapp.objects;
 
 
+import com.google.firebase.firestore.DocumentId;
+
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Listing implements Serializable {
+    @DocumentId
+    private String uid;
     private String category;
     private String createdBy;
     private Integer currentOrder;
@@ -39,6 +43,14 @@ public class Listing implements Serializable {
         this.category = category;
         this.variationNames = variationNames;
         this.variationAdditionalPrice = variationAdditionalPrice;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public Double getOldPrice() {
