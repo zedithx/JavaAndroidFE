@@ -106,7 +106,7 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
         // Get the profile button
-        LinearLayout profile_button = findViewById(R.id.avatar);
+        ImageView profile_button = findViewById(R.id.avatar);
 
         AlgoliaHelper.searchListings("Xu Kai", new CallbackAdapter() {
             @Override
