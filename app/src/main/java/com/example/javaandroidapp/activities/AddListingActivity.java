@@ -81,6 +81,10 @@ public class AddListingActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
+        if (fbUser == null) {
+            Intent notSignedIn = new Intent(AddListingActivity.this, LogInActivity.class);
+            startActivity(notSignedIn);
+        }
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_listing);

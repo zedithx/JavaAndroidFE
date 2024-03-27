@@ -16,4 +16,5 @@ public interface Callbacks {
     void getCategory(List<CategoryModel> categories);
     void getListOfString(List<String> strings);
     void getOrderList(Listing listing);
+    void getUser(User user);
 }

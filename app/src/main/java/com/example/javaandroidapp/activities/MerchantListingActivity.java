@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.objects.Listing;
@@ -24,36 +26,32 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LandingSavedActivity  extends AppCompatActivity {
+public class MerchantListingActivity extends AppCompatActivity {
     private List<Listing> listings = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser fbUser = mAuth.getCurrentUser();
-        if (fbUser == null) {
-            Intent notSignedIn = new Intent(LandingSavedActivity.this, LogInActivity.class);
-            startActivity(notSignedIn);
-        }
         super.onCreate(savedInstanceState);
         // set page as view
-        setContentView(R.layout.landing_saved);
+        setContentView(R.layout.merchant_listing);
         ImageView back_arrow = findViewById(R.id.back_arrow);
         back_arrow.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(LandingSavedActivity.this, LandingActivity.class);
+                Intent Main = new Intent(MerchantListingActivity.this, MenuActivity.class);
                 startActivity(Main);
             }
         });
         // Okay to do this since it embraces singleton design principle
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = mAuth.getCurrentUser();
         // initialise adapters to bind the listings to
-        RecyclerView listingRecyclerSavedView = findViewById(R.id.listingRecyclerSavedView);
+        RecyclerView listingRecyclerMerchantView = findViewById(R.id.listingRecyclerMerchantView);
         LinearLayoutManager listingLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        listingRecyclerSavedView.setLayoutManager(listingLayoutManager);
+        listingRecyclerMerchantView.setLayoutManager(listingLayoutManager);
         ListingAdapter adapter_listing = new ListingAdapter(listings);
-        listingRecyclerSavedView.setAdapter(adapter_listing);
-        Users.getSaved(db, fbUser, new CallbackAdapter() {
+        listingRecyclerMerchantView.setAdapter(adapter_listing);
+        Users.getListingCreated(db, fbUser, new CallbackAdapter() {
             @Override
             public void getList(List<Listing> listings_new) {
                 listings.clear();
@@ -61,15 +59,6 @@ public class LandingSavedActivity  extends AppCompatActivity {
                     listings.addAll(listings_new);
                     adapter_listing.notifyDataSetChanged();
                 }
-            }
-        });
-        adapter_listing.setOnItemClickListener(new ListingAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Listing data) {
-                // Handle item click, e.g., start a new activity
-                Intent intent = new Intent(LandingSavedActivity.this, ViewProductActivity.class);
-                intent.putExtra("listing", data);
-                startActivity(intent);
             }
         });
     }

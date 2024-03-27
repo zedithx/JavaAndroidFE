@@ -43,4 +43,9 @@ public class CallbackAdapter implements Callbacks{
 
     }
 
+    @Override
+    public void getUser(User user) {
+
+    }
+
 }
