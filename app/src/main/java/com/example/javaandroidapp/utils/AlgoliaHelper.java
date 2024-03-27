@@ -26,39 +26,28 @@ import java.util.concurrent.ExecutionException;
 public class AlgoliaHelper {
     public static void searchListings(String item, Callbacks callback) {
         Client client = new Client("2E5RB96ERX", "d488826decadd6593821cefdabd53fa2");
-        Index index = client.getIndex("Bulkify");
+        Index index = client.getIndex("Bulkify_query_suggestions");
         index.searchAsync(new Query(item), new CompletionHandler() {
             @Override
             public void requestCompleted(@androidx.annotation.Nullable JSONObject jsonObject, @androidx.annotation.Nullable AlgoliaException e) {
                 try {
                     if (jsonObject != null) {
                         JSONArray hits = jsonObject.getJSONArray("hits");
-                        List<Listing> item = new ArrayList<Listing>();
+
+                        List<String> item = new ArrayList<String>();
                         if (hits.length() != 0) {
                             for (int i = 0; i < hits.length(); i++) {
                                 JSONObject hit = hits.getJSONObject(i);
-                                Listing new_item = new Listing();
-                                new_item.setExpiry(Date.from(Instant.ofEpochSecond(hit.getLong("expiry"))));
-                                new_item.setName(hit.getString("name"));
-                                new_item.setPrice(hit.getDouble("price"));
-                                ArrayList<String> images = new ArrayList<String>();
-                                JSONArray images_json = hit.getJSONArray("imageList");
-                                for (int j = 0; j < images_json.length(); j++) {
-                                    images.add(images_json.getString(j));
-                                }
-                                new_item.setImageList(images);
-                                item.add(new_item);
+                                item.add(hit.getString("query"));
                             }
-                            callback.getList(item);
-
+                            callback.getListOfString(item);
                         } else {
-                            callback.getList(item);
+                            callback.getListOfString(item);
                         }
                     }
-                    } catch (JSONException ex) {
-                        throw new RuntimeException(ex);
-                    }
-
+                } catch (JSONException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }

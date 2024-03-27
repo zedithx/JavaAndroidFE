@@ -108,9 +108,9 @@ public class LandingActivity extends AppCompatActivity {
         // Get the profile button
         ImageView profile_button = findViewById(R.id.avatar);
 
-        AlgoliaHelper.searchListings("Xu Kai", new CallbackAdapter() {
+        AlgoliaHelper.searchListings("t", new CallbackAdapter() {
             @Override
-            public void getList(List<Listing> item) {
+            public void getListOfString(List<String> item) {
                 System.out.println(item);
             }
         });
