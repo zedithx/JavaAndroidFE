@@ -12,11 +12,20 @@
         android:layout_gravity="center_horizontal"
         >
         <!-- TODO: Change the image container to rounded corners -->
-        <ImageView
-            android:id="@+id/product_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:srcCompat="@drawable/test_kangol"/>
+        <androidx.cardview.widget.CardView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:cardCornerRadius="12dp"
+            android:layout_margin="5dp"
+            android:elevation="8dp">
+            <ImageView
+                android:id="@+id/product_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:elevation="8dp"
+                app:srcCompat="@drawable/test_kangol"/>
+        </androidx.cardview.widget.CardView>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerVertical="true"
         android:layout_alignParentEnd="true">
         <LinearLayout
             android:id="@+id/ordernumber"
@@ -100,7 +109,7 @@
                 android:fontFamily="@font/interfont"
                 android:textFontWeight="800"
                 android:layout_marginHorizontal="2dp"
-                android:textSize="34sp"
+                android:textSize="30sp"
                 >
             </TextView>
             <TextView
@@ -121,19 +130,19 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/interfont"
                 android:textFontWeight="800"
-                android:textSize="24sp"
+                android:textSize="30sp"
                 android:layout_marginHorizontal="2dp"
                 >
             </TextView>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             >
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right">
+                android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
