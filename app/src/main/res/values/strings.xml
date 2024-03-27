@@ -55,6 +55,11 @@
     <string name="logout">Logout</string>
     <string name="payment_methods_subtitle">Add or remove payment methods.</string>
     <string name="logout_subtitle">Logout of account on this device.</string>
+    <string name="listings">Listings</string>
+    <string name="rating_5"> /5.0</string>
+    <string name="user_rating">0.0</string>
+    <string name="no_listings">No listings to show.</string>
+
 
 
 </resources>
