@@ -46,6 +46,14 @@ public class LandingOrdersActivity extends AppCompatActivity {
         TextView title_name = findViewById(R.id.title_saved);
         title_name.setText("My Orders");
         ImageView back_arrow = findViewById(R.id.back_arrow);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = mAuth.getCurrentUser();
+
+        if (fbUser == null) {
+            Intent notSignedIn = new Intent(LandingOrdersActivity.this, LogInActivity.class);
+            startActivity(notSignedIn);
+        }
 
         back_arrow.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -54,9 +62,6 @@ public class LandingOrdersActivity extends AppCompatActivity {
                 startActivity(Main);
             }
         });
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser fbUser = mAuth.getCurrentUser();
         // initialise adapters to bind the listings to
         RecyclerView listingRecyclerOrderView = findViewById(R.id.listingRecyclerOrderView);
         LinearLayoutManager listingLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -66,7 +71,6 @@ public class LandingOrdersActivity extends AppCompatActivity {
         Users.getOrder(db, fbUser, new CallbackAdapter() {
             @Override
             public void getOrder(List<Order> orders_new) {
-//                Log.d("test", "orders" + orders_new);
                 orders.clear();
                 if (orders_new.size() != 0) {
                     orders.addAll(orders_new);

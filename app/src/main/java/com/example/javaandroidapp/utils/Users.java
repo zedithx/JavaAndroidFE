@@ -82,17 +82,47 @@ public class Users {
         }
     }
 
-    public static void getName(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
-        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//    public static void getName(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
+//        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        callback.getResult(document.getData().get("name").toString());
+//                    } else {
+//                        callback.getResult("");
+//                    }
+//                }
+//            }
+//        });
+//    }
+
+    public static void saveListing(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
+        db.collection("users").document(fbUser.getUid().toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        callback.getResult(document.getData().get("name").toString());
-                    } else {
-                        callback.getResult("");
-                    }
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    User user = document.toObject(User.class);
+                    assert user != null;
+                    user.setUserRef(fbUser);
+                    callback.getUser(user);
+                }
+            }
+        });
+    }
+
+    public static void getUser(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
+        db.collection("users").document(fbUser.getUid().toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    User user = document.toObject(User.class);
+                    assert user != null;
+                    user.setUserRef(fbUser);
+                    callback.getUser(user);
                 }
             }
         });
@@ -110,7 +140,6 @@ public class Users {
                             @Override
                             public void getList(List<Listing> listings) {
                                 if (listings.size() != 0) {
-                                    System.out.println("Here");
                                     callback.getList(listings);
                                 }
                             }
@@ -140,6 +169,29 @@ public class Users {
                         });
                     } else {
                         callback.getOrder(new ArrayList<Order>());
+                    }
+                }
+            }
+        });
+    }
+    public static void getListingCreated(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
+        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    List<DocumentReference> items = (List<DocumentReference>) document.getData().get("listings");
+                    if (items != null) {
+                        Listings.getMerchantListings(items, new CallbackAdapter() {
+                            @Override
+                            public void getList(List<Listing> listings) {
+                                if (listings.size() != 0) {
+                                    callback.getList(listings);
+                                }
+                            }
+                        });
+                    } else {
+                        callback.getList(new ArrayList<Listing>());
                     }
                 }
             }
