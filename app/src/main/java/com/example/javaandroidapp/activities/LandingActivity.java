@@ -108,9 +108,9 @@ public class LandingActivity extends AppCompatActivity {
         // Get the profile button
         ImageView profile_button = findViewById(R.id.avatar);
 
-        AlgoliaHelper.searchListings("t", new CallbackAdapter() {
+        AlgoliaHelper.searchListingID("minecraft tutorial", new CallbackAdapter() {
             @Override
-            public void getListOfString(List<String> item) {
+            public void getList(List<Listing> item) {
                 System.out.println(item);
             }
         });
