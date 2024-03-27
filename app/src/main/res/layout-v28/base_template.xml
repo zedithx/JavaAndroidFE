@@ -18,7 +18,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="20dp"
             android:layout_centerVertical="true"
-            app:srcCompat="@drawable/black_back_arrow">
+            app:srcCompat="@drawable/white_back_arrow">
         </ImageView>
         <TextView
             android:id="@+id/header_saved"
@@ -30,7 +30,7 @@
             android:layout_centerVertical="true"
             android:textFontWeight="600"
             android:textSize="20sp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:fontFamily="@font/interfont"
             android:text="@string/saved">
         </TextView>
@@ -43,7 +43,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
             android:layout_centerVertical="true"
-            app:srcCompat="@drawable/search_icon">
+            app:srcCompat="@drawable/white_search_icon">
         </ImageView>
 
     </RelativeLayout>

@@ -31,31 +31,33 @@ public class AlgoliaHelper {
             @Override
             public void requestCompleted(@androidx.annotation.Nullable JSONObject jsonObject, @androidx.annotation.Nullable AlgoliaException e) {
                 try {
-                    JSONArray hits = jsonObject.getJSONArray("hits");
-                    List<Listing> item = new ArrayList<Listing>();
-                    if (hits.length() != 0) {
-                        for (int i = 0; i < hits.length(); i++) {
-                            JSONObject hit = hits.getJSONObject(i);
-                            Listing new_item = new Listing();
-                            new_item.setExpiry(Date.from(Instant.ofEpochSecond(hit.getLong("expiry"))));
-                            new_item.setName(hit.getString("name"));
-                            new_item.setPrice(hit.getDouble("price"));
-                            ArrayList<String> images = new ArrayList<String>();
-                            JSONArray images_json = hit.getJSONArray("imageList");
-                            for (int j = 0; j < images_json.length(); j++) {
-                                images.add(images_json.getString(j));
+                    if (jsonObject != null) {
+                        JSONArray hits = jsonObject.getJSONArray("hits");
+                        List<Listing> item = new ArrayList<Listing>();
+                        if (hits.length() != 0) {
+                            for (int i = 0; i < hits.length(); i++) {
+                                JSONObject hit = hits.getJSONObject(i);
+                                Listing new_item = new Listing();
+                                new_item.setExpiry(Date.from(Instant.ofEpochSecond(hit.getLong("expiry"))));
+                                new_item.setName(hit.getString("name"));
+                                new_item.setPrice(hit.getDouble("price"));
+                                ArrayList<String> images = new ArrayList<String>();
+                                JSONArray images_json = hit.getJSONArray("imageList");
+                                for (int j = 0; j < images_json.length(); j++) {
+                                    images.add(images_json.getString(j));
+                                }
+                                new_item.setImageList(images);
+                                item.add(new_item);
                             }
-                            new_item.setImageList(images);
-                            item.add(new_item);
-                        }
-                        callback.getList(item);
+                            callback.getList(item);
 
-                    } else {
-                        callback.getList(item);
+                        } else {
+                            callback.getList(item);
+                        }
                     }
-                } catch (JSONException ex) {
-                    throw new RuntimeException(ex);
-                }
+                    } catch (JSONException ex) {
+                        throw new RuntimeException(ex);
+                    }
 
             }
         });
