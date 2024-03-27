@@ -40,24 +40,6 @@ public class LandingActivity extends AppCompatActivity {
     private List<Listing> listings = new ArrayList<>();
 
     private QuerySnapshot listing_items;
-    private int calculateRecyclerViewHeight(RecyclerView listingRecyclerView) {
-        RecyclerView.Adapter adapter = listingRecyclerView.getAdapter();
-        if (adapter == null) {
-            return 0;
-        }
-        int itemCount = adapter.getItemCount();
-        View firstChild = listingRecyclerView.getChildAt(0);
-        int itemHeight = firstChild != null ? firstChild.getHeight() : 0;
-        return itemCount * itemHeight;
-    }
-
-    private int calculateAvailableSpace() {
-        View navigationBar = findViewById(R.id.navigation_bar);
-        int navigationBarHeight = navigationBar.getHeight();
-        ConstraintLayout constraintLayout = findViewById(R.id.constraintlayout);
-        int constraintLayoutHeight = constraintLayout.getHeight();
-        return constraintLayoutHeight - navigationBarHeight;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
