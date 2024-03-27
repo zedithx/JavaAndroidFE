@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textSize="30sp"
+                android:textSize="32sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/interfont"
                 android:layout_alignParentStart="true"
@@ -67,7 +67,7 @@
                 android:layout_height="28dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                app:srcCompat="@drawable/search">
+                app:srcCompat="@drawable/red_search_icon">
             </ImageView>
         </RelativeLayout>
         <RelativeLayout
@@ -76,13 +76,13 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="10dp">
             <ImageView
-                android:id="@+id/leftArrow"
+                android:id="@+id/pink_back"
                 android:contentDescription="@string/left_arrow"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
-                app:srcCompat="@drawable/pink_back_arrow"/>
+                app:srcCompat="@drawable/red_back_arrow"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categoryRecyclerView"
                 android:layout_width="match_parent"
@@ -101,7 +101,7 @@
                 android:layout_centerVertical="true"
                 android:layout_height="28dp"
                 android:layout_alignParentEnd="true"
-                app:srcCompat="@drawable/pink_right_arrow"/>
+                app:srcCompat="@drawable/red_front_arrow"/>
         </RelativeLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -128,8 +128,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:background="@drawable/border_top">
             <LinearLayout
                 android:orientation="vertical"
@@ -142,13 +142,13 @@
                     android:id="@+id/heart"
                     android:contentDescription="@string/hearticon"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="30dp"
                     android:layout_alignParentStart="true"
                     android:fontFamily="@font/interfont"
                     android:textColor="@color/lightred"
                     android:textFontWeight="600"
                     android:text="@string/saved"
-                    android:src="@drawable/heart_empty"/>
+                    android:src="@drawable/red_heart_empty"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -213,7 +213,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="28dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/chatbox" />
+                    app:srcCompat="@drawable/red_chatbox" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -240,17 +240,17 @@
                 android:clipChildren="true">
                 <ImageButton
                     android:contentDescription="@string/avatar"
-                    android:layout_width="40dp"
+                    android:layout_width="match_parent"
                     android:layout_height="28dp"
                     android:layout_gravity="center"
                     android:background="@null"
-                    app:srcCompat="@drawable/avatar" />
+                    app:srcCompat="@drawable/red_avatar" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/interfont"
+                    android:layout_marginTop="4dp"
                     android:layout_gravity="center"
                     android:textFontWeight="600"
                     android:text="Profile"/>

@@ -72,7 +72,7 @@
                                 android:layout_alignParentTop="true"
                                 android:background="@null"
                                 android:contentDescription="@string/previous_button"
-                                app:srcCompat="@drawable/pink_back_arrow" />
+                                app:srcCompat="@drawable/red_back_arrow" />
 
                             <ImageButton
                                 android:id="@+id/nextBtn"
@@ -82,8 +82,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:background="@null"
                                 android:contentDescription="@string/next_button"
-                                app:srcCompat="@drawable/pink_right_arrow" />
-
+                                app:srcCompat="@drawable/red_front_arrow" />
 
                         </RelativeLayout>
 
@@ -351,6 +350,7 @@
                     <TextView
                         android:id="@+id/topBanner"
                         style="@style/TopBanner"
+                        android:textColor="@color/white"
                         android:text="@string/group_order" />
 
                     <ImageButton
@@ -361,7 +361,7 @@
                         android:background="@null"
                         android:contentDescription="Back button"
                         android:padding="15dp"
-                        android:src="@drawable/keyboard_arrow_left" />
+                        android:src="@drawable/white_back_arrow" />
 
 
                 </RelativeLayout>
