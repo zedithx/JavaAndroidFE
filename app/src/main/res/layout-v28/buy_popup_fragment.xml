@@ -187,8 +187,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_margin="5dp"
-                            android:layout_weight="0.8"
+                            android:layout_weight="0.9"
                             android:backgroundTint="@color/lightred"
                             android:text="@string/buy"
                             android:textSize="23sp" />
