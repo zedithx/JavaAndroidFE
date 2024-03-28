@@ -78,6 +78,7 @@ public class LandingActivity extends AppCompatActivity {
                         .addToBackStack(null)
                         .commit();
             }
+
         });
         // Get the profile button
         ImageView profile_button = findViewById(R.id.avatar);

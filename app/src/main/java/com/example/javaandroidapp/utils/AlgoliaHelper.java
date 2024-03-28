@@ -39,8 +39,9 @@ public class AlgoliaHelper {
                         JSONArray hits = jsonObject.getJSONArray("hits");
 
                         List<String> item = new ArrayList<String>();
+                        int limit = Math.min(4, hits.length());
                         if (hits.length() != 0) {
-                            for (int i = 0; i < hits.length(); i++) {
+                            for (int i = 0; i < limit; i++) {
                                 JSONObject hit = hits.getJSONObject(i);
                                 item.add(hit.getString("query"));
                             }
