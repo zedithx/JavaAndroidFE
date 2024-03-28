@@ -7,23 +7,19 @@
     <RelativeLayout
         android:id="@+id/top_banner_landing"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="70dp"
         android:orientation="horizontal"
         android:background="@color/lightred">
         <ImageView
             android:id="@+id/back_arrow"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginBottom="30dp"
-            android:layout_alignParentBottom="true"
             android:layout_marginStart="20dp"
             android:layout_centerVertical="true"
             app:srcCompat="@drawable/white_back_arrow">
         </ImageView>
         <TextView
             android:id="@+id/header_saved"
-            android:layout_marginBottom="30dp"
-            android:layout_alignParentBottom="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -36,8 +32,6 @@
         </TextView>
         <ImageView
             android:id="@+id/search_saved"
-            android:layout_marginBottom="30dp"
-            android:layout_alignParentBottom="true"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentEnd="true"
@@ -55,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/title_saved"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
             android:text="Saved Listings"
             android:fontFamily="@font/interfont"
