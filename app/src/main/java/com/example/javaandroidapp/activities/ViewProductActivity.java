@@ -160,25 +160,45 @@ public class ViewProductActivity extends AppCompatActivity {
         }
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
-
-            ;
-
             // saved order button
             ImageButton saveListingBtn = view.findViewById(R.id.saveBtn);
-            saveListingBtn.setImageResource( savedListing ? R.drawable.filled_heart : R.drawable.unfilled_heart);
+            // check whether listing is saved to toggle heart icon
+            Users.isSaved(db, fbUser, listing, new CallbackAdapter() {
+                @Override
+                public void onResult(boolean isSuccess) {
+                    savedListing = isSuccess;
+                    System.out.println(isSuccess);
+                    saveListingBtn.setImageResource( savedListing ? R.drawable.red_heart_filled : R.drawable.red_heart_empty);
+                }
+            });
             saveListingBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // add to save attribute array in firebase
-                    Users.saveListing(db, fbUser, listing, new CallbackAdapter() {
-                        @Override
-                        public void onResult(boolean isSuccess) {
-                            if (isSuccess) {
-                                savedListing = !savedListing;
-                                saveListingBtn.setImageResource(savedListing ? R.drawable.filled_heart : R.drawable.unfilled_heart);
+                    if (!savedListing) {
+                        // save listing under User object
+                        Users.saveListing(db, fbUser, listing, new CallbackAdapter() {
+                            @Override
+                            public void onResult(boolean isSuccess) {
+                                if (isSuccess) {
+                                    savedListing = !savedListing;
+                                    saveListingBtn.setImageResource(savedListing ? R.drawable.red_heart_filled : R.drawable.red_heart_empty);
+                                }
                             }
-                        }
                         });
+                    }
+                    else {
+                        // remove saved listing under User object
+                        Users.removeSavedListing(db, fbUser, listing, new CallbackAdapter(){
+                            @Override
+                            public void onResult(boolean isSuccess) {
+                                if (isSuccess) {
+                                    savedListing = !savedListing;
+                                    saveListingBtn.setImageResource(savedListing ? R.drawable.red_heart_filled : R.drawable.red_heart_empty);
+                                }
+                            }
+                        });
+                    }
                 }
             });
             Button joinBtn = view.findViewById(R.id.buyOrderBtn);
