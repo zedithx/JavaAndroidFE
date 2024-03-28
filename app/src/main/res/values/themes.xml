@@ -6,4 +6,7 @@
     </style>
 
     <style name="Theme.JavaAndroidApp" parent="Base.Theme.JavaAndroidApp" />
+
+    <!--SplashScreen-->
+
 </resources>

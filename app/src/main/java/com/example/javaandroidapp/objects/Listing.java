@@ -16,8 +16,8 @@ public class Listing implements Serializable {
     private Date expiry;
     private Integer minOrder;
     private String name;
-    private Double oldPrice;
-    private Double price;
+    private double oldPrice;
+    private double price;
     //TODO - change to variant collection
     private ArrayList<String> variationNames = new ArrayList<>();
     private ArrayList<Double> variationAdditionalPrice = new ArrayList<>();
@@ -45,7 +45,7 @@ public class Listing implements Serializable {
         return this.oldPrice;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return this.price;
     }
 

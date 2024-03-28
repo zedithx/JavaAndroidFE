@@ -57,12 +57,8 @@
                                         android:id="@+id/imageViewer"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_margin="0dp"
                                         android:contentDescription="@string/product_image_description"
-                                        android:padding="0dp"
-                                        android:scaleType="centerInside"
-                                        android:scaleX="1.2"
-                                        android:scaleY="1.2"
+                                        android:scaleType="centerCrop"
                                         android:src="@drawable/test_kangol" />
                                 </androidx.cardview.widget.CardView>
                             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -137,7 +133,7 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/detailsLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -148,9 +144,9 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.7"
+                            android:layout_alignParentStart="true"
                             android:orientation="horizontal">
 
                             <LinearLayout
@@ -202,7 +198,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="bottom"
-                                        android:src="@drawable/people_alt" />
+                                        android:src="@drawable/people" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -211,13 +207,13 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.3"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:layout_alignParentEnd="true">
 
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
 
@@ -236,13 +232,15 @@
                             <TextView
                                 android:id="@+id/originalPrice"
                                 style="@style/H4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:text="S$xxxx.xx"
                                 android:textColor="@color/lightred" />
 
                         </LinearLayout>
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -269,22 +267,6 @@
                             </LinearLayout>
                         </HorizontalScrollView>
 
-                        <!--Trying out ViewPager2
-
-                        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/content"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
-
-                            <TextView style="?android:textAppearanceMedium"
-                                android:padding="16dp"
-                                android:lineSpacingMultiplier="1.2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="test" />
-                        </ScrollView>
-
-                        -->
 
 
                     </LinearLayout>
@@ -318,7 +300,8 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:orientation="horizontal"
-                        android:padding="10dp">
+                        android:padding="10dp"
+                        android:clickable="true">
 
                         <ImageView
                             android:layout_width="50dp"
@@ -379,7 +362,7 @@
                         android:background="@null"
                         android:contentDescription="Back button"
                         android:padding="15dp"
-                        android:src="@drawable/black_back_arrow" />
+                        android:src="@drawable/keyboard_arrow_left" />
 
 
                 </RelativeLayout>

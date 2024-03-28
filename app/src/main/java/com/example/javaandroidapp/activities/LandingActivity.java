@@ -7,43 +7,57 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
+import com.example.javaandroidapp.fragments.SearchFragment;
 import com.example.javaandroidapp.objects.CategoryModel;
+import com.example.javaandroidapp.utils.AlgoliaHelper;
 import com.example.javaandroidapp.utils.Categories;
 import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.utils.Listings;
 import com.example.javaandroidapp.R;
-import com.example.javaandroidapp.utils.Users;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class LandingActivity extends AppCompatActivity {
     private List<CategoryModel> categories = new ArrayList<>();
     private List<Listing> listings = new ArrayList<>();
 
     private QuerySnapshot listing_items;
+    private int calculateRecyclerViewHeight(RecyclerView listingRecyclerView) {
+        RecyclerView.Adapter adapter = listingRecyclerView.getAdapter();
+        if (adapter == null) {
+            return 0;
+        }
+        int itemCount = adapter.getItemCount();
+        View firstChild = listingRecyclerView.getChildAt(0);
+        int itemHeight = firstChild != null ? firstChild.getHeight() : 0;
+        return itemCount * itemHeight;
+    }
+
+    private int calculateAvailableSpace() {
+        View navigationBar = findViewById(R.id.navigation_bar);
+        int navigationBarHeight = navigationBar.getHeight();
+        ConstraintLayout constraintLayout = findViewById(R.id.constraintlayout);
+        int constraintLayoutHeight = constraintLayout.getHeight();
+        return constraintLayoutHeight - navigationBarHeight;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +66,10 @@ public class LandingActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
+        if (fbUser == null) {
+            Intent notSignedIn = new Intent(LandingActivity.this, LogInActivity.class);
+            startActivity(notSignedIn);
+        }
         // set landing page as view
         setContentView(R.layout.landing);
         // category horizontal carousel
@@ -62,22 +80,40 @@ public class LandingActivity extends AppCompatActivity {
         RecyclerView listingRecyclerView = findViewById(R.id.listingRecyclerView);
         LinearLayoutManager listingLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listingRecyclerView.setLayoutManager(listingLayoutManager);
-        // Get all categories from firestore
         // Get name view to edit
-        TextView username = findViewById(R.id.username);
+//        TextView username = findViewById(R.id.username);
         // Retrieve user's name
-        Users.getName(db, fbUser, new CallbackAdapter() {
+//        Users.getName(db, fbUser, new CallbackAdapter() {
+//            @Override
+//            public void getResult(String result) {
+//                if (!result.equals("")) {
+//                    username.setText(String.format("Hi, %s!", result));
+//                } else {
+//                    username.setText("Hi, User!");
+//                }
+//            }
+//        });
+        // Get the search button
+        ImageView search_button = findViewById(R.id.search);
+        search_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void getResult(String result) {
-                if (!result.equals("")) {
-                    username.setText(String.format("Hi, %s!", result));
-                } else {
-                    username.setText("Hi, User!");
-                }
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right)
+                        .replace(R.id.listingsFrameLayout, new SearchFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
         // Get the profile button
-        ImageButton profile_button = findViewById(R.id.avatar);
+        LinearLayout profile_button = findViewById(R.id.avatar);
+
+        AlgoliaHelper.searchListings("Xu Kai", new CallbackAdapter() {
+            @Override
+            public void getList(List<Listing> item) {
+                System.out.println(item);
+            }
+        });
         profile_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -102,7 +138,6 @@ public class LandingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //TODO - change back after testing
                 Intent Main = new Intent(LandingActivity.this, LandingOrdersActivity.class);
-                Main.putExtra("User", fbUser);
                 startActivity(Main);
             }
         });
@@ -111,7 +146,7 @@ public class LandingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Listing data) {
                 // Handle item click, e.g., start a new activity
-                Intent intent = new Intent(LandingActivity.this, ViewProductActivity.class);
+                Intent intent = new Intent(LandingActivity.this, transitionViewProductActivity.class);
                 intent.putExtra("listing", data);
                 startActivity(intent);
             }
@@ -139,6 +174,7 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
     }
+
 }
 
 class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHolder>{
@@ -207,7 +243,13 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHold
             String listingExpiryCountdown = listing.getExpiryCountdown();
             Glide.with(listingView).load(listing.getImageList().get(0)).into(productImageView);
             priceTextView.setText(String.format("$%s", listing_price.toString()));
-            nameTextView.setText(listing_name);
+            if (listing_name.length() < 24){
+                nameTextView.setText(listing_name);
+            }
+            else {
+                String shortened_name = listing_name.substring(0, 20) + "...";
+                nameTextView.setText(shortened_name);
+            }
             minorderTextView.setText(listingMinOrder.toString());
             currentorderTextView.setText(listingCurrentOrder.toString());
             expiryTextView.setText(listingExpiryCountdown);
@@ -303,3 +345,4 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewH
         }
     }
 }
+

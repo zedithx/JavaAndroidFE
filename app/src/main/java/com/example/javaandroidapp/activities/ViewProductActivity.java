@@ -1,6 +1,7 @@
 package com.example.javaandroidapp.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
@@ -41,7 +42,7 @@ public class ViewProductActivity extends AppCompatActivity {
     int count = 0;
     static int amt;
     static int focusedBtnId = 1;
-    static boolean savedOrder = false;
+    static boolean savedListing = false;
     static boolean buyClicked = false;
     static BuyFragment buyFrag;
     static double displayedPrice;
@@ -58,8 +59,9 @@ public class ViewProductActivity extends AppCompatActivity {
         setContentView(R.layout.product_page);
         amt = 1;
 
-        buyFrag = new BuyFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
+                .replace(R.id.buyFrameLayout, new BuyFragment()).commit();
 
         // back button
         backBtn = findViewById(R.id.backBtn);
@@ -124,11 +126,14 @@ public class ViewProductActivity extends AppCompatActivity {
         ownerLayout = findViewById(R.id.productOwnerLayout);
         ownerLayout.setBackground(descriptionBg);
 
-
-        // buy button panel pop up
-
-        ft.replace(R.id.buyFrameLayout, buyFrag);
-        ft.commit();
+        ownerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sellerListing = new Intent( ViewProductActivity.this, SellerListingActivity.class);
+                sellerListing.putExtra("sellerInfo", listing.getCreatedBy());
+                startActivity(sellerListing);
+            }
+        });
 
 
         RelativeLayout alphaRelative = findViewById(R.id.alphaRelative);
@@ -149,14 +154,15 @@ public class ViewProductActivity extends AppCompatActivity {
             ;
 
             // saved order button
-            ImageButton saveOrderBtn = view.findViewById(R.id.saveBtn);
-            saveOrderBtn.setImageResource( savedOrder ? R.drawable.heart_filled : R.drawable.heart_empty);
-            saveOrderBtn.setOnClickListener(new View.OnClickListener() {
+            ImageButton saveListingBtn = view.findViewById(R.id.saveBtn);
+            saveListingBtn.setImageResource( savedListing ? R.drawable.filled_heart : R.drawable.unfilled_heart);
+            saveListingBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    savedOrder = !savedOrder;
-                    //post req to set savedOrder as true
-                    saveOrderBtn.setImageResource(savedOrder ? R.drawable.heart_filled : R.drawable.heart_empty);
+                    savedListing = !savedListing;
+                    // add to save attribute array in firebase
+//                    Users.saveListing
+                    saveListingBtn.setImageResource(savedListing ? R.drawable.filled_heart : R.drawable.unfilled_heart);
                 }
             });
             Button joinBtn = view.findViewById(R.id.buyOrderBtn);
@@ -214,7 +220,7 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
 
-                    // Order amount
+                    // Change order amounts and change price
                     addOrder.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -246,8 +252,8 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
     static void setPrice(double displayedPrice, TextView priceDollars, TextView priceCents) {
-        priceDollars.setText("S$" + ("" + displayedPrice).split("\\.")[0]);
-        String cents = ("" + displayedPrice).contains(".") ? ("" + displayedPrice).split("\\.")[1] : "00";
+        priceDollars.setText("S$" + ("" + df.format(displayedPrice)).split("\\.")[0]);
+        String cents = df.format(displayedPrice).contains(".") ? df.format(displayedPrice).split("\\.")[1] : "00";
         priceCents.setText("." + (cents.length() > 1 ? cents : cents + "0"));
     }
 

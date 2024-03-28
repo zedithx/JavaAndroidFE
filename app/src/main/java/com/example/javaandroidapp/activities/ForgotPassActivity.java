@@ -14,6 +14,7 @@ import com.example.javaandroidapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ForgotPassActivity extends AppCompatActivity {
     @Override
@@ -21,9 +22,14 @@ public class ForgotPassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forgot);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = mAuth.getCurrentUser();
         Button forgetPasswordButton = findViewById(R.id.forgetpass_button);
         EditText forgetEmail = findViewById(R.id.forgetEmail);
         ImageView backButton = findViewById(R.id.forgot_back);
+        if (fbUser != null) {
+            Intent signedIn = new Intent(ForgotPassActivity.this, LandingActivity.class);
+            startActivity(signedIn);
+        }
         backButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
