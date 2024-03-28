@@ -68,7 +68,7 @@
 
         </activity>
         <activity
-            android:name=".activities.transitionViewProductActivity"
+            android:name=".activities.TransitionViewProductActivity"
             android:exported="true">
 
             <intent-filter>

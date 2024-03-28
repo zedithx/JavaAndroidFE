@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.objects.Listing;
 
-public class transitionViewProductActivity extends AppCompatActivity {
+public class TransitionViewProductActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +19,7 @@ public class transitionViewProductActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Handle item click, e.g., start a new activity
-                Intent intent = new Intent(transitionViewProductActivity.this, ViewProductActivity.class);
+                Intent intent = new Intent(TransitionViewProductActivity.this, ViewProductActivity.class);
                 intent.putExtra("listing", listing);
                 startActivity(intent);
                 finish();

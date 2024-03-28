@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +32,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 public class LandingActivity extends AppCompatActivity {
     private List<CategoryModel> categories = new ArrayList<>();
@@ -128,7 +126,7 @@ public class LandingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Listing data) {
                 // Handle item click, e.g., start a new activity
-                Intent intent = new Intent(LandingActivity.this, transitionViewProductActivity.class);
+                Intent intent = new Intent(LandingActivity.this, TransitionViewProductActivity.class);
                 intent.putExtra("listing", data);
                 startActivity(intent);
             }
