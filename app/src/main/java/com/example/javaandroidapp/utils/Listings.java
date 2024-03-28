@@ -19,6 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -96,16 +97,20 @@ public class Listings {
         }
     }
 
-    public static void searchListing(FirebaseFirestore db, String search, Callbacks callback) {
+    public static void searchListing(FirebaseFirestore db, List<String> doc, Callbacks callback) {
         Date date = new Date();
-        db.collection("Listings").whereGreaterThanOrEqualTo("name", search).whereLessThanOrEqualTo("name", search + "\uf8ff").whereGreaterThanOrEqualTo("expiry", date).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<Listing> listings = task.getResult().toObjects(Listing.class);
-                    callback.getList(listings);
+        List<Listing> listings = new ArrayList<>();
+        for (String document : doc) {
+            db.collection("Listings").document(document).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        Listing listing = task.getResult().toObject(Listing.class);
+                        listings.add(listing);
+                        callback.getList(listings);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }

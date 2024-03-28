@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +22,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.utils.Users;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -49,10 +52,17 @@ public class ViewProductActivity extends AppCompatActivity {
 
     public static Listing listing;
 
+    public static FirebaseFirestore db;
+
+    public static FirebaseUser fbUser;
+
     // get images for product id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        fbUser = mAuth.getCurrentUser();
         // get listing object from listing clicked
         listing = (Listing) getIntent().getSerializableExtra("listing");
         super.onCreate(savedInstanceState);
@@ -150,19 +160,45 @@ public class ViewProductActivity extends AppCompatActivity {
         }
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
-
-            ;
-
             // saved order button
             ImageButton saveListingBtn = view.findViewById(R.id.saveBtn);
-            saveListingBtn.setImageResource( savedListing ? R.drawable.filled_heart : R.drawable.unfilled_heart);
+            // check whether listing is saved to toggle heart icon
+            Users.isSaved(db, fbUser, listing, new CallbackAdapter() {
+                @Override
+                public void onResult(boolean isSuccess) {
+                    savedListing = isSuccess;
+                    System.out.println(isSuccess);
+                    saveListingBtn.setImageResource( savedListing ? R.drawable.red_heart_filled : R.drawable.red_heart_empty);
+                }
+            });
             saveListingBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    savedListing = !savedListing;
                     // add to save attribute array in firebase
-//                    Users.saveListing
-                    saveListingBtn.setImageResource(savedListing ? R.drawable.filled_heart : R.drawable.unfilled_heart);
+                    if (!savedListing) {
+                        // save listing under User object
+                        Users.saveListing(db, fbUser, listing, new CallbackAdapter() {
+                            @Override
+                            public void onResult(boolean isSuccess) {
+                                if (isSuccess) {
+                                    savedListing = !savedListing;
+                                    saveListingBtn.setImageResource(savedListing ? R.drawable.red_heart_filled : R.drawable.red_heart_empty);
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        // remove saved listing under User object
+                        Users.removeSavedListing(db, fbUser, listing, new CallbackAdapter(){
+                            @Override
+                            public void onResult(boolean isSuccess) {
+                                if (isSuccess) {
+                                    savedListing = !savedListing;
+                                    saveListingBtn.setImageResource(savedListing ? R.drawable.red_heart_filled : R.drawable.red_heart_empty);
+                                }
+                            }
+                        });
+                    }
                 }
             });
             Button joinBtn = view.findViewById(R.id.buyOrderBtn);
