@@ -97,7 +97,7 @@ public class LandingActivity extends AppCompatActivity {
                 startActivity(Main);
             }
         });
-        // Get the order and saved buttons
+        // Link for saved button
         LinearLayout saved_button = findViewById(R.id.saved_button);
         saved_button.setOnClickListener(new View.OnClickListener(){
              @Override
@@ -107,12 +107,22 @@ public class LandingActivity extends AppCompatActivity {
                  startActivity(Main);
              }
         });
+        //Link for order button
         LinearLayout order_button = findViewById(R.id.order_button);
         order_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO - change back after testing
                 Intent Main = new Intent(LandingActivity.this, LandingOrdersActivity.class);
+                startActivity(Main);
+            }
+        });
+
+        //Link for chat button
+        ImageView chat_button = findViewById(R.id.chatbox);
+        chat_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent Main = new Intent(LandingActivity.this, ChannelActivity.class);
                 startActivity(Main);
             }
         });
