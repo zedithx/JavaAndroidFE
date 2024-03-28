@@ -27,16 +27,22 @@ public class SellerListingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        // get seller of product shown in ViewProductActivity
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String seller = extras.getString("seller");
+            //The key argument here must match that used in the ViewProductActivity
+        }
 
         // get user object from seller clicked
-        seller = (User) getIntent().getSerializableExtra("user");
+        seller = (User) getIntent().getSerializableExtra("seller");
         setContentView(R.layout.view_pdt_owner_listing);
 
         GridLayout listingsGrid = findViewById(R.id.listingsGrid);
-        ArrayList<Listing> listings = seller.getListings();
-        if (listings.size() > 0){
-            Handler listingHandler = new Handler();
-        }
+//        ArrayList<Listing> listings = seller.getListings();
+//        if (listings.size() > 0){
+//            Handler listingHandler = new Handler();
+//        }
 
 
 
