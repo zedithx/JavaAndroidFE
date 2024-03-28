@@ -2,6 +2,7 @@ package com.example.javaandroidapp.fragments;
 
 import static com.example.javaandroidapp.utils.AlgoliaHelper.querySuggestion;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,8 +18,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.activities.LandingActivity;
+import com.example.javaandroidapp.activities.SearchActivity;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.objects.Order;
+import com.example.javaandroidapp.utils.AlgoliaHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +48,23 @@ public class SearchFragment extends Fragment {
         queryBox.add(suggestionText2);
         queryBox.add(suggestionText3);
         queryBox.add(suggestionText4);
-
-        suggestionText1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Clicking should return the view of all products
-            }
-        });
+        for (TextView suggestionTextquery: queryBox){
+            suggestionTextquery.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Clicking should return the view of all products
+                    AlgoliaHelper.searchListingID(suggestionTextquery.getText().toString(), new CallbackAdapter(){
+                        @Override
+                        public void getListOfString(List<String> listings_query) {
+                            Intent Main = new Intent(getActivity(), SearchActivity.class);
+                            System.out.println(listings_query);
+                            Main.putStringArrayListExtra("listings", (ArrayList<String>) listings_query);
+                            startActivity(Main);
+                        }
+                    });
+                }
+            });
+        }
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
