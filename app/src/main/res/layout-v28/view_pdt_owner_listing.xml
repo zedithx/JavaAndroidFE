@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/lightred"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/topBanner"
+                    style="@style/TopBanner"
+                    android:text="@string/listings" />
+
+                <ImageButton
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:background="@null"
+                    android:contentDescription="Back button"
+                    android:padding="15dp"
+                    android:clickable="true"
+                    android:src="@drawable/keyboard_arrow_left" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp">
+
+            <LinearLayout
+                android:id="@+id/productOwnerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:src="@drawable/profile_pic" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        android:id="@+id/owner"
+                        style="@style/H2"
+                        android:layout_gravity="start"
+                        android:ellipsize="end"
+                        android:text="pdtOwner" />
+
+                    <LinearLayout
+                        android:id="@+id/rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/H4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:text="@string/user_rating"
+                            android:textColor="@color/lightred" />
+
+                        <TextView
+                            style="@style/H4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:text="@string/rating_5"
+                            android:textColor="@color/lightred" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="0dp"
+                            android:src="@drawable/star" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/chatBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:background="@null"
+                android:src="@drawable/chatbox" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/listingsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/H2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listings" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:strokeWidth="2dp">
+
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <GridLayout
+
+                android:id="@+id/listingsGrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2">
+
+            </GridLayout>
+            <TextView
+                android:id="@+id/noListingsToShow"
+                style="@style/H4"
+                android:layout_gravity="center"
+                android:layout_margin="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_listings"
+                android:textColor="@color/lightgray"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

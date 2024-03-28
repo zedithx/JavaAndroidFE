@@ -136,7 +136,14 @@ public class ViewProductActivity extends AppCompatActivity {
         ownerLayout = findViewById(R.id.productOwnerLayout);
         ownerLayout.setBackground(descriptionBg);
 
-
+        ownerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sellerListing = new Intent( ViewProductActivity.this, SellerListingActivity.class);
+                sellerListing.putExtra("sellerInfo", listing.getCreatedBy());
+                startActivity(sellerListing);
+            }
+        });
 
 
         RelativeLayout alphaRelative = findViewById(R.id.alphaRelative);
