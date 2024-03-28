@@ -300,7 +300,8 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:orientation="horizontal"
-                        android:padding="10dp">
+                        android:padding="10dp"
+                        android:clickable="true">
 
                         <ImageView
                             android:layout_width="50dp"
