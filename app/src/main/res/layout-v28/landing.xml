@@ -34,13 +34,14 @@
         <RelativeLayout
             android:id="@+id/top_landing"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="66dp"
             android:layout_marginHorizontal="20dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textSize="32sp"
+                android:textSize="24sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/interfont"
                 android:layout_alignParentStart="true"
@@ -51,8 +52,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textColor="@color/lightred"
                 android:fontFamily="@font/interfont"
                 android:layout_alignParentStart="true"
@@ -73,7 +73,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="10dp"
             android:layout_marginVertical="10dp">
             <ImageView
                 android:id="@+id/pink_back"
@@ -126,39 +126,35 @@
         <LinearLayout
             android:id="@+id/navigation_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:background="@drawable/border_top">
+            android:background="@drawable/red_navigation">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:id="@+id/saved_button"
-                android:padding="15dp">
+                android:layout_gravity="center">
                 <ImageView
                     android:id="@+id/heart"
                     android:contentDescription="@string/hearticon"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_alignParentStart="true"
+                    android:layout_height="24dp"
                     android:fontFamily="@font/interfont"
                     android:textColor="@color/lightred"
                     android:textFontWeight="600"
                     android:text="@string/saved"
-                    android:src="@drawable/red_heart_empty"/>
+                    android:src="@drawable/white_heart"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/interfont"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textFontWeight="600"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
                     android:textAlignment="center"
                     android:gravity="center"
-                    android:layout_margin="0dp"
                     android:text="@string/saved">
                 </TextView>
 
@@ -173,25 +169,23 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:id="@+id/order_button"
-                android:padding="15dp">
+                android:id="@+id/order_button">
                 <ImageView
                     android:id="@+id/order"
                     android:contentDescription="@string/ordericon"
                     android:layout_width="match_parent"
-                    android:layout_height="28dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/order" />
+                    app:srcCompat="@drawable/white_order" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/interfont"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textFontWeight="600"
                     android:textAlignment="center"
                     android:gravity="center"
-                    android:layout_margin="0dp"
+                    android:layout_marginTop="4dp"
                     android:text="@string/orders">
                 </TextView>
             </LinearLayout>
@@ -204,21 +198,20 @@
                 android:orientation="vertical"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_centerHorizontal="true"
-                android:padding="15dp">
+                android:layout_gravity="center">
                 <ImageView
                     android:id="@+id/chatbox"
                     android:contentDescription="@string/chatboxicon"
                     android:layout_width="match_parent"
-                    android:layout_height="28dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/red_chatbox" />
+                    app:srcCompat="@drawable/white_chatbox" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="4dp"
+                    android:textColor="@color/white"
                     android:fontFamily="@font/interfont"
                     android:textFontWeight="600"
                     android:text="@string/chats">
@@ -233,22 +226,21 @@
                 android:orientation="vertical"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/avatar"
-                android:layout_alignParentEnd="true"
-                android:padding="15dp"
+                android:layout_gravity="center"
                 android:clickable="true"
                 android:clipChildren="true">
                 <ImageButton
                     android:contentDescription="@string/avatar"
+                    android:id="@+id/avatar"
                     android:layout_width="match_parent"
-                    android:layout_height="28dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:background="@null"
-                    app:srcCompat="@drawable/red_avatar" />
+                    app:srcCompat="@drawable/white_avatar" />
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:fontFamily="@font/interfont"
                     android:layout_marginTop="4dp"
                     android:layout_gravity="center"

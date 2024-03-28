@@ -29,7 +29,7 @@
                 android:background="@null"
                 android:scaleX="1.2"
                 android:scaleY="1.2"
-                android:src="@drawable/back_arrow" />
+                android:src="@drawable/red_back_arrow" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                                 android:layout_height="39dp"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_margin="15dp"
-                                android:src="@drawable/eye_view" />
+                                android:src="@drawable/red_eye" />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -196,7 +196,7 @@
                                 android:layout_height="39dp"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_margin="15dp"
-                                android:src="@drawable/add_listing" />
+                                android:src="@drawable/red_plus" />
 
                             <TextView
                                 android:layout_width="match_parent"

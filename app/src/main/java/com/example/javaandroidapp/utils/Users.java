@@ -1,7 +1,6 @@
 package com.example.javaandroidapp.utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,8 +11,9 @@ import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.objects.Order;
 import com.example.javaandroidapp.objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Users {
     public static void signInUser(FirebaseAuth mAuth, Context context, String email, String password, Callbacks callback) {
@@ -98,7 +97,7 @@ public class Users {
 //        });
 //    }
 
-    public static void saveListing(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
+    public static void savedListing(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
         db.collection("users").document(fbUser.getUid().toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -193,6 +192,37 @@ public class Users {
                     } else {
                         callback.getList(new ArrayList<Listing>());
                     }
+                }
+            }
+        });
+    }
+    public static void saveListing(FirebaseFirestore db, FirebaseUser fbUser, Listing listing, Callbacks callback) {
+        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot userRef = task.getResult();
+                if (userRef.exists()) {
+                    List<DocumentReference> saved = (List<DocumentReference>) userRef.get("saved");
+                    if (saved == null) {
+                        saved = new ArrayList<>();
+                    }
+                    DocumentReference listingReference = db.collection("listings").document(listing.getUid());
+                    saved.add(listingReference);
+                    db.collection("users").document(fbUser.getUid()).update("saved", saved)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Callback for success
+                                    callback.onResult(true);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Callback for failure
+                                    callback.onResult(false);
+                                }
+                            });
                 }
             }
         });
