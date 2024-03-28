@@ -43,7 +43,7 @@ public class LandingOrdersActivity extends AppCompatActivity {
         // set page as view
         setContentView(R.layout.landing_order);
         TextView header_name = findViewById(R.id.header_saved);
-        header_name.setText("Orders");
+        header_name.setText("Search Results");
         TextView title_name = findViewById(R.id.title_saved);
         title_name.setText("My Orders");
         ImageView back_arrow = findViewById(R.id.back_arrow);

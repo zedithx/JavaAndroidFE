@@ -1,6 +1,9 @@
 package com.example.javaandroidapp.objects;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.DocumentId;
 
 import java.io.Serializable;
@@ -10,7 +13,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Listing implements Serializable {
+public class Listing implements Serializable{
     @DocumentId
     private String uid;
     private String category;
