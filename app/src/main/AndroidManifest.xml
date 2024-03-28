@@ -78,6 +78,9 @@
         <activity android:name=".activities.SearchActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".activities.ChatActivity"
+            android:exported="true"></activity>
 
     </application>
 
