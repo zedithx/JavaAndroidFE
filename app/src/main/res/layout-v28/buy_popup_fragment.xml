@@ -43,9 +43,13 @@
                     <LinearLayout
                         android:id="@+id/popupLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="320dp"
+                        android:animateLayoutChanges="true"
+                        android:transitionGroup="true"
+                        android:transitionName="popUpLayout"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        >
 <!--change visibility-->
                         <LinearLayout
                             android:id="@+id/chooseVarTextLayout"
