@@ -126,7 +126,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 }
 
-class UserProfile {
+class   UserProfile {
     private String username;
     private String emailAddress;
     private ArrayList<String> paymentMethods = new ArrayList<>();
