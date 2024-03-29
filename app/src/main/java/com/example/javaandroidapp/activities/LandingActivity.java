@@ -148,7 +148,7 @@ public class LandingActivity extends AppCompatActivity {
                 // Handle item click, e.g., start a new activity
                 Intent intent = new Intent(LandingActivity.this, transitionViewProductActivity.class);
                 intent.putExtra("listing", data);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
         listingRecyclerView.setAdapter(adapter_listing);

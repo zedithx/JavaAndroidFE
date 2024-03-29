@@ -79,6 +79,7 @@ public class SellerListingActivity extends AppCompatActivity {
             cardMaterialParams.setMargins(15, 15, 15, 15);
 
             CardView card = new CardView(this);
+            card.setRadius(20);
             card.setLayoutParams(cardParams);
 
             LinearLayout layout = new LinearLayout(this);
@@ -159,15 +160,18 @@ public class SellerListingActivity extends AppCompatActivity {
             cardMat.setClickable(true);
             cardMat.setClipChildren(true);
             cardMat.setCardBackgroundColor(null);
+            cardMat.setCardElevation(0);
+            cardMat.setStrokeWidth(0);
+
             cardMat.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus){
-                        cardMat.setCardElevation(20);
+                        card.setCardElevation(20);
                         cardMat.setStrokeWidth(20);
                         cardMat.setStrokeColor(Color.RED);
                     }else{
-                        cardMat.setCardElevation(0);
+                        card.setCardElevation(0);
                         cardMat.setStrokeWidth(0);
                     }
                 }
@@ -175,7 +179,6 @@ public class SellerListingActivity extends AppCompatActivity {
             cardMaterialParams.rowSpec = GridLayout.spec(i / 2);
             cardMaterialParams.columnSpec = GridLayout.spec(i % 2);
             cardMat.setLayoutParams(cardMaterialParams);
-            cardMat.setStrokeWidth(0);
             cardMat.addView(card);
             listingsGrid.addView(cardMat);
         }

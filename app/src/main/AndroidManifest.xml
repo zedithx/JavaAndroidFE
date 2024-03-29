@@ -83,6 +83,17 @@
         <activity
             android:name=".activities.SellerListingActivity"
             android:exported="true"></activity>
+        <activity
+            android:name=".activities.ChannelActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".activities.ChatActivity"
+            android:exported="true"></activity>
+        <activity android:name=".activities.SearchActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".activities.TransitionLandingActivity"
+            android:exported="true"></activity>
 
     </application>
 
