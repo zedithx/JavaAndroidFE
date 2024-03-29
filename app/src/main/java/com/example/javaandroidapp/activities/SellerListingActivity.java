@@ -2,6 +2,10 @@ package com.example.javaandroidapp.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.BlendMode;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
@@ -10,6 +14,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -57,27 +62,19 @@ public class SellerListingActivity extends AppCompatActivity {
         seller = (User) getIntent().getSerializableExtra("seller");
         setContentView(R.layout.view_pdt_owner_listing);
 
-//        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int numItems = 8;
         GridLayout listingsGrid = (GridLayout) findViewById(R.id.listingsGrid);
         listingsGrid.removeAllViews();
         listingsGrid.setColumnCount(2);
         listingsGrid.setRowCount(numItems / 2 + 1);
-//        View newMatCardView = inflater.inflate(R.layout.listing_card, null);
 
         listings = new ArrayList<>();
-//        listings = seller.getListings();
-//        if (listings.size() > 0){
-//            Handler listingHandler = new Handler();
-//        }
 
-//        int width = listingsGrid.getWidth() / 2;
         for (int i = 0; i < numItems; i++) {
             GridLayout.LayoutParams cardMaterialParams = new GridLayout.LayoutParams();
-            LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            LinearLayout.LayoutParams newLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            cardMaterialParams.height = GridLayout.LayoutParams.WRAP_CONTENT;
-            cardMaterialParams.height = 450;
+            LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            LinearLayout.LayoutParams newLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            cardMaterialParams.height = 750;
             cardMaterialParams.width = 450;
             cardMaterialParams.setMargins(15, 15, 15, 15);
 
@@ -89,33 +86,92 @@ public class SellerListingActivity extends AppCompatActivity {
             layout.setOrientation(LinearLayout.VERTICAL);
 
             LinearLayout imgLayout = new LinearLayout(this);
-            imgLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 300));
+            imgLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             imgLayout.setClipChildren(true);
             ImageView cardImg = new ImageView(this);
             cardParams.setMargins(0, 0, 0, 0);
             cardImg.setLayoutParams(cardParams);
-            cardImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            cardImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 400));
+
+            // Name of product displayed on each card
             TextView cardTitle = new TextView(this);
-            TextView cardDescription = new TextView(this);
-            cardTitle.setTextSize(20);
+            cardTitle.setTextSize(15);
             cardTitle.setEllipsize(TextUtils.TruncateAt.END);
-            cardTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            cardDescription.setText("S$ 40.80");
+            cardTitle.setMaxLines(2);
+            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            textParams.setMargins(25, 10, 25, 0);
+            cardTitle.setLayoutParams(textParams);
+
+            // Price of Product displayed on each card
+            TextView cardPrice = new TextView(this);
+            cardPrice.setLayoutParams(textParams);
+            cardPrice.setTextSize(20);
+            cardPrice.setText("S$" + ViewProductActivity.df.format(40.80));
+            cardPrice.setTypeface(Typeface.DEFAULT_BOLD);
+
+            // Horizontal Layout for order num text and icon
+            LinearLayout numOrderLayout = new LinearLayout(this);
+            numOrderLayout.setOrientation(LinearLayout.HORIZONTAL);
+            numOrderLayout.setLayoutParams(textParams);
+
+            // Num of orders displayed on each card
+            int currOrderNum = 20;
+            int minOrderNum = 40;
+            TextView cardOrderNum = new TextView(this);
+            cardOrderNum.setTextSize(15);
+            cardOrderNum.setText(currOrderNum + "/" + minOrderNum);
+            cardOrderNum.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            // Num of orders icon
+            ImageView pplIcon = new ImageView(this);
+            pplIcon.setLayoutParams(textParams);
+            pplIcon.setImageResource(R.drawable.people);
+            pplIcon.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            numOrderLayout.addView(cardOrderNum);
+            numOrderLayout.addView(pplIcon);
+
+            // Expiry time displayed on each card
+            int expiry = 4;
+            TextView expiryText = new TextView(this);
+            expiryText.setTextSize(15);
+            expiryText.setTextColor(Color.RED);
+            expiryText.setText(expiry + " days left");
+            expiryText.setLayoutParams(textParams);
+
             if (i % 3 == 0) { //testing with various images
                 cardImg.setImageResource(R.drawable.test_kangol);
             } else {
-                cardImg.setImageResource(R.drawable.test_teenageengineering);
+                cardImg.setImageResource(R.drawable.test_springheads);
 
             }
             cardImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            cardTitle.setText("" + i + "th item");
+            cardTitle.setText("" + i + "th item Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum");
             imgLayout.addView(cardImg);
             layout.addView(imgLayout);
             layout.addView(cardTitle);
-            layout.addView(cardDescription);
+            layout.addView(cardPrice);
+            layout.addView(numOrderLayout);
+            layout.addView(expiryText);
             card.addView(layout);
 
             MaterialCardView cardMat = new MaterialCardView(this);
+            cardMat.setClickable(true);
+            cardMat.setClipChildren(true);
+            cardMat.setCardBackgroundColor(null);
+            cardMat.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus){
+                        cardMat.setCardElevation(20);
+                        cardMat.setStrokeWidth(20);
+                        cardMat.setStrokeColor(Color.RED);
+                    }else{
+                        cardMat.setCardElevation(0);
+                        cardMat.setStrokeWidth(0);
+                    }
+                }
+            });
             cardMaterialParams.rowSpec = GridLayout.spec(i / 2);
             cardMaterialParams.columnSpec = GridLayout.spec(i % 2);
             cardMat.setLayoutParams(cardMaterialParams);
@@ -124,30 +180,6 @@ public class SellerListingActivity extends AppCompatActivity {
             listingsGrid.addView(cardMat);
         }
 
-//        int total = 8;
-//        int column = 2;
-//        int row = total / column;
-//        listingsGrid.setColumnCount(column);
-//        listingsGrid.setRowCount(row + 1);
-//        for(int i =0, c = 0, r = 0; i < total; i++, c++)
-//        {
-//            if(c == column)
-//            {
-//                c = 0;
-//                r++;
-//            }
-//            ImageView oImageView = new ImageView(this);
-//            oImageView.setImageResource(R.drawable.test_teenageengineering);
-//            GridLayout.LayoutParams param =new GridLayout.LayoutParams();
-//            param.height = GridLayout.LayoutParams.WRAP_CONTENT;
-//            param.width = ViewGroup.LayoutParams.FILL_PARENT;
-//            param.setMargins(15, 15, 15, 15);
-//            param.setGravity(Gravity.CENTER);
-//            param.columnSpec = GridLayout.spec(c);
-//            param.rowSpec = GridLayout.spec(r);
-//            oImageView.setLayoutParams (param);
-//            listingsGrid.addView(oImageView);
-//        }
         // close activity when back btn clicked
         ImageButton backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
