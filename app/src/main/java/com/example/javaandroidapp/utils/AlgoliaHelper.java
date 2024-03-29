@@ -39,8 +39,9 @@ public class AlgoliaHelper {
                         JSONArray hits = jsonObject.getJSONArray("hits");
 
                         List<String> item = new ArrayList<String>();
+                        int limit = Math.min(4, hits.length());
                         if (hits.length() != 0) {
-                            for (int i = 0; i < hits.length(); i++) {
+                            for (int i = 0; i < limit; i++) {
                                 JSONObject hit = hits.getJSONObject(i);
                                 item.add(hit.getString("query"));
                             }
@@ -65,19 +66,20 @@ public class AlgoliaHelper {
                 try {
                     if (jsonObject != null) {
                         JSONArray hits = jsonObject.getJSONArray("hits");
-                        List<String> item = new ArrayList<>();
+                        List<String> items = new ArrayList<>();
                         if (hits.length() != 0) {
                             for (int i = 0; i < hits.length(); i ++) {
                                 JSONObject hit = hits.getJSONObject(i);
                                 String object = hit.getString("objectID");
-                                item.add(object);
+                                items.add(object);
                             }
-                            Listings.searchListing(FirebaseFirestore.getInstance(), item, new CallbackAdapter() {
-                                @Override
-                                public void getList(List<Listing> listing) {
-                                    callback.getList(listing);
-                                }
-                            });
+                            callback.getListOfString(items);
+//                            Listings.searchListing(FirebaseFirestore.getInstance(), item, new CallbackAdapter() {
+//                                @Override
+//                                public void getList(List<Listing> listing) {
+//                                    callback.getList(listing);
+//                                }
+//                            });
                         }
                     }
                 } catch (JSONException ex) {

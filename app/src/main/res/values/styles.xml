@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/lightred</item>
+        <!-- Other theme attributes -->
+        <item name="colorPrimaryDark">@color/lightred</item>
+        <!-- Set your desired color for the accent color -->
+        <item name="colorAccent">@color/lightred</item>
+        <!-- Other theme attributes -->
+    </style>
 
     <style name="TopBanner">
         <item name="android:layout_width">match_parent</item>

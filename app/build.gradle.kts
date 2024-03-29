@@ -6,7 +6,10 @@ plugins {
 android {
     namespace = "com.example.javaandroidapp"
     compileSdk = 34
-
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
     defaultConfig {
         applicationId = "com.example.javaandroidapp"
         minSdk = 26
@@ -37,6 +40,8 @@ android {
         implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
         implementation("com.google.firebase:firebase-auth")
         implementation("com.algolia:algoliasearch-android:3.+")
+        implementation("io.getstream:stream-chat-java:1.21.0")
+        implementation("io.getstream:stream-chat-android-ui-components:6.2.3")
 //        implementation("com.algolia:algoliasearch-apache:3.16.5")
         implementation("com.github.bumptech.glide:glide:4.16.0")
         implementation("com.google.firebase:firebase-storage:20.3.0")
