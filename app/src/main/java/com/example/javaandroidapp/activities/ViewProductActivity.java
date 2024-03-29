@@ -1,14 +1,24 @@
 package com.example.javaandroidapp.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.LayoutTransition;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.Scene;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -94,7 +104,7 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
         //add images
-        loadImages(listing.getImageList()) ;
+        loadImages(listing.getImageList());
 
         TextView productName = findViewById(R.id.productName);
         TextView minOrdersView = findViewById(R.id.numOrders2);
@@ -141,7 +151,7 @@ public class ViewProductActivity extends AppCompatActivity {
         ownerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sellerListing = new Intent( ViewProductActivity.this, SellerListingActivity.class);
+                Intent sellerListing = new Intent(ViewProductActivity.this, SellerListingActivity.class);
                 sellerListing.putExtra("sellerInfo", listing.getCreatedBy());
                 startActivity(sellerListing);
             }
@@ -154,6 +164,8 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
     public static class BuyFragment extends Fragment {
+
+        static LinearLayout popUpLayout;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
             {
@@ -170,7 +182,7 @@ public class ViewProductActivity extends AppCompatActivity {
                 public void onResult(boolean isSuccess) {
                     savedListing = isSuccess;
                     System.out.println(isSuccess);
-                    saveListingBtn.setImageResource( savedListing ? R.drawable.red_heart_filled : R.drawable.red_heart_empty);
+                    saveListingBtn.setImageResource(savedListing ? R.drawable.red_heart_filled : R.drawable.red_heart_empty);
                 }
             });
             saveListingBtn.setOnClickListener(new View.OnClickListener() {
@@ -188,10 +200,9 @@ public class ViewProductActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                    }
-                    else {
+                    } else {
                         // remove saved listing under User object
-                        Users.removeSavedListing(db, fbUser, listing, new CallbackAdapter(){
+                        Users.removeSavedListing(db, fbUser, listing, new CallbackAdapter() {
                             @Override
                             public void onResult(boolean isSuccess) {
                                 if (isSuccess) {
@@ -207,12 +218,18 @@ public class ViewProductActivity extends AppCompatActivity {
 
             LinearLayout chooseVarBtnLayout = view.findViewById(R.id.chooseVarBtnLayout);
             Button blankFillLayout = view.findViewById(R.id.blankFillBtn);
+            popUpLayout = view.findViewById(R.id.popupLayout);
+
             blankFillLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LinearLayout popUpLayout = view.findViewById(R.id.popupLayout);
-                    popUpLayout.setVisibility(View.GONE);
+//                    popUpLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+                    if (popUpLayout.getVisibility() == View.VISIBLE) {
+                        collapseCard();
+                    }
                     blankFillLayout.setVisibility(View.GONE);
+
+
                 }
             });
             TextView amtToOrder = view.findViewById(R.id.amtToOrder);
@@ -229,14 +246,14 @@ public class ViewProductActivity extends AppCompatActivity {
             varSpinner.setAdapter(adapter);
             TextView subTotal = view.findViewById(R.id.subTotalText);
             displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-            subTotal.setText("S$ "+ df.format(amt * displayedPrice));
+            subTotal.setText("S$ " + df.format(amt * displayedPrice));
 
             varSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     focusedBtnId = position;
                     displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-                    subTotal.setText("S$ "+ df.format(amt * displayedPrice));
+                    subTotal.setText("S$ " + df.format(amt * displayedPrice));
 
                 }
 
@@ -245,17 +262,20 @@ public class ViewProductActivity extends AppCompatActivity {
 
                 }
             });
+
             joinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    buyClicked = true;
-                    LinearLayout popUpLayout = view.findViewById(R.id.popupLayout);
-                    popUpLayout.setVisibility(View.VISIBLE);
+
+//                    popUpLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    if (popUpLayout.getVisibility() == View.GONE) {
+                        expandCard();
+                    }
                     blankFillLayout.setVisibility(View.VISIBLE);
+                    buyClicked = true;
 
 
                     // variation btn panel
-
 
 
                     // Change order amounts and change price
@@ -265,7 +285,7 @@ public class ViewProductActivity extends AppCompatActivity {
                             amt += 1;
                             amtToOrder.setText("" + amt);
                             displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-                            subTotal.setText("S$ "+ df.format(amt * displayedPrice));
+                            subTotal.setText("S$ " + df.format(amt * displayedPrice));
                         }
                     });
                     minusOrder.setOnClickListener(new View.OnClickListener() {
@@ -274,7 +294,7 @@ public class ViewProductActivity extends AppCompatActivity {
                             amt = amt > 1 ? amt - 1 : 1;
                             amtToOrder.setText("" + amt);
                             displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-                            subTotal.setText("S$ "+ df.format(amt * displayedPrice));
+                            subTotal.setText("S$ " + df.format(amt * displayedPrice));
 
                         }
                     });
@@ -285,6 +305,47 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
         }
+
+        private void expandCard() {
+            popUpLayout.setVisibility(View.VISIBLE);
+//            popUpLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//            int endHeight = popUpLayout.getMeasuredHeight();
+//            popUpLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+
+            ValueAnimator anim = ValueAnimator.ofInt(0, 900);
+            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    int value = (Integer) valueAnimator.getAnimatedValue();
+                    popUpLayout.getLayoutParams().height = value;
+                    popUpLayout.requestLayout();
+                }
+            });
+            anim.setDuration(200); // Duration in milliseconds
+            anim.start();
+        }
+
+        private void collapseCard() {
+            ValueAnimator anim = ValueAnimator.ofInt(popUpLayout.getMeasuredHeight(), 0);
+            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    int value = (Integer) valueAnimator.getAnimatedValue();
+                    popUpLayout.getLayoutParams().height = value;
+                    popUpLayout.requestLayout();
+                }
+            });
+            anim.setDuration(200); // Duration in milliseconds
+            anim.start();
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    popUpLayout.setVisibility(View.GONE);
+                }
+            });
+        }
+
 
     }
 
@@ -342,8 +403,6 @@ public class ViewProductActivity extends AppCompatActivity {
         LinearLayout.LayoutParams varBtnParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         varBtnParams.setMargins(15, 15, 15, 15);
         ArrayList<RoundedButton> varBtnList = new ArrayList<>();
-
-
 
 
         for (int i = 0; i < varBtnName.size(); i++) {
