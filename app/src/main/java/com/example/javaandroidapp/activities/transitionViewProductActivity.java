@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.objects.Listing;
 
-public class transitionViewProductActivity extends AppCompatActivity {
+public class TransitionViewProductActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

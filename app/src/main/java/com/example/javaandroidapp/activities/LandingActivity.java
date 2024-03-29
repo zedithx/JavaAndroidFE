@@ -146,7 +146,7 @@ public class LandingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Listing data) {
                 // Handle item click, e.g., start a new activity
-                Intent intent = new Intent(LandingActivity.this, transitionViewProductActivity.class);
+                Intent intent = new Intent(LandingActivity.this, TransitionViewProductActivity.class);
                 intent.putExtra("listing", data);
                 startActivityForResult(intent, 1);
             }
