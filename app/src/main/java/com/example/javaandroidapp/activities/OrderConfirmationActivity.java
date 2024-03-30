@@ -1,5 +1,6 @@
 package com.example.javaandroidapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -133,6 +134,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
             // Payment was successful
             Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show();
+            Intent Main = new Intent(OrderConfirmationActivity.this, PaymentSuccessActivity.class);
+            startActivity(Main);
         } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
             // Payment failed
             Toast.makeText(this, "Payment failed", Toast.LENGTH_SHORT).show();
