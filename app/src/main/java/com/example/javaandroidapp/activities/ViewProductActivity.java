@@ -37,11 +37,13 @@ import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.objects.Order;
 import com.example.javaandroidapp.utils.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -270,9 +272,15 @@ public class ViewProductActivity extends AppCompatActivity {
 //                    popUpLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     if (popUpLayout.getVisibility() == View.GONE) {
                         expandCard();
+                        blankFillLayout.setVisibility(View.VISIBLE);
+                        buyClicked = true;
+                    }else if (popUpLayout.getVisibility() == View.VISIBLE){
+                        MakeOrder newOrder = new MakeOrder(amt, listing, varBtnName.get(focusedBtnId));
+                        Intent joinOrderIntent = new Intent(getContext(), OrderConfirmationActivity.class);
+                        joinOrderIntent.putExtra("new_order", (Serializable) newOrder);
+                        startActivity(joinOrderIntent);
                     }
-                    blankFillLayout.setVisibility(View.VISIBLE);
-                    buyClicked = true;
+
 
 
                     // variation btn panel
@@ -452,5 +460,16 @@ public class ViewProductActivity extends AppCompatActivity {
             drawable.setCornerRadius(rad);
             return drawable;
         }
+    }
+}
+
+class MakeOrder implements Serializable {
+    int amount;
+    Listing listing;
+    String variantName;
+    MakeOrder(int amount, Listing listing, String variantName){
+        amount = amount;
+        listing = listing;
+        variantName = variantName;
     }
 }
