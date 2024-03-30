@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
@@ -27,7 +28,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     TextView variantNameTextView;
     LinearLayout imageViewLayout;
     ImageButton backBtn;
-    MaterialCardView confirmBtn;
+    CardView confirmBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
