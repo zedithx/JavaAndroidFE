@@ -4,6 +4,8 @@ import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     TextView orderAmountTextView;
     TextView variantNameTextView;
     LinearLayout imageViewLayout;
+    ImageButton backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -44,7 +47,13 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 //        Glide.with(imageViewLayout).load(listing.getImageList().get(0)).into(listingImageView);
 //        variantNameTextView.setText(orderDetails.getVariantName());
 //        orderAmountTextView.setText("" + orderDetails.getAmount());
-
+        backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 }
