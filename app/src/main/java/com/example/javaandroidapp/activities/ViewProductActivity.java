@@ -421,7 +421,7 @@ public class ViewProductActivity extends AppCompatActivity {
             RoundedButton newVarBtn = new RoundedButton(variationBtnParentLayout.getContext());
             newVarBtn.setLayoutParams(varBtnParams);
             newVarBtn.setId(btnId);
-            String varText = varBtnName.get(i) + "\n" + (varBtnPrice.get(i) > 0 ? "+" + varBtnPrice.get(i) : "-");
+            String varText = varBtnName.get(i) + "\n" + (varBtnPrice.get(i) > 0 ? "+" + df.format(varBtnPrice.get(i)) : "-");
             newVarBtn.setText(varText);
             varBtnList.add(newVarBtn);
             newVarBtn.setOnClickListener(new View.OnClickListener() {

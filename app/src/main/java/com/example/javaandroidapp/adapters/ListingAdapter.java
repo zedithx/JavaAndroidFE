@@ -13,9 +13,11 @@ import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.objects.Listing;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHolder> {
+    static DecimalFormat df = new DecimalFormat("#.00");
     private List<Listing> listings;
 
     public interface OnItemClickListener {
@@ -84,7 +86,7 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
             Integer listingCurrentOrder = listing.getCurrentOrder();
             String listingExpiryCountdown = listing.getExpiryCountdown();
             Glide.with(listingView).load(listing.getImageList().get(0)).into(productImageView);
-            priceTextView.setText(String.format("$%s", listing_price.toString()));
+            priceTextView.setText(String.format("$%s", df.format(listing_price)));
             if (listing_name.length() < 24) {
                 nameTextView.setText(listing_name);
             } else {
