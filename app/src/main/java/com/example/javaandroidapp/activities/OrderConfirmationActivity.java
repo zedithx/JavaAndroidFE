@@ -5,6 +5,7 @@ import static androidx.fragment.app.FragmentManager.TAG;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.objects.Listing;
+import com.google.android.material.card.MaterialCardView;
 
 import org.w3c.dom.Text;
 
@@ -25,6 +27,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     TextView variantNameTextView;
     LinearLayout imageViewLayout;
     ImageButton backBtn;
+    MaterialCardView confirmBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -55,5 +58,12 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             }
         });
 
+        confirmBtn = findViewById(R.id.confirmButton);
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // make stripe payment
+            }
+        });
     }
 }

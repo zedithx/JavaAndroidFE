@@ -72,6 +72,8 @@
     <string name="collection_surcharge">Collection/Delivery Surcharge</string>
     <string name="amount">Amount</string>
     <string name="payment_details">Payment Details</string>
+    <string name="confirm_order_btn">Confirm Order</string>
+
 
 
 
