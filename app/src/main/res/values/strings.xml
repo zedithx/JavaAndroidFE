@@ -59,6 +59,7 @@
     <string name="rating_5"> /5.0</string>
     <string name="user_rating">0.0</string>
     <string name="no_listings">No listings to show.</string>
+    <string name="stripe">Stripe</string>
 
 
 

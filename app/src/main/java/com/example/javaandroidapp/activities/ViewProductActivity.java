@@ -276,9 +276,12 @@ public class ViewProductActivity extends AppCompatActivity {
                         buyClicked = true;
                     }else if (popUpLayout.getVisibility() == View.VISIBLE){
                         MakeOrder newOrder = new MakeOrder(amt, listing, varBtnName.get(focusedBtnId));
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("new_order", (Serializable) newOrder);
                         Intent joinOrderIntent = new Intent(getContext(), OrderConfirmationActivity.class);
-                        joinOrderIntent.putExtra("new_order", (Serializable) newOrder);
+                        joinOrderIntent.putExtra("new_order",bundle);
                         startActivity(joinOrderIntent);
+
                     }
 
 
@@ -471,5 +474,14 @@ class MakeOrder implements Serializable {
         amount = amount;
         listing = listing;
         variantName = variantName;
+    }
+    public String getVariantName(){
+        return variantName;
+    }
+    public Listing getListing(){
+        return listing;
+    }
+    public int getAmount(){
+        return amount;
     }
 }
