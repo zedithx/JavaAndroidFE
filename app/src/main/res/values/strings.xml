@@ -59,7 +59,7 @@
     <string name="rating_5"> /5.0</string>
     <string name="user_rating">0.0</string>
     <string name="no_listings">No listings to show.</string>
-    <string name="stripe">Stripe</string>
+    <string name="stripe">Visa/Master</string>
     <string name="order_confirmation">Order Confirmation</string>
     <string name="order_details">Order Details</string>
     <string name="locker_collection">Locker Collection</string>
