@@ -59,6 +59,21 @@
     <string name="rating_5"> /5.0</string>
     <string name="user_rating">0.0</string>
     <string name="no_listings">No listings to show.</string>
+    <string name="stripe">Stripe</string>
+    <string name="order_confirmation">Order Confirmation</string>
+    <string name="order_details">Order Details</string>
+    <string name="locker_collection">Locker Collection</string>
+    <string name="self_collection">Self-Collection at Locker at selected location.</string>
+    <string name="collection_location">SUTD Fabrication Lab</string>
+    <string name="location_address">58 Upper Changi South Ave 1 \n599580</string>
+    <string name="total">Total Payment</string>
+    <string name="item_variation">Item Variation</string>
+    <string name="price_per_item">Price Per Item</string>
+    <string name="collection_surcharge">Collection/Delivery Surcharge</string>
+    <string name="amount">Amount</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="confirm_order_btn">Confirm Order</string>
+
 
 
 

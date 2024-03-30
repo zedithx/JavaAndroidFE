@@ -81,6 +81,9 @@ public class SellerListingActivity extends AppCompatActivity {
             CardView card = new CardView(this);
             card.setRadius(20);
             card.setLayoutParams(cardParams);
+            card.setCardBackgroundColor(Color.TRANSPARENT);
+            card.setCardElevation(0);
+
 
             LinearLayout layout = new LinearLayout(this);
             layout.setLayoutParams(newLayoutParams);
@@ -167,8 +170,8 @@ public class SellerListingActivity extends AppCompatActivity {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus){
-                        card.setCardElevation(20);
-                        cardMat.setStrokeWidth(20);
+                        card.setCardElevation(10);
+                        cardMat.setStrokeWidth(2);
                         cardMat.setStrokeColor(Color.RED);
                     }else{
                         card.setCardElevation(0);
