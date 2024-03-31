@@ -112,7 +112,7 @@ public class AddListingActivity extends AppCompatActivity {
         EditText newPrice = findViewById(R.id.addNewPrice);
         EditText minOrder = findViewById(R.id.addMinOrder);
         Spinner category = findViewById(R.id.addCategory);
-        TextView addListingButton = findViewById(R.id.addListingButton);
+        LinearLayout addListingButton = findViewById(R.id.addListingButton);
         ImageView back_arrow = findViewById(R.id.back_arrow);
         back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
