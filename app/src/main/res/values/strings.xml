@@ -73,7 +73,12 @@
     <string name="amount">Amount</string>
     <string name="payment_details">Payment Details</string>
     <string name="confirm_order_btn">Confirm Order</string>
-
+    <string name="successful">Successful</string>
+    <string name="payment_withheld">Payment Withheld</string>
+    <string name="payment_homebutton">Back To Homescreen</string>
+    <string name="payment_vieworderbutton">View Order Details</string>
+    <string name="date_hint">dd/MM/yy</string>
+    <string name="time_hint">hh:mm</string>
 
 
 
