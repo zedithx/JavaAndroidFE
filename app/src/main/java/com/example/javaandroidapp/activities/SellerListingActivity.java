@@ -61,7 +61,6 @@ public class SellerListingActivity extends AppCompatActivity {
         // get user object from seller clicked
         seller = (User) getIntent().getSerializableExtra("seller");
         setContentView(R.layout.view_pdt_owner_listing);
-
         int numItems = 8;
         GridLayout listingsGrid = (GridLayout) findViewById(R.id.listingsGrid);
         listingsGrid.removeAllViews();
@@ -83,8 +82,6 @@ public class SellerListingActivity extends AppCompatActivity {
             card.setLayoutParams(cardParams);
             card.setCardBackgroundColor(Color.TRANSPARENT);
             card.setCardElevation(0);
-
-
             LinearLayout layout = new LinearLayout(this);
             layout.setLayoutParams(newLayoutParams);
             layout.setOrientation(LinearLayout.VERTICAL);
@@ -186,6 +183,30 @@ public class SellerListingActivity extends AppCompatActivity {
             listingsGrid.addView(cardMat);
         }
 
+//        int total = 8;
+//        int column = 2;
+//        int row = total / column;
+//        listingsGrid.setColumnCount(column);
+//        listingsGrid.setRowCount(row + 1);
+//        for(int i =0, c = 0, r = 0; i < total; i++, c++)
+//        {
+//            if(c == column)
+//            {
+//                c = 0;
+//                r++;
+//            }
+//            ImageView oImageView = new ImageView(this);
+//            oImageView.setImageResource(R.drawable.test_teenageengineering);
+//            GridLayout.LayoutParams param =new GridLayout.LayoutParams();
+//            param.height = GridLayout.LayoutParams.WRAP_CONTENT;
+//            param.width = ViewGroup.LayoutParams.FILL_PARENT;
+//            param.setMargins(15, 15, 15, 15);
+//            param.setGravity(Gravity.CENTER);
+//            param.columnSpec = GridLayout.spec(c);
+//            param.rowSpec = GridLayout.spec(r);
+//            oImageView.setLayoutParams (param);
+//            listingsGrid.addView(oImageView);
+//        }
         // close activity when back btn clicked
         ImageButton backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
