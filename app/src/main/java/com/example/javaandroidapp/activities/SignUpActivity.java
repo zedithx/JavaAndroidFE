@@ -23,7 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
         if (fbUser != null) {
-            Intent signedIn = new Intent(SignUpActivity.this, LandingActivity.class);
+            Intent signedIn = new Intent(SignUpActivity.this, TransitionLandingActivity.class);
             startActivity(signedIn);
         }
         super.onCreate(savedInstanceState);
