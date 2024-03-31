@@ -77,7 +77,7 @@ public class AddListingActivity extends AppCompatActivity {
                 if (o.getData() != null) {
                     displayImageLayout = findViewById(R.id.displayImageLayout);
                     image = o.getData().getData();
-                    uriArrList.add(String.valueOf(image));
+                    uriArrList.add(image.toString());
 //                    Glide.with(getApplicationContext()).load(image).apply(new RequestOptions().override(100, 100)).into(addImageButton);
                     displayImageLayout.addView(addNewImageButton(image));
                     //Used to create a new button dynamically
@@ -152,7 +152,7 @@ public class AddListingActivity extends AppCompatActivity {
                         AddListingActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
-                        addDate.setText(day + "/" + (month + 1) + "/" + year);
+                        addDate.setText(String.format("%02d/%02d/%04d", day, (month % 13) + 1, year));
                     }
                 }, year, month, day
                 );
@@ -196,7 +196,7 @@ public class AddListingActivity extends AppCompatActivity {
                         variantAdditionalPrice.add(4.0);
                         variantAdditionalPrice.add(6.0);
                         String datetime = addDate.getText().toString() + " " + addTime.getText().toString();
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy H:mm");
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy HH:mm");
                         LocalDate parsedDateTime = LocalDate.parse(datetime, formatter);
                         Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
                         Listings.addListing(db, fbUser, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
