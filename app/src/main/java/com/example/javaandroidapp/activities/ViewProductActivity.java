@@ -42,6 +42,7 @@ import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.objects.Order;
 import com.example.javaandroidapp.utils.Users;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -84,7 +85,7 @@ public class ViewProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_page);
         amt = 1;
-
+        focusedBtnId = 1;
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
                 .replace(R.id.buyFrameLayout, new BuyFragment()).commit();
@@ -172,12 +173,14 @@ public class ViewProductActivity extends AppCompatActivity {
     public static class BuyFragment extends Fragment {
 
         static LinearLayout popUpLayout;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
             {
                 return inflater.inflate(R.layout.buy_popup_fragment, parent, false);
             }
         }
+
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             // saved order button
@@ -220,7 +223,7 @@ public class ViewProductActivity extends AppCompatActivity {
                     }
                 }
             });
-            Button joinBtn = view.findViewById(R.id.buyOrderBtn);
+            MaterialCardView joinBtn = view.findViewById(R.id.buyOrderBtn);
 
             LinearLayout chooseVarBtnLayout = view.findViewById(R.id.chooseVarBtnLayout);
             Button blankFillLayout = view.findViewById(R.id.blankFillBtn);
@@ -272,12 +275,12 @@ public class ViewProductActivity extends AppCompatActivity {
                         expandCard();
                         blankFillLayout.setVisibility(View.VISIBLE);
                         buyClicked = true;
-                    }else if (popUpLayout.getVisibility() == View.VISIBLE){
+                    } else if (popUpLayout.getVisibility() == View.VISIBLE) {
                         MakeOrder newOrder = new MakeOrder(amt, listing, varBtnName.get(focusedBtnId));
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("new_order", (Serializable) newOrder);
                         Intent joinOrderIntent = new Intent(getContext(), OrderConfirmationActivity.class);
-                        joinOrderIntent.putExtra("new_order",bundle);
+                        joinOrderIntent.putExtra("new_order", bundle);
                         startActivity(joinOrderIntent);
 
                     }
@@ -450,18 +453,22 @@ class MakeOrder implements Serializable {
     int amount;
     Listing listing;
     String variantName;
-    MakeOrder(int amount, Listing listing, String variantName){
+
+    MakeOrder(int amount, Listing listing, String variantName) {
         amount = amount;
         listing = listing;
         variantName = variantName;
     }
-    public String getVariantName(){
+
+    public String getVariantName() {
         return variantName;
     }
-    public Listing getListing(){
+
+    public Listing getListing() {
         return listing;
     }
-    public int getAmount(){
+
+    public int getAmount() {
         return amount;
     }
 }
