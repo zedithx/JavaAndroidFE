@@ -27,7 +27,7 @@ public class ForgotPassActivity extends AppCompatActivity {
         EditText forgetEmail = findViewById(R.id.forgetEmail);
         ImageView backButton = findViewById(R.id.forgot_back);
         if (fbUser != null) {
-            Intent signedIn = new Intent(ForgotPassActivity.this, LandingActivity.class);
+            Intent signedIn = new Intent(ForgotPassActivity.this, TransitionLandingActivity.class);
             startActivity(signedIn);
         }
         backButton.setOnClickListener(new View.OnClickListener(){

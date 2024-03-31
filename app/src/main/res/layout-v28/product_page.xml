@@ -289,10 +289,10 @@
                             android:background="@android:color/transparent"
                             android:padding="10dp">
 
-                            <TextView
-                                android:id="@+id/descriptionHeader"
-                                style="@style/H3"
-                                android:text="@string/description_header" />
+                                <TextView
+                                    android:id="@+id/descriptionHeader"
+                                    style="@style/H3"
+                                    android:text="@string/description_header"/>
 
                             <TextView
                                 android:id="@+id/productDescription"
