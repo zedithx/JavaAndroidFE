@@ -73,49 +73,39 @@
                     android:id="@+id/suggestion1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textFontWeight="600"
-                    android:layout_marginVertical="10dp"
-                    android:layout_marginHorizontal="16dp"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="16dp"
                     />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@android:color/darker_gray" />
                 <TextView
                     android:id="@+id/suggestion2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textFontWeight="600"
-                    android:layout_marginVertical="10dp"
-                    android:layout_marginHorizontal="16dp"
+                    android:background="@color/lightpink"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="16dp"
                     />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@android:color/darker_gray" />
                     <TextView
                         android:id="@+id/suggestion3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:textFontWeight="600"
-                        android:layout_marginVertical="10dp"
-                        android:layout_marginHorizontal="16dp"
+                        android:paddingVertical="10dp"
+                        android:paddingHorizontal="16dp"
                         />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@android:color/darker_gray" />
                     <TextView
                         android:id="@+id/suggestion4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:textFontWeight="600"
-                        android:layout_marginVertical="10dp"
-                        android:layout_marginHorizontal="16dp"
+                        android:background="@color/lightpink"
+                        android:paddingVertical="10dp"
+                        android:paddingHorizontal="16dp"
                         />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
