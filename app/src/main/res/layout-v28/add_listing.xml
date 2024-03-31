@@ -4,293 +4,332 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/addListingLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginLeft="10dp">
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
         <!-- Top header -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="20dp"
-            >
+            android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/back_arrow"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/red_back_arrow"
                 android:layout_gravity="center"
-                >
-            </ImageView>
+                android:src="@drawable/red_back_arrow"></ImageView>
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/H3"
                 android:layout_marginLeft="10dp"
-                android:text="Add Listing"
-                android:fontFamily="@font/interfont"
-                android:textSize="20sp"
-                android:textFontWeight="600"
-                android:textColor="@color/lightred"
-                >
-            </TextView>
+                android:text="@string/add_listing"
+                android:textColor="@color/lightred"></TextView>
         </LinearLayout>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:orientation="vertical">
-            <RelativeLayout
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:gravity="start"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="80dp"
+                        android:layout_height="80dp">
+
+                        <ImageButton
+                            android:id="@+id/addImageButton"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:background="@null"
+                            android:contentDescription="Add Listing"
+                            android:src="@drawable/dotted_border" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="8dp"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/camera_enhance" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignStart="@+id/addImageButton"
+                                android:layout_alignTop="@+id/addImageButton"
+                                android:layout_alignEnd="@+id/addImageButton"
+                                android:fontFamily="@font/interfont"
+                                android:gravity="center"
+                                android:text="Add New Image"
+                                android:textColor="@color/lightred"></TextView>
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbarStyle="outsideInset">
+
+                        <LinearLayout
+                            android:id="@+id/displayImageLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:orientation="horizontal">
+
+                        </LinearLayout>
+
+                    </HorizontalScrollView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        style="@style/H3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="Product Name"
+                        android:textColor="@color/lightred" />
+
+                    <EditText
+                        android:id="@+id/addProductName"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:hint="Click to edit"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/H3"
+                        android:layout_marginTop="20dp"
+                        android:text="Description"
+                        android:textColor="@color/lightred" />
+
+                    <EditText
+                        android:id="@+id/addDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:hint="Provide an informational description for your buyers."
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:maxLines="8"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/H3"
+                        android:layout_marginTop="20dp"
+                        android:text="Pricing"
+                        android:textColor="@color/lightred" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/interfont"
+                            android:text="Original Price (S$):"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/addOldPrice"
+                            android:layout_width="100dp"
+                            android:layout_height="48dp"
+                            android:ellipsize="start"
+                            android:gravity="center"
+                            android:hint="0.00"
+                            android:importantForAutofill="no"
+                            android:inputType="numberDecimal"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/interfont"
+                            android:text="Discounted Price (S$):"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/addNewPrice"
+                            android:layout_width="100dp"
+                            android:layout_height="48dp"
+                            android:ellipsize="start"
+                            android:gravity="center"
+                            android:hint="0.00"
+                            android:importantForAutofill="no"
+                            android:inputType="numberDecimal"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/H3"
+                        android:layout_marginTop="20dp"
+                        android:text="Minimum Order"
+                        android:textColor="@color/lightred" />
+
+                    <EditText
+                        android:id="@+id/addMinOrder"
+                        android:layout_width="100dp"
+                        android:layout_height="48dp"
+                        android:ellipsize="start"
+                        android:gravity="center"
+                        android:hint="e.g. 10"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/H3"
+                        android:layout_marginTop="20dp"
+                        android:text="Category"
+                        android:textColor="@color/lightred" />
+
+                    <Spinner
+                        android:id="@+id/addCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="10dp"
+                        android:spinnerMode="dropdown" />
+
+                    <TextView
+                        style="@style/H3"
+                        android:layout_marginTop="20dp"
+                        android:text="Expiry Date"
+                        android:textColor="@color/lightred" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:id="@+id/addDate"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:ellipsize="start"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:gravity="center"
+                            android:hint="@string/date_hint"
+                            android:importantForAutofill="no"
+                            android:inputType="date"
+                            android:textSize="18sp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="2dp"
+                            android:background="@color/darkgray" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/H3"
+                        android:layout_marginTop="20dp"
+                        android:text="Expiry Time"
+                        android:textColor="@color/lightred" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:id="@+id/addTime"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="start"
+                            android:gravity="center"
+                            android:hint="@string/time_hint"
+                            android:importantForAutofill="no"
+                            android:inputType="time"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="2dp"
+                            android:background="@color/darkgray" />
+
+                    </LinearLayout>
+                </LinearLayout>
+                <ProgressBar
+                    android:id="@+id/loadSpinner"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginVertical="40dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+            <LinearLayout
+                android:id="@+id/addListingButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="20dp"
-                >
-                <ImageButton
-                    android:contentDescription="Add Listing"
-                    android:background="@null"
-                    android:id="@+id/addImageButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/dotted_border"
-                    />
+                android:visibility="visible"
+                android:layout_gravity="center">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/addImageButton"
-                    android:layout_alignTop="@+id/addImageButton"
-                    android:layout_alignEnd="@+id/addImageButton"
+                    android:layout_width="240dp"
+                    android:layout_height="34dp"
+                    android:layout_marginVertical="40dp"
+                    android:background="@drawable/categorybox_red"
                     android:fontFamily="@font/interfont"
                     android:gravity="center"
-                    android:text="+"
-                    android:textColor="@color/lightred"
-                    android:textFontWeight="500"
-                    android:textSize="36sp">
-                </TextView>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/addImageButton"
-                    android:layout_alignBottom="@+id/addImageButton"
-                    android:layout_alignEnd="@+id/addImageButton"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="@font/interfont"
-                    android:gravity="center"
-                    android:text="Add new image"
-                    android:textColor="@color/lightred"
-                    android:textFontWeight="500"
-                    android:textSize="12sp">
-                </TextView>
-            </RelativeLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textFontWeight="500"
-                    android:fontFamily="@font/interfont"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/lightred"
-                    android:textSize="18sp"
-                    android:text="Product Name" />
-                <EditText
-                    android:id="@+id/addProductName"
-                    android:layout_width="200dp"
-                    android:layout_height="48dp"
-                    android:importantForAutofill="no"
-                    android:ellipsize="start"
-                    android:gravity="center"
-                    android:hint="Click to edit"
-                    android:textSize="14sp"
-                    android:inputType="text"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textFontWeight="500"
-                    android:fontFamily="@font/interfont"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/lightred"
-                    android:textSize="18sp"
-                    android:text="Description" />
-                <EditText
-                    android:id="@+id/addDescription"
-                    android:layout_width="200dp"
-                    android:layout_height="48dp"
-                    android:importantForAutofill="no"
-                    android:ellipsize="start"
-                    android:gravity="center"
-                    android:hint="Click to edit"
-                    android:textSize="14sp"
-                    android:inputType="text"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textFontWeight="500"
-                    android:fontFamily="@font/interfont"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/lightred"
-                    android:textSize="18sp"
-                    android:text="Pricing" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/interfont"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:text="Original Price (S$):"/>
-                    <EditText
-                        android:id="@+id/addOldPrice"
-                        android:layout_width="100dp"
-                        android:layout_height="48dp"
-                        android:importantForAutofill="no"
-                        android:ellipsize="start"
-                        android:gravity="center"
-                        android:hint="Click to edit"
-                        android:textSize="14sp"
-                        android:inputType="numberDecimal"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/interfont"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:text="Discounted Price (S$):"/>
-                    <EditText
-                        android:id="@+id/addNewPrice"
-                        android:layout_width="100dp"
-                        android:layout_height="48dp"
-                        android:importantForAutofill="no"
-                        android:ellipsize="start"
-                        android:gravity="center"
-                        android:hint="Click to edit"
-                        android:textSize="14sp"
-                        android:inputType="numberDecimal"/>
-                </LinearLayout>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textFontWeight="500"
-                    android:fontFamily="@font/interfont"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/lightred"
-                    android:textSize="18sp"
-                    android:text="Minimum Order" />
-                <EditText
-                    android:id="@+id/addMinOrder"
-                    android:layout_width="100dp"
-                    android:layout_height="48dp"
-                    android:importantForAutofill="no"
-                    android:ellipsize="start"
-                    android:gravity="center"
-                    android:hint="Click to edit"
-                    android:textSize="14sp"
-                    android:inputType="number"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textFontWeight="500"
-                    android:fontFamily="@font/interfont"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/lightred"
-                    android:textSize="18sp"
-                    android:text="Category" />
-                <Spinner
-                    android:id="@+id/addCategory"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:spinnerMode="dropdown" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textFontWeight="500"
-                    android:fontFamily="@font/interfont"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/lightred"
-                    android:textSize="18sp"
-                    android:text="Date" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:id="@+id/addDate"
-                        android:layout_width="100dp"
-                        android:layout_height="48dp"
-                        android:importantForAutofill="no"
-                        android:ellipsize="start"
-                        android:gravity="center"
-                        android:hint=""
-                        android:textSize="18sp"
-                        android:inputType="date"/>
-                    <ImageView
-                        android:id="@+id/calender"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/calender_icon"/>
-                </LinearLayout>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textFontWeight="500"
-                    android:fontFamily="@font/interfont"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/lightred"
-                    android:textSize="18sp"
-                    android:text="Time" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:id="@+id/addTime"
-                        android:layout_width="70dp"
-                        android:layout_height="48dp"
-                        android:importantForAutofill="no"
-                        android:ellipsize="start"
-                        android:gravity="center"
-                        android:hint=""
-                        android:textSize="18sp"
-                        android:inputType="time"/>
-                    <ImageView
-                        android:id="@+id/clock"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/clock_icon"/>
-                </LinearLayout>
+                    android:text="Add Listing"
+                    android:textColor="@color/white"
+                    android:textFontWeight="500" />
             </LinearLayout>
-            <TextView
-                android:layout_marginVertical="40dp"
-                android:id="@+id/addListingButton"
-                android:layout_width="240dp"
-                android:layout_height="34dp"
-                android:text="Add Listing"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:textColor="@color/white"
-                android:textFontWeight="500"
-                android:fontFamily="@font/interfont"
-                android:background="@drawable/categorybox_red"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

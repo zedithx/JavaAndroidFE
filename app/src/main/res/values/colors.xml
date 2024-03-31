@@ -3,8 +3,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lightred">#ED183D</color>
+    <color name="lightpink">#FFD1DC</color>
     <color name="lightblack">#323232</color>
     <color name="lightgray">#26323232</color>
     <color name="darkgray">#73323232</color>
     <color name="listing">#E6323232</color>
+    <color name="palegray">#EFEFEF</color>
+    <color name="unfocused">#0A0A0A26</color>
 </resources>

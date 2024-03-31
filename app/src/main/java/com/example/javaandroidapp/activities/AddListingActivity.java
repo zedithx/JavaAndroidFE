@@ -1,5 +1,7 @@
 package com.example.javaandroidapp.activities;
 
+import static android.app.ProgressDialog.show;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -8,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -15,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -25,6 +29,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
@@ -36,13 +41,16 @@ import com.example.javaandroidapp.fragments.TimePickerFragment;
 import com.example.javaandroidapp.utils.Categories;
 import com.example.javaandroidapp.utils.Images;
 import com.example.javaandroidapp.utils.Listings;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firestore.v1.Value;
 
 import org.checkerframework.checker.units.qual.A;
+import org.w3c.dom.Text;
 
 import java.sql.Time;
 import java.time.LocalDate;
@@ -58,6 +66,8 @@ public class AddListingActivity extends AppCompatActivity {
     ImageButton addImageButton;
     LinearLayout addListingLayout;
     Uri image;
+    ArrayList<String> uriArrList = new ArrayList<>();
+    LinearLayout displayImageLayout;
     private List<String> categories = new ArrayList<String>();
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -65,8 +75,11 @@ public class AddListingActivity extends AppCompatActivity {
         public void onActivityResult(ActivityResult o) {
             if (o.getResultCode() == RESULT_OK) {
                 if (o.getData() != null) {
+                    displayImageLayout = findViewById(R.id.displayImageLayout);
                     image = o.getData().getData();
-                    Glide.with(getApplicationContext()).load(image).apply(new RequestOptions().override(100, 100)).into(addImageButton);
+                    uriArrList.add(image.toString());
+//                    Glide.with(getApplicationContext()).load(image).apply(new RequestOptions().override(100, 100)).into(addImageButton);
+                    displayImageLayout.addView(addNewImageButton(image));
                     //Used to create a new button dynamically
 //                    ImageButton button = new ImageButton(getApplicationContext());
 //                    addListingLayout.addView(button);
@@ -76,6 +89,7 @@ public class AddListingActivity extends AppCompatActivity {
             }
         }
     });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -90,19 +104,19 @@ public class AddListingActivity extends AppCompatActivity {
         setContentView(R.layout.add_listing);
         addImageButton = findViewById(R.id.addImageButton);
         addListingLayout = (LinearLayout) findViewById(R.id.addListingLayout);
-        ImageView addDateButton = findViewById(R.id.calender);
-        ImageView addTimeButton = findViewById(R.id.clock);
-        EditText expiryDate = findViewById(R.id.addDate);
-        EditText expiryTime = findViewById(R.id.addTime);
+        TextView addDate = findViewById(R.id.addDate);
+        TextView addTime = findViewById(R.id.addTime);
         EditText productName = findViewById(R.id.addProductName);
         EditText description = findViewById(R.id.addDescription);
         EditText oldPrice = findViewById(R.id.addOldPrice);
         EditText newPrice = findViewById(R.id.addNewPrice);
         EditText minOrder = findViewById(R.id.addMinOrder);
         Spinner category = findViewById(R.id.addCategory);
-        TextView addListingButton = findViewById(R.id.addListingButton);
+        // For processing animation
+        LinearLayout addListingButton = findViewById(R.id.addListingButton);
+        ProgressBar loadSpinner = findViewById(R.id.loadSpinner);
         ImageView back_arrow = findViewById(R.id.back_arrow);
-        back_arrow.setOnClickListener(new View.OnClickListener(){
+        back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent Main = new Intent(AddListingActivity.this, MenuActivity.class);
@@ -128,30 +142,54 @@ public class AddListingActivity extends AppCompatActivity {
                 activityResultLauncher.launch(intent);
             }
         });
-        addDateButton.setOnClickListener(new View.OnClickListener() {
+        addDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerFragment().show(getSupportFragmentManager(), "datePicker");
+                final Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog newDatePickerDialog = new DatePickerDialog(
+                        AddListingActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        addDate.setText(String.format("%02d/%02d/%04d", day, (month % 13) + 1, year));
+                    }
+                }, year, month, day
+                );
+                newDatePickerDialog.show();
             }
         });
 
-        addTimeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new TimePickerFragment().show(getSupportFragmentManager(), "timePicker");
-                }
-            });
+        addTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar timeCalendar = Calendar.getInstance();
+                int hour = timeCalendar.get(Calendar.HOUR_OF_DAY);
+                int min = timeCalendar.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker = new TimePickerDialog(AddListingActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int setHour, int setMin) {
+                        addTime.setText(String.format("%02d:%02d", setHour, setMin));
+                    }
+                }, hour, min, true);
+                mTimePicker.show();
+            }
+        });
 
         addListingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addListingButton.setVisibility(View.GONE);
+                loadSpinner.setVisibility(View.VISIBLE);
 
                 Images.addImages(image, storageRef, new CallbackAdapter() {
                     @Override
                     public void getResult(String uri) {
                         //TODO - change to list of Image
-                        ArrayList<String> uri_list = new ArrayList<>();
-                        uri_list.add(uri);
+//                        ArrayList<String> uri_list = new ArrayList<>();
+//                        uri_list.add(uri);
                         //TODO - change to hashmap population from edittext
                         ArrayList<String> variantNames = new ArrayList<>();
                         variantNames.add("Small");
@@ -161,18 +199,18 @@ public class AddListingActivity extends AppCompatActivity {
                         variantAdditionalPrice.add(2.0);
                         variantAdditionalPrice.add(4.0);
                         variantAdditionalPrice.add(6.0);
-                        String datetime =  expiryDate.getText().toString() + " " + expiryTime.getText().toString();
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy H:m");
+                        String datetime = addDate.getText().toString() + " " + addTime.getText().toString();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy HH:mm");
                         LocalDate parsedDateTime = LocalDate.parse(datetime, formatter);
                         Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
                         Listings.addListing(db, fbUser, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
-                                Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, uri_list, description.getText().toString(),
+                                Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, uriArrList, description.getText().toString(),
                                 Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), variantNames, variantAdditionalPrice, new CallbackAdapter() {
                             @Override
                             public void onResult(boolean isSuccess) {
                                 if (isSuccess) {
                                     Toast.makeText(getApplicationContext(), "Added Listing!", Toast.LENGTH_LONG).show();
-                                    Intent Main = new Intent(AddListingActivity.this, LandingActivity.class);
+                                    Intent Main = new Intent(AddListingActivity.this, TransitionLandingActivity.class);
                                     startActivity(Main);
                                 }
                             }
@@ -182,5 +220,25 @@ public class AddListingActivity extends AppCompatActivity {
 
             }
         });
+
+
+    }
+
+    MaterialCardView addNewImageButton(Uri image) {
+        MaterialCardView newMatCard = new MaterialCardView(this);
+        newMatCard.setStrokeWidth(0);
+        LinearLayout.LayoutParams cardMatParams = new LinearLayout.LayoutParams(200, 200);
+        cardMatParams.setMargins(15, 0, 0, 0);
+        newMatCard.setLayoutParams(cardMatParams);
+        ImageView newImage = new ImageView(this);
+        newImage.setImageURI(image);
+
+        newImage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        newImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        CardView newCard = new CardView(this);
+        newCard.addView(newImage);
+        newCard.setCardElevation(0);
+        newMatCard.addView(newCard);
+        return newMatCard;
     }
 }

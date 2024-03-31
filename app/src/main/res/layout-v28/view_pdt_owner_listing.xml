@@ -24,6 +24,7 @@
                 <TextView
                     android:id="@+id/topBanner"
                     style="@style/TopBanner"
+                    android:textColor="@color/white"
                     android:text="@string/listings" />
 
                 <ImageButton
@@ -35,7 +36,7 @@
                     android:clickable="true"
                     android:contentDescription="Back button"
                     android:padding="15dp"
-                    android:src="@drawable/keyboard_arrow_left" />
+                    android:src="@drawable/white_back_arrow" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -114,9 +115,12 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:layout_margin="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
                 android:background="@null"
-                android:src="@drawable/chatbox" />
+                android:src="@drawable/red_chatbox" />
         </RelativeLayout>
 
 

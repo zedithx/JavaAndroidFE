@@ -1,6 +1,9 @@
 package com.example.javaandroidapp.objects;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.DocumentId;
 
 import java.io.Serializable;
@@ -10,7 +13,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Listing implements Serializable {
+public class Listing implements Serializable{
     @DocumentId
     private String uid;
     private String category;
@@ -98,9 +101,17 @@ public class Listing implements Serializable {
 
         // Calculate the period between the two dates
         Period period = Period.between(today, localDate);
+        String yearsLeft = period.getYears() < 1 ? "" : period.getYears() + "y ";
+        String monthsLeft = period.getMonths() < 1 ? "" : period.getMonths() + "m ";
+        String daysLeft = "";
+        if ((period.getDays() < 1 && period.getMonths() < 1 && period.getYears() < 1) || period.getDays() > 1){
+            daysLeft = period.getDays() + "d left";
+        }else {
+            daysLeft = "left";
+        }
 
         // Return the number of days in the period
-        return period.getDays() + " Days Left";
+        return yearsLeft + monthsLeft + daysLeft;
     }
 
     public String getCreatedBy() {

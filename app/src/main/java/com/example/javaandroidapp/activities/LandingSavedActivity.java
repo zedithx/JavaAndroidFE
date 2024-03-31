@@ -2,19 +2,16 @@ package com.example.javaandroidapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
+import com.example.javaandroidapp.adapters.ListingAdapter;
 import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.utils.Users;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +39,7 @@ public class LandingSavedActivity  extends AppCompatActivity {
         back_arrow.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(LandingSavedActivity.this, LandingActivity.class);
+                Intent Main = new Intent(LandingSavedActivity.this, TransitionLandingActivity.class);
                 startActivity(Main);
             }
         });

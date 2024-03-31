@@ -45,9 +45,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/bulkify_logo"
-            tools:layout_editor_absoluteX="287dp"
-            tools:layout_editor_absoluteY="100dp" />
+            app:srcCompat="@drawable/bulkify_logo"/>
         </LinearLayout>
         <TextView
             android:id="@+id/text_below_logo"

@@ -41,13 +41,14 @@
                     android:layout_width="220dp"
                     android:background="@drawable/white_input_box"
                     android:ellipsize="start"
-                    android:paddingLeft="20dp"
+                    android:paddingStart="20dp"
                     android:hint="Search"
                     android:textSize="18sp"
                     android:importantForAutofill="no"
                     android:inputType="text"/>
             </LinearLayout>
             <ImageView
+                android:id="@+id/fragment_search"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="16dp"
@@ -69,40 +70,42 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                 <TextView
+                    android:id="@+id/suggestion1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textFontWeight="600"
-                    android:layout_marginVertical="10dp"
-                    android:layout_marginHorizontal="16dp"
-                    android:text="Chocolate candy"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="16dp"
                     />
                 <TextView
+                    android:id="@+id/suggestion2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textFontWeight="600"
-                    android:layout_marginVertical="10dp"
-                    android:layout_marginHorizontal="16dp"
-                    android:text="Chocolate rhino"
+                    android:background="@color/lightpink"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="16dp"
                     />
                     <TextView
+                        android:id="@+id/suggestion3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:textFontWeight="600"
-                        android:layout_marginVertical="10dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:text="Chocolate dinosaur"
+                        android:paddingVertical="10dp"
+                        android:paddingHorizontal="16dp"
                         />
                     <TextView
+                        android:id="@+id/suggestion4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:textFontWeight="600"
-                        android:layout_marginVertical="10dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:text="Youxiang Mudda"
+                        android:background="@color/lightpink"
+                        android:paddingVertical="10dp"
+                        android:paddingHorizontal="16dp"
                         />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

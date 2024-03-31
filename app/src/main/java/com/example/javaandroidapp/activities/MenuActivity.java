@@ -64,7 +64,7 @@ public class MenuActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(MenuActivity.this, LandingActivity.class);
+                Intent Main = new Intent(MenuActivity.this, TransitionLandingActivity.class);
                 startActivity(Main);
             }
         });
@@ -126,7 +126,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 }
 
-class UserProfile {
+class   UserProfile {
     private String username;
     private String emailAddress;
     private ArrayList<String> paymentMethods = new ArrayList<>();
