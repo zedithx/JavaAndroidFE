@@ -85,7 +85,7 @@ public class ViewProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_page);
         amt = 1;
-
+focusedBtnId = 1;
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
                 .replace(R.id.buyFrameLayout, new BuyFragment()).commit();
