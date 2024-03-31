@@ -260,6 +260,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_margin="10dp"
                         android:clipChildren="true"
+                        android:background="@null"
                         app:cardCornerRadius="8dp"
                         app:strokeWidth="0dp">
 
