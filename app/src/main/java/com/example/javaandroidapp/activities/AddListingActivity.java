@@ -202,15 +202,15 @@ public class AddListingActivity extends AppCompatActivity {
                         Listings.addListing(db, fbUser, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
                                 Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, uriArrList, description.getText().toString(),
                                 Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), variantNames, variantAdditionalPrice, new CallbackAdapter() {
-                                    @Override
-                                    public void onResult(boolean isSuccess) {
-                                        if (isSuccess) {
-                                            Toast.makeText(getApplicationContext(), "Added Listing!", Toast.LENGTH_LONG).show();
-                                            Intent Main = new Intent(AddListingActivity.this, LandingActivity.class);
-                                            startActivity(Main);
-                                        }
-                                    }
-                                });
+                            @Override
+                            public void onResult(boolean isSuccess) {
+                                if (isSuccess) {
+                                    Toast.makeText(getApplicationContext(), "Added Listing!", Toast.LENGTH_LONG).show();
+                                    Intent Main = new Intent(AddListingActivity.this, TransitionLandingActivity.class);
+                                    startActivity(Main);
+                                }
+                            }
+                        });
                     }
                 });
 

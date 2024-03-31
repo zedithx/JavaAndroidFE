@@ -288,7 +288,7 @@
                                 <TextView
                                     android:id="@+id/descriptionHeader"
                                     style="@style/H3"
-                                    android:text="@string/description_header" />
+                                    android:text="@string/description_header"/>
 
                                 <TextView
                                     android:id="@+id/productDescription"

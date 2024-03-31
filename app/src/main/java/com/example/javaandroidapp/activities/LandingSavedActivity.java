@@ -39,7 +39,7 @@ public class LandingSavedActivity  extends AppCompatActivity {
         back_arrow.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(LandingSavedActivity.this, LandingActivity.class);
+                Intent Main = new Intent(LandingSavedActivity.this, TransitionLandingActivity.class);
                 startActivity(Main);
             }
         });

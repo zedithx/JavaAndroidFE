@@ -11,8 +11,9 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.JavaAndroidApp"
+        android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
             android:name=".activities.LogInActivity"
@@ -24,19 +25,12 @@
         </activity>
         <activity
             android:name=".activities.LandingActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="true"
+            android:windowSoftInputMode="adjustNothing">
         </activity>
         <activity
             android:name=".activities.ViewProductActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.SignUpActivity"
@@ -83,6 +77,8 @@
         <activity android:name=".activities.TransitionLandingActivity"
             android:exported="true"></activity>
         <activity android:name=".activities.OrderConfirmationActivity"
+            android:exported="true"></activity>
+        <activity android:name=".activities.PaymentSuccessActivity"
             android:exported="true"></activity>
     </application>
 
