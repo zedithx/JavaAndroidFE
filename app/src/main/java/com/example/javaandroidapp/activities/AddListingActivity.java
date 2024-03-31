@@ -172,7 +172,7 @@ public class AddListingActivity extends AppCompatActivity {
                             public void onResult(boolean isSuccess) {
                                 if (isSuccess) {
                                     Toast.makeText(getApplicationContext(), "Added Listing!", Toast.LENGTH_LONG).show();
-                                    Intent Main = new Intent(AddListingActivity.this, LandingActivity.class);
+                                    Intent Main = new Intent(AddListingActivity.this, TransitionLandingActivity.class);
                                     startActivity(Main);
                                 }
                             }

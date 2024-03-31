@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.adapters.CategoryAdapter;
 import com.example.javaandroidapp.adapters.ListingAdapter;
@@ -18,7 +19,6 @@ import com.example.javaandroidapp.objects.CategoryModel;
 import com.example.javaandroidapp.utils.AlgoliaHelper;
 import com.example.javaandroidapp.utils.Categories;
 import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.utils.Listings;
 import com.example.javaandroidapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +46,8 @@ public class LandingActivity extends AppCompatActivity {
         }
         // set landing page as view
         setContentView(R.layout.landing);
+        Intent i = getIntent();
+        listings = (List<Listing>) i.getSerializableExtra("listings");
         // category horizontal carousel
         RecyclerView categoryRecyclerView = findViewById(R.id.categoryRecyclerView);
         LinearLayoutManager categoryLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -133,20 +135,10 @@ public class LandingActivity extends AppCompatActivity {
                 // Handle item click, e.g., start a new activity
                 Intent intent = new Intent(LandingActivity.this, TransitionViewProductActivity.class);
                 intent.putExtra("listing", data);
-                startActivityForResult(intent, 1);
+                startActivity(intent);
             }
         });
         listingRecyclerView.setAdapter(adapter_listing);
-        // Retrieve all listings
-        Listings.getAllListings(db, "All", new CallbackAdapter() {
-            @Override
-            public void getList(List<Listing> listings_new) {
-                if (listings_new.size() != 0) {
-                    listings.addAll(listings_new);
-                }
-                adapter_listing.notifyDataSetChanged();
-            }
-        });
 
         CategoryAdapter adapter = new CategoryAdapter(categories, listings, db, adapter_listing);
         Categories.getCategorySnapshot(db, new CallbackAdapter() {

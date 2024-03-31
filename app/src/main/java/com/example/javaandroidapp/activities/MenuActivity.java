@@ -64,7 +64,7 @@ public class MenuActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(MenuActivity.this, LandingActivity.class);
+                Intent Main = new Intent(MenuActivity.this, TransitionLandingActivity.class);
                 startActivity(Main);
             }
         });

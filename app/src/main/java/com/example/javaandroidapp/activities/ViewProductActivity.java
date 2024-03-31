@@ -79,6 +79,7 @@ public class ViewProductActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         fbUser = mAuth.getCurrentUser();
         // get listing object from listing clicked
+        // Change to multithread
         listing = (Listing) getIntent().getSerializableExtra("listing");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_page);

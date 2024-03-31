@@ -68,7 +68,7 @@ public class SearchActivity extends AppCompatActivity {
         back_arrow.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(SearchActivity.this, LandingActivity.class);
+                Intent Main = new Intent(SearchActivity.this, TransitionLandingActivity.class);
                 startActivity(Main);
             }
         });
