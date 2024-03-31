@@ -1,5 +1,7 @@
 package com.example.javaandroidapp.activities;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
@@ -15,6 +17,7 @@ import android.transition.AutoTransition;
 import android.transition.Scene;
 import android.transition.Transition;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,13 +145,13 @@ public class ViewProductActivity extends AppCompatActivity {
         productDescription.setText(listing.getDescription());
 
         descriptionLayout = findViewById(R.id.descriptionLayout);
-        GradientDrawable descriptionBg = RoundedButton.RoundedRect(25);
-        descriptionBg.setColor(Color.argb(15, 10, 10, 10));
-        descriptionLayout.setBackground(descriptionBg);
-        productDescription.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        productDescription.setMaxLines(8);
+//        GradientDrawable descriptionBg = RoundedButton.RoundedRect(25);
+//        descriptionBg.setColor(Color.argb(15, 10, 10, 10));
+//        descriptionLayout.setBackground(descriptionBg);
+        productDescription.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//        productDescription.setMaxLines(8);
         ownerLayout = findViewById(R.id.productOwnerLayout);
-        ownerLayout.setBackground(descriptionBg);
+//        ownerLayout.setBackground(descriptionBg);
 
         ownerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,7 +228,6 @@ public class ViewProductActivity extends AppCompatActivity {
             blankFillLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    popUpLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
                     if (popUpLayout.getVisibility() == View.VISIBLE) {
                         collapseCard();
                     }
@@ -241,26 +243,23 @@ public class ViewProductActivity extends AppCompatActivity {
             ArrayList<String> varBtnName = listing.getVariationNames();
             ArrayList<Double> varBtnPrice = listing.getVariationAdditionalPrice();
 
-//            createBtnPanel(product, varBtnName, varBtnPrice, chooseVarBtnLayout);
-//            chooseVarBtnLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             Spinner varSpinner = view.findViewById(R.id.varSpinner);
             ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, varBtnName);
             varSpinner.setAdapter(adapter);
             TextView subTotal = view.findViewById(R.id.subTotalText);
             displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
             subTotal.setText("S$ " + df.format(amt * displayedPrice));
-
             varSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     focusedBtnId = position;
                     displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
                     subTotal.setText("S$ " + df.format(amt * displayedPrice));
-
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
+
 
                 }
             });
@@ -268,8 +267,6 @@ public class ViewProductActivity extends AppCompatActivity {
             joinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-//                    popUpLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     if (popUpLayout.getVisibility() == View.GONE) {
                         expandCard();
                         blankFillLayout.setVisibility(View.VISIBLE);
@@ -283,11 +280,6 @@ public class ViewProductActivity extends AppCompatActivity {
                         startActivity(joinOrderIntent);
 
                     }
-
-
-
-                    // variation btn panel
-
 
                     // Change order amounts and change price
                     addOrder.setOnClickListener(new View.OnClickListener() {
@@ -319,9 +311,6 @@ public class ViewProductActivity extends AppCompatActivity {
 
         private void expandCard() {
             popUpLayout.setVisibility(View.VISIBLE);
-//            popUpLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-//            int endHeight = popUpLayout.getMeasuredHeight();
-//            popUpLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
 
             ValueAnimator anim = ValueAnimator.ofInt(0, 900);
             anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -356,8 +345,6 @@ public class ViewProductActivity extends AppCompatActivity {
                 }
             });
         }
-
-
     }
 
 
@@ -385,7 +372,6 @@ public class ViewProductActivity extends AppCompatActivity {
                 count = count <= 0 ? imageList.size() - 1 : count - 1;
                 String image = imageList.get(count);
                 Glide.with(imageViewLayout).load(image).into(productImages);
-
             }
         });
 
@@ -395,19 +381,9 @@ public class ViewProductActivity extends AppCompatActivity {
                 count = count < imageList.size() - 1 ? count + 1 : 0;
                 String image = imageList.get(count);
                 Glide.with(imageViewLayout).load(image).into(productImages);
-
             }
-
-
         });
-
-
-        // bottom modal
-
     }
-// onclick -> extendedBuyLayout -> fill parent
-    // generate all variation buttons
-    // ...
 
     static void createBtnPanel(Listing listing, ArrayList<String> varBtnName, ArrayList<Double> varBtnPrice, LinearLayout variationBtnParentLayout) {
 
@@ -423,6 +399,11 @@ public class ViewProductActivity extends AppCompatActivity {
             newVarBtn.setId(btnId);
             String varText = varBtnName.get(i) + "\n" + (varBtnPrice.get(i) > 0 ? "+" + df.format(varBtnPrice.get(i)) : "-");
             newVarBtn.setText(varText);
+            GradientDrawable drawable = RoundedButton.RoundedRect(25);
+            drawable.setColor((focusedBtnId == newVarBtn.getId() ? Color.argb(150, 255, 30, 7) : Color.argb(15, 10, 10, 10)));
+            newVarBtn.setBackground(drawable);
+
+
             varBtnList.add(newVarBtn);
             newVarBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -439,8 +420,6 @@ public class ViewProductActivity extends AppCompatActivity {
             });
             variationBtnParentLayout.addView(newVarBtn);
         }
-
-
     }
 
     static class RoundedButton extends androidx.appcompat.widget.AppCompatButton {
