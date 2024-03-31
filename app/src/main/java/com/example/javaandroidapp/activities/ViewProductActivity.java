@@ -42,6 +42,7 @@ import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.objects.Order;
 import com.example.javaandroidapp.utils.Users;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -220,7 +221,7 @@ public class ViewProductActivity extends AppCompatActivity {
                     }
                 }
             });
-            Button joinBtn = view.findViewById(R.id.buyOrderBtn);
+            MaterialCardView joinBtn = view.findViewById(R.id.buyOrderBtn);
 
             LinearLayout chooseVarBtnLayout = view.findViewById(R.id.chooseVarBtnLayout);
             Button blankFillLayout = view.findViewById(R.id.blankFillBtn);
