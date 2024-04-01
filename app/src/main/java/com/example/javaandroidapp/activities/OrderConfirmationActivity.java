@@ -122,7 +122,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // make stripe payment
+                // Trigger PaymentSheet
                 PaymentFlow();
             }
         });

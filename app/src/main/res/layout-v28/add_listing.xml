@@ -305,11 +305,20 @@
 
                     </LinearLayout>
                 </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/addListingButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                <ProgressBar
+                    android:id="@+id/loadSpinner"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginVertical="40dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+            <LinearLayout
+                android:id="@+id/addListingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_gravity="center">
                 <TextView
                     android:layout_width="240dp"
                     android:layout_height="34dp"
@@ -320,7 +329,7 @@
                     android:text="Add Listing"
                     android:textColor="@color/white"
                     android:textFontWeight="500" />
-                </LinearLayout>
+            </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
