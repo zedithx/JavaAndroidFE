@@ -12,9 +12,11 @@ public class User {
     private String address;
     private List<DocumentReference> orders;
     private List<DocumentReference> saved;
+    private List<DocumentReference> listings;
     private FirebaseUser userRef;
     private String profileimage;
     private List<String> paymentMethods;
+
 
     public User() {
         this.phoneNumber = 0;
@@ -26,6 +28,9 @@ public class User {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.saved  = new ArrayList<>();
+        this.orders = new ArrayList<>();
+        this.listings = new ArrayList<>();
     }
 
     public List<DocumentReference> getOrders() {
@@ -79,4 +84,5 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
 }
