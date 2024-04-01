@@ -247,11 +247,12 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp">
 
                         <TextView
                             android:id="@+id/addDate"
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:clickable="false"
                             android:cursorVisible="false"
@@ -282,11 +283,12 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp">
 
                         <TextView
                             android:id="@+id/addTime"
-                            android:layout_width="wrap_content"
+                            android:layout_width="70dp"
                             android:layout_height="wrap_content"
                             android:ellipsize="start"
                             android:gravity="center"
@@ -303,12 +305,23 @@
 
                     </LinearLayout>
                 </LinearLayout>
-
+                <ProgressBar
+                    android:id="@+id/loadSpinner"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginVertical="40dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+            <LinearLayout
+                android:id="@+id/addListingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_gravity="center">
                 <TextView
-                    android:id="@+id/addListingButton"
                     android:layout_width="240dp"
                     android:layout_height="34dp"
-                    android:layout_gravity="center"
                     android:layout_marginVertical="40dp"
                     android:background="@drawable/categorybox_red"
                     android:fontFamily="@font/interfont"
@@ -316,6 +329,7 @@
                     android:text="Add Listing"
                     android:textColor="@color/white"
                     android:textFontWeight="500" />
+            </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

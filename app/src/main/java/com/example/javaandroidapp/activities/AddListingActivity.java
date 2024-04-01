@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -67,7 +68,6 @@ public class AddListingActivity extends AppCompatActivity {
     Uri image;
     ArrayList<String> uriArrList = new ArrayList<>();
     LinearLayout displayImageLayout;
-
     private List<String> categories = new ArrayList<String>();
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -112,7 +112,9 @@ public class AddListingActivity extends AppCompatActivity {
         EditText newPrice = findViewById(R.id.addNewPrice);
         EditText minOrder = findViewById(R.id.addMinOrder);
         Spinner category = findViewById(R.id.addCategory);
-        TextView addListingButton = findViewById(R.id.addListingButton);
+        // For processing animation
+        LinearLayout addListingButton = findViewById(R.id.addListingButton);
+        ProgressBar loadSpinner = findViewById(R.id.loadSpinner);
         ImageView back_arrow = findViewById(R.id.back_arrow);
         back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +181,8 @@ public class AddListingActivity extends AppCompatActivity {
         addListingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addListingButton.setVisibility(View.GONE);
+                loadSpinner.setVisibility(View.VISIBLE);
 
                 Images.addImages(image, storageRef, new CallbackAdapter() {
                     @Override
