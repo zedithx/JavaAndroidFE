@@ -74,6 +74,13 @@
                         android:layout_gravity="start"
                         android:ellipsize="end"
                         android:text="pdtOwner" />
+                    <TextView
+                        android:id="@+id/email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:ellipsize="end"
+                        android:text="email address" />
 
                     <LinearLayout
                         android:id="@+id/rating"
