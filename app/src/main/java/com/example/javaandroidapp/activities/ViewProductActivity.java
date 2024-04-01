@@ -13,6 +13,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.transition.AutoTransition;
 import android.transition.Scene;
 import android.transition.Transition;
@@ -33,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -159,7 +162,8 @@ public class ViewProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent sellerListing = new Intent(ViewProductActivity.this, SellerListingActivity.class);
-                sellerListing.putExtra("sellerInfo", listing.getCreatedBy());
+                String sellerEmail = listing.getCreatedBy();
+                sellerListing.putExtra("sellerEmail", sellerEmail);
                 startActivity(sellerListing);
             }
         });

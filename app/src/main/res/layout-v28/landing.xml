@@ -107,23 +107,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/constraintlayout">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toTopOf="@id/navigation_bar"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:layout_editor_absoluteX="-16dp">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listingRecyclerView"
-                    android:paddingHorizontal="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
                     android:clipToPadding="false"
                     android:overScrollMode="never"
+                    android:paddingHorizontal="10dp"
+                    android:paddingBottom="10dp"
                     android:scrollbars="none"
                     app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
             </LinearLayout>
-        <LinearLayout
+
+            <LinearLayout
             android:id="@+id/navigation_bar"
             android:layout_width="match_parent"
             android:layout_height="100dp"
