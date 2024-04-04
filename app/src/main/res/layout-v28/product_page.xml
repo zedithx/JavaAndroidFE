@@ -63,7 +63,26 @@
                                 </androidx.cardview.widget.CardView>
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:cardCornerRadius="20dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_alignParentBottom="true"
+                                app:cardBackgroundColor="@color/darkgray">
+                                <TextView
+                                    android:id="@+id/imageIndex"
+                                    android:paddingHorizontal="6dp"
+                                    android:paddingVertical="3dp"
+                                    android:fontFamily="@font/interfont"
+                                    android:textFontWeight="600"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0/0"
+                                    android:textColor="@color/white"/>
+                            </androidx.cardview.widget.CardView>
                             <ImageButton
                                 android:id="@+id/prevBtn"
                                 android:layout_width="50dp"
