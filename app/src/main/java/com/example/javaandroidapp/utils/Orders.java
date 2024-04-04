@@ -8,6 +8,8 @@ import com.example.javaandroidapp.objects.Listing;
 import com.example.javaandroidapp.objects.Order;
 import com.example.javaandroidapp.objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -34,5 +36,21 @@ public class Orders {
                 }
             });
         }
+    }
+    public static void createOrder(FirebaseFirestore db, String delivery, Listing listing, String paidAmount,
+                                   String paymentStatus, Integer quantity, User user, String variant, Callbacks callback) {
+        // Create the order here
+        // add order to order collection
+        db.collection("Listings").add(listing).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                callback.onResult(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onResult(false);
+            }
+        });
     }
 }
