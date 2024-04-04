@@ -1,4 +1,4 @@
-package com.example.javaandroidapp.objects;
+package com.example.javaandroidapp.modals;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;

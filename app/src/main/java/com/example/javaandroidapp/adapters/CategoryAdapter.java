@@ -12,8 +12,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.javaandroidapp.R;
-import com.example.javaandroidapp.objects.CategoryModel;
-import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.modals.CategoryModel;
+import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.utils.Listings;
 import com.google.firebase.firestore.FirebaseFirestore;
 

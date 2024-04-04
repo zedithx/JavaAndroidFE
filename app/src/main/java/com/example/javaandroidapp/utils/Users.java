@@ -7,9 +7,9 @@ import androidx.annotation.NonNull;
 
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.adapters.Callbacks;
-import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.objects.Order;
-import com.example.javaandroidapp.objects.User;
+import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.modals.Order;
+import com.example.javaandroidapp.modals.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

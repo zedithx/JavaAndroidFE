@@ -1,11 +1,7 @@
 package com.example.javaandroidapp.activities;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.LayoutTransition;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
@@ -13,17 +9,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.transition.AutoTransition;
-import android.transition.Scene;
-import android.transition.Transition;
-import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,15 +23,13 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
-import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.objects.Order;
+import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.utils.Users;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;

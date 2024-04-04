@@ -1,16 +1,12 @@
 package com.example.javaandroidapp.utils;
 
-import android.telecom.Call;
-
 import androidx.annotation.NonNull;
 
-import com.example.javaandroidapp.activities.LandingActivity;
 import com.example.javaandroidapp.adapters.Callbacks;
-import com.example.javaandroidapp.objects.CategoryModel;
+import com.example.javaandroidapp.modals.CategoryModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 

@@ -1,7 +1,5 @@
 package com.example.javaandroidapp.activities;
 
-import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +7,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.javaandroidapp.R;
-import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.modals.Listing;
 
 public class TransitionViewProductActivity extends AppCompatActivity {
     @Override

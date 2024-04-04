@@ -15,14 +15,10 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.javaandroidapp.R;
-import com.example.javaandroidapp.activities.LandingActivity;
 import com.example.javaandroidapp.activities.SearchActivity;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
-import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.objects.Order;
 import com.example.javaandroidapp.utils.AlgoliaHelper;
 
 import java.util.ArrayList;
