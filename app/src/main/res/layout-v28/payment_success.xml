@@ -51,7 +51,17 @@
             android:textSize="14sp"
             android:layout_gravity="center"
             android:textColor="@color/darkgray"
-            android:text="You have been added to the following Group Buy"
+            android:text="You have been added to the following Group Buy."
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textFontWeight="600"
+            android:fontFamily="@font/interfont"
+            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:textColor="@color/darkgray"
+            android:text="You will not be charged until the order is successful."
             />
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

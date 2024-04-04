@@ -38,8 +38,10 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     String customerID;
     String ephemeralKey;
     String ClientSecret;
-    String SECRET_KEY = "sk_test_51OxodJK24tdo9W186Z7oRocGQytGZsmyXwWyQ6zGSGy8ozksHT1MnwnGheqxlPjKtiwVZZLIH4Eh6VdShSog2WxP00GYwWQoYZ";
-    String PUBLISH_KEY= "pk_test_51OxodJK24tdo9W18EForeaCEkq3Bqg0GOKI5VSrhcOLafuA3KQ1p19ewowL6PtT7gN9VtYZCrSyMMZcwKLltIk4c00ph2COvon";
+
+    //TODO - move to environment var
+    String SECRET_KEY = "sk_test_51OxodJK24tdo9W189suQ8qBTT4qmfs5kqo4xBS1SBTrzRYbITc5gPRB3if0T8Gx8PMvlaUz6inMKryBQ0HnETr9T009CpIhchL";
+    String PUBLISH_KEY= "pk_test_51OxodJK24tdo9W18DDtNNwSl0XRv3IsLEO7LDymAdRSfJAaVYfAwSzFO4J2nXACDhe5tkb1tlz49F4OIUZ4ELdjD00h9mrNaXI";
     ImageView listingImageView;
     TextView listingNameTextView;
     TextView orderAmountTextView;
@@ -194,6 +196,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                         try {
                             JSONObject object = new JSONObject(response);
                             ClientSecret=object.getString("client_secret");
+                            //TODO - store client secret in array of listing
+
                             // At this point we have all variables needed to proceed with paymentSheetIntent
                             // Change loading button to actual button
                             loadingSpinner.setVisibility(View.GONE);
@@ -222,6 +226,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                 params.put("amount", "10" + "00");
                 params.put("currency", "sgd");
                 params.put("automatic_payment_methods[enabled]", "true");
+                //changes to withold. Need to store all clientsecrets to be used to capture later on
+                params.put("capture_method", "manual");
                 return params;
             }
         };
