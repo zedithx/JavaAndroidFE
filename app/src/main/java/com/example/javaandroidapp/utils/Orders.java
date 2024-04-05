@@ -34,11 +34,13 @@ public class Orders {
             });
         }
     }
+
+    //TODO create order
     public static void createOrder(FirebaseFirestore db, String delivery, Listing listing, String paidAmount,
                                    String paymentStatus, Integer quantity, User user, String variant, Callbacks callback) {
         // Create the order here
         // add order to order collection
-        db.collection("Listings").add(listing).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        db.collection("listings").add(listing).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 callback.onResult(true);

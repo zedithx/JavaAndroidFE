@@ -204,7 +204,7 @@ public class Users {
                 DocumentSnapshot userRef = task.getResult();
                 if (userRef.exists()) {
                     List<DocumentReference> saved = (List<DocumentReference>) userRef.get("saved");
-                    DocumentReference listingReference = db.collection("Listings").document(listing.getUid());
+                    DocumentReference listingReference = db.collection("listings").document(listing.getUid());
                     // Check if listingReference is in saved, then remove
                     if (saved == null) {
                         callback.onResult(false);
@@ -233,7 +233,7 @@ public class Users {
                     if (saved == null) {
                         saved = new ArrayList<>();
                     }
-                    DocumentReference listingReference = db.collection("Listings").document(listing.getUid());
+                    DocumentReference listingReference = db.collection("listings").document(listing.getUid());
                     saved.add(listingReference);
                     db.collection("users").document(fbUser.getUid()).update("saved", saved)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -261,7 +261,7 @@ public class Users {
                 DocumentSnapshot userRef = task.getResult();
                 if (userRef.exists()) {
                     List<DocumentReference> saved = (List<DocumentReference>) userRef.get("saved");
-                    DocumentReference listingReference = db.collection("Listings").document(listing.getUid());
+                    DocumentReference listingReference = db.collection("listings").document(listing.getUid());
                     // Check if listingReference is in saved, then remove
                     Iterator<DocumentReference> iterator = saved.iterator();
                     while (iterator.hasNext()) {

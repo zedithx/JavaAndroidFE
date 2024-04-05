@@ -167,6 +167,7 @@ public class ViewProductActivity extends AppCompatActivity {
 
     }
 
+    //carousel
     private class ImagePagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
         private ArrayList<String> mImages = listing.getImageList(); //instantiate the imagelist
         private TextView imageIndex;
