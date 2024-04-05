@@ -40,7 +40,7 @@
                 android:fontFamily="@font/interfont"
                 android:textColor="@color/listing"
                 android:textFontWeight="600"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 >
             </TextView>
             <TextView
@@ -50,7 +50,7 @@
                 android:text="Medium"
                 android:fontFamily="@font/interfont"
                 android:textColor="@color/listing"
-                android:textSize="14sp">
+                android:textSize="12sp">
             </TextView>
             <TextView
                 android:layout_width="wrap_content"
@@ -109,7 +109,7 @@
                 android:fontFamily="@font/interfont"
                 android:textFontWeight="800"
                 android:layout_marginHorizontal="2dp"
-                android:textSize="30sp"
+                android:textSize="22sp"
                 >
             </TextView>
             <TextView
@@ -118,7 +118,7 @@
                 android:text="/"
                 android:textColor="@color/black"
                 android:fontFamily="@font/interfont"
-                android:textSize="30sp"
+                android:textSize="22sp"
                 android:layout_marginLeft="2dp"
                 >
             </TextView>
@@ -130,7 +130,7 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/interfont"
                 android:textFontWeight="800"
-                android:textSize="30sp"
+                android:textSize="22sp"
                 android:layout_marginHorizontal="2dp"
                 >
             </TextView>

@@ -147,7 +147,7 @@ public class ViewProductActivity extends AppCompatActivity {
 //        GradientDrawable descriptionBg = RoundedButton.RoundedRect(25);
 //        descriptionBg.setColor(Color.argb(15, 10, 10, 10));
 //        descriptionLayout.setBackground(descriptionBg);
-        productDescription.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        productDescription.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 //        productDescription.setMaxLines(8);
         ownerLayout = findViewById(R.id.productOwnerLayout);
 //        ownerLayout.setBackground(descriptionBg);

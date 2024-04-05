@@ -71,7 +71,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                     }
                     Log.d("categories", "category:" + categories);
                     // Get the clicked category
-                    CategoryModel clickedCategory = categories.get(getAdapterPosition());
+                    CategoryModel clickedCategory = categories.get(getBindingAdapterPosition());
                     Listings.getAllListings(db, clickedCategory.getCategoryName(), new CallbackAdapter() {
                         @Override
                         public void getList(List<Listing> listings_new) {

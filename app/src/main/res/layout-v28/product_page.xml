@@ -31,44 +31,45 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:orientation="vertical" />
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="20dp"
-                        android:layout_marginBottom="8dp">
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="25dp">
-
-                        <androidx.viewpager.widget.ViewPager
-                            xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/view_pager"
-                            android:layout_width="match_parent"
-                            android:layout_height="250dp"/>
-                    </androidx.cardview.widget.CardView>
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:cardCornerRadius="20dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_alignParentBottom="true"
-                            app:cardBackgroundColor="@color/darkgray">
-                            <TextView
-                                android:id="@+id/imageIndex"
-                                android:paddingHorizontal="6dp"
-                                android:paddingVertical="3dp"
-                                android:fontFamily="@font/interfont"
-                                android:textFontWeight="600"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0/0"
-                                android:textColor="@color/white"/>
-                        </androidx.cardview.widget.CardView>
-                    </RelativeLayout>
+                            android:layout_margin="20dp"
+                            android:layout_marginBottom="8dp"
+                            app:cardCornerRadius="25dp"
+                            app:cardElevation="8dp">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="240dp">
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_marginBottom="10dp"
+                                    app:cardCornerRadius="20dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    app:cardBackgroundColor="@color/darkgray">
+                                    <TextView
+                                        android:id="@+id/imageIndex"
+                                        android:paddingHorizontal="6dp"
+                                        android:paddingVertical="3dp"
+                                        android:fontFamily="@font/interfont"
+                                        android:textFontWeight="600"
+                                        android:textSize="11sp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="0/0"
+                                        android:textColor="@color/white"/>
+                                </androidx.cardview.widget.CardView>
 
+                                <androidx.viewpager.widget.ViewPager
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:id="@+id/view_pager"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
 
                     <TextView
                         android:id="@+id/productName"
