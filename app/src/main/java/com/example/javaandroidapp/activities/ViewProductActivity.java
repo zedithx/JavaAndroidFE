@@ -172,6 +172,7 @@ public class ViewProductActivity extends AppCompatActivity {
         private TextView imageIndex;
         public ImagePagerAdapter(TextView imageIndex) {
             this.imageIndex = imageIndex;
+            imageIndex.setText(String.format("%d/%d",  1, getCount()));
         }
 
 
@@ -195,7 +196,6 @@ public class ViewProductActivity extends AppCompatActivity {
                     .load(imageUrl)
                     .into(imageView);
             ((ViewPager) container).addView(imageView, 0);
-            imageIndex.setText(String.format("%d/%d",  1, getCount()));
             return imageView;
         }
 
