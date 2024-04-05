@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
-import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.objects.Order;
+import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.modals.Order;
 
 import java.util.List;
 

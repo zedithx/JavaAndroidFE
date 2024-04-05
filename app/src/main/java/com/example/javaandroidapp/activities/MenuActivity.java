@@ -14,7 +14,7 @@ import androidx.cardview.widget.CardView;
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
-import com.example.javaandroidapp.objects.User;
+import com.example.javaandroidapp.modals.User;
 import com.example.javaandroidapp.utils.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

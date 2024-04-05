@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.javaandroidapp.adapters.Callbacks;
-import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.modals.Listing;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -15,25 +15,22 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class Listings {
     public static void getAllListings(FirebaseFirestore db, String category, Callbacks callbacks) {
         Query item;
-        Log.d("listings", "retrieved" + category);
         Date date = new Date();
         if (category.equals("All")) {
-            item = db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
+            item = db.collection("listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
         } else if (category.equals("Popular")) {
-            item = db.collection("Listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("currentOrder", Query.Direction.DESCENDING);
+            item = db.collection("listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("currentOrder", Query.Direction.DESCENDING);
         } else {
-            item = db.collection("Listings").whereEqualTo("category", category).whereGreaterThan("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
+            item = db.collection("listings").whereEqualTo("category", category).whereGreaterThan("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
         }
         item.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -67,7 +64,7 @@ public class Listings {
                                   ArrayList<Double> variationAdditionalPrice, Callbacks callback) {
         Listing listing = new Listing(price, name, minOrder, currentOrder, expiryDate,
                 imageList, fbUser.getEmail(), description, oldPrice, category, variationNames, variationAdditionalPrice);
-        db.collection("Listings").add(listing).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        db.collection("listings").add(listing).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 callback.onResult(true);
@@ -101,7 +98,7 @@ public class Listings {
         Date date = new Date();
         List<Listing> listings = new ArrayList<>();
         for (String document : doc) {
-            db.collection("Listings").document(document).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            db.collection("listings").document(document).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {

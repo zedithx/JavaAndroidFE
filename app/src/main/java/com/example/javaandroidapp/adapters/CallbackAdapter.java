@@ -1,11 +1,11 @@
 package com.example.javaandroidapp.adapters;
 
-import com.example.javaandroidapp.activities.LandingActivity;
-import com.example.javaandroidapp.objects.CategoryModel;
-import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.objects.Order;
-import com.example.javaandroidapp.objects.User;
+import com.example.javaandroidapp.modals.CategoryModel;
+import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.modals.Order;
+import com.example.javaandroidapp.modals.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CallbackAdapter implements Callbacks{
@@ -36,6 +36,11 @@ public class CallbackAdapter implements Callbacks{
 
     @Override
     public void getListOfString(List<String> strings) {
+
+    }
+
+    @Override
+    public void getArrayListOfString(ArrayList<String> strings) {
 
     }
     @Override

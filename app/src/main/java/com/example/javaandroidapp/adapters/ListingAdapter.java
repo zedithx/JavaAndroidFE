@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
-import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.modals.Listing;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -61,8 +61,12 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
 
     @Override
     public int getItemCount() {
-        return listings.size();
-    }
+        int size = 0;
+        if (listings != null) {
+            size = listings.size();
+        }
+        return size;
+    };
 
     class ListingViewHolder extends RecyclerView.ViewHolder {
         private View listingView;
@@ -85,7 +89,9 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
             Integer listingMinOrder = listing.getMinOrder();
             Integer listingCurrentOrder = listing.getCurrentOrder();
             String listingExpiryCountdown = listing.getExpiryCountdown();
-            Glide.with(listingView).load(listing.getImageList().get(0)).into(productImageView);
+            if (listing.getImageList() != null) {
+                Glide.with(listingView).load(listing.getImageList().get(0)).into(productImageView);
+            }
             priceTextView.setText(String.format("$%s", df.format(listing_price)));
             if (listing_name.length() < 24) {
                 nameTextView.setText(listing_name);

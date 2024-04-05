@@ -1,29 +1,15 @@
 package com.example.javaandroidapp.activities;
 
-import static com.example.javaandroidapp.activities.ViewProductActivity.db;
 import static com.example.javaandroidapp.activities.ViewProductActivity.df;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BlendMode;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.ContactsContract;
-import android.text.Layout;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -35,31 +21,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.javaandroidapp.R;
 
-import com.bumptech.glide.Glide;
-import com.example.javaandroidapp.R;
-import com.example.javaandroidapp.adapters.ListingAdapter;
-import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.model.Document;
-
-import org.w3c.dom.Text;
 
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,7 +55,7 @@ public class SellerListingActivity extends AppCompatActivity {
         TextView emailTextView = findViewById(R.id.email);
         emailTextView.setText(sellerEmail);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Listings").whereEqualTo("createdBy", sellerEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("listings").whereEqualTo("createdBy", sellerEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 int numItems = task.getResult().size();

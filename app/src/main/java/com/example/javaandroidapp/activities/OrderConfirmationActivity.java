@@ -1,6 +1,9 @@
 package com.example.javaandroidapp.activities;
 
+import android.app.Application;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -40,8 +43,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     String ClientSecret;
 
     //TODO - move to environment var
-    String SECRET_KEY = "sk_test_51OxodJK24tdo9W189suQ8qBTT4qmfs5kqo4xBS1SBTrzRYbITc5gPRB3if0T8Gx8PMvlaUz6inMKryBQ0HnETr9T009CpIhchL";
-    String PUBLISH_KEY= "pk_test_51OxodJK24tdo9W18DDtNNwSl0XRv3IsLEO7LDymAdRSfJAaVYfAwSzFO4J2nXACDhe5tkb1tlz49F4OIUZ4ELdjD00h9mrNaXI";
+    String SECRET_KEY;
+    String PUBLISH_KEY;
     ImageView listingImageView;
     TextView listingNameTextView;
     TextView orderAmountTextView;
@@ -49,13 +52,24 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     LinearLayout imageViewLayout;
     ImageButton backBtn;
     CardView confirmBtn;
-
+    ApplicationInfo applicationInfo;
     ProgressBar loadingSpinner;
     MaterialCardView orderButton;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         Bundle bundle = getIntent().getExtras();
         System.out.println(bundle);
+        // Get SECRET KEY
+        try {
+            applicationInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (applicationInfo != null){
+            SECRET_KEY = applicationInfo.metaData.getString("secretKey");
+            PUBLISH_KEY = applicationInfo.metaData.getString("publishKey");
+        }
         MakeOrder orderDetails = (MakeOrder) bundle.getSerializable("new_order");
 //        Listing listing = orderDetails.getListing();
         super.onCreate(savedInstanceState);
@@ -132,10 +146,15 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 
     // All stripes functions
 
+    // This is the callback for success on payment
     private void onPaymentResult(PaymentSheetResult paymentSheetResult) {
         if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
             // Payment was successful
             Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show();
+            //query User
+            //add order object to order collection with userid
+            //add reference to order on Listing
+            //add reference to order on User
             Intent Main = new Intent(OrderConfirmationActivity.this, PaymentSuccessActivity.class);
             startActivity(Main);
         } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
@@ -197,7 +216,6 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                             JSONObject object = new JSONObject(response);
                             ClientSecret=object.getString("client_secret");
                             //TODO - store client secret in array of listing
-
                             // At this point we have all variables needed to proceed with paymentSheetIntent
                             // Change loading button to actual button
                             loadingSpinner.setVisibility(View.GONE);

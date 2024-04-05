@@ -1,13 +1,9 @@
-package com.example.javaandroidapp.objects;
+package com.example.javaandroidapp.modals;
 
-
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.firebase.firestore.DocumentId;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;

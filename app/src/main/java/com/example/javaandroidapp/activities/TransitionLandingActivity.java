@@ -8,10 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
-import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.utils.Listings;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;

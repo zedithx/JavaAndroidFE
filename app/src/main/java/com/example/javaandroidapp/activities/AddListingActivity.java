@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -66,7 +67,8 @@ public class AddListingActivity extends AppCompatActivity {
     ImageButton addImageButton;
     LinearLayout addListingLayout;
     Uri image;
-    ArrayList<String> uriArrList = new ArrayList<>();
+    ArrayList<Uri> uriArrList = new ArrayList<>();
+    ArrayList<String> uriImageList = new ArrayList<>();
     LinearLayout displayImageLayout;
     private List<String> categories = new ArrayList<String>();
 
@@ -77,7 +79,8 @@ public class AddListingActivity extends AppCompatActivity {
                 if (o.getData() != null) {
                     displayImageLayout = findViewById(R.id.displayImageLayout);
                     image = o.getData().getData();
-                    uriArrList.add(image.toString());
+                    uriArrList.add(image);
+                    Log.d("uriArr", "uriArr" + uriArrList);
 //                    Glide.with(getApplicationContext()).load(image).apply(new RequestOptions().override(100, 100)).into(addImageButton);
                     displayImageLayout.addView(addNewImageButton(image));
                     //Used to create a new button dynamically
@@ -177,16 +180,15 @@ public class AddListingActivity extends AppCompatActivity {
                 mTimePicker.show();
             }
         });
-
         addListingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addListingButton.setVisibility(View.GONE);
                 loadSpinner.setVisibility(View.VISIBLE);
 
-                Images.addImages(image, storageRef, new CallbackAdapter() {
+                Images.addImages(uriArrList, storageRef, new CallbackAdapter() {
                     @Override
-                    public void getResult(String uri) {
+                    public void getArrayListOfString(ArrayList<String> imageList) {
                         //TODO - change to list of Image
 //                        ArrayList<String> uri_list = new ArrayList<>();
 //                        uri_list.add(uri);
@@ -204,7 +206,7 @@ public class AddListingActivity extends AppCompatActivity {
                         LocalDate parsedDateTime = LocalDate.parse(datetime, formatter);
                         Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
                         Listings.addListing(db, fbUser, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
-                                Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, uriArrList, description.getText().toString(),
+                                Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, imageList, description.getText().toString(),
                                 Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), variantNames, variantAdditionalPrice, new CallbackAdapter() {
                             @Override
                             public void onResult(boolean isSuccess) {

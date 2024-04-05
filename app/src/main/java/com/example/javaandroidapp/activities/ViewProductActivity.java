@@ -1,11 +1,7 @@
 package com.example.javaandroidapp.activities;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.LayoutTransition;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
@@ -13,17 +9,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.transition.AutoTransition;
-import android.transition.Scene;
-import android.transition.Transition;
-import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,15 +23,13 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
-import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.objects.Order;
+import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.utils.Users;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,6 +47,7 @@ public class ViewProductActivity extends AppCompatActivity {
     ArrayList<RoundedButton> varBtnList;
     static TextView priceDollars, priceCents, productDescription, amtToOrder, strikePrice;
     LinearLayout descriptionLayout, ownerLayout, buyPanelLayout, extendedBuyLayout;
+    TextView imageIndex;
     int count = 0;
     static int amt;
     static int focusedBtnId = 1;
@@ -92,7 +79,8 @@ public class ViewProductActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
                 .replace(R.id.buyFrameLayout, new BuyFragment()).commit();
-
+        //ImageIndex
+        imageIndex = findViewById(R.id.imageIndex);
         // back button
         backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -370,6 +358,7 @@ public class ViewProductActivity extends AppCompatActivity {
         ImageView productImages = findViewById(R.id.imageViewer);
         RelativeLayout imageViewLayout = findViewById(R.id.imageViewLayout);
         Glide.with(imageViewLayout).load(imageList.get(0)).into(productImages);
+        imageIndex.setText(String.format("1/%s", imageList.size()));
         ImageButton prevBtn = findViewById(R.id.prevBtn);
         ImageButton nextBtn = findViewById(R.id.nextBtn);
         prevBtn.setOnClickListener(new View.OnClickListener() {
@@ -380,6 +369,7 @@ public class ViewProductActivity extends AppCompatActivity {
                 count = count <= 0 ? imageList.size() - 1 : count - 1;
                 String image = imageList.get(count);
                 Glide.with(imageViewLayout).load(image).into(productImages);
+                imageIndex.setText(String.format("%s/%s",count+1, imageList.size()));
             }
         });
 
@@ -389,6 +379,7 @@ public class ViewProductActivity extends AppCompatActivity {
                 count = count < imageList.size() - 1 ? count + 1 : 0;
                 String image = imageList.get(count);
                 Glide.with(imageViewLayout).load(image).into(productImages);
+                imageIndex.setText(String.format("%s/%s",count+1, imageList.size()));
             }
         });
     }
@@ -407,8 +398,9 @@ public class ViewProductActivity extends AppCompatActivity {
             newVarBtn.setId(btnId);
             String varText = varBtnName.get(i) + "\n" + (varBtnPrice.get(i) > 0 ? "+" + df.format(varBtnPrice.get(i)) : "-");
             newVarBtn.setText(varText);
+            newVarBtn.setTextColor((focusedBtnId == newVarBtn.getId() ? Color.WHITE: Color.BLACK));
             GradientDrawable drawable = RoundedButton.RoundedRect(25);
-            drawable.setColor((focusedBtnId == newVarBtn.getId() ? Color.argb(150, 255, 30, 7) : Color.argb(15, 10, 10, 10)));
+            drawable.setColor((focusedBtnId == newVarBtn.getId() ? Color.rgb( 237, 24, 61) : Color.argb(15, 10, 10, 10)));
             newVarBtn.setBackground(drawable);
 
 
@@ -419,7 +411,8 @@ public class ViewProductActivity extends AppCompatActivity {
                     focusedBtnId = newVarBtn.getId();
                     for (RoundedButton btn : varBtnList) {
                         GradientDrawable drawable = RoundedButton.RoundedRect(25);
-                        drawable.setColor((focusedBtnId == btn.getId() ? Color.argb(150, 255, 30, 7) : Color.argb(15, 10, 10, 10)));
+                        btn.setTextColor((focusedBtnId == btn.getId() ? Color.WHITE: Color.BLACK));
+                        drawable.setColor((focusedBtnId == btn.getId() ? Color.rgb(237, 24, 61) : Color.argb(15, 10, 10, 10)));
                         btn.setBackground(drawable);
                         displayedPrice = listing.getPrice() + varBtnPrice.get(btnId - 1);
                         setPrice(displayedPrice, priceDollars, priceCents);

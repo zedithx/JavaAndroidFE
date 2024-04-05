@@ -1,22 +1,14 @@
-package com.example.javaandroidapp.objects;
+package com.example.javaandroidapp.modals;
 
 import androidx.annotation.NonNull;
 
-import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.adapters.Callbacks;
-import com.example.javaandroidapp.utils.Orders;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Document;
-
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Order {
     private String delivery;
