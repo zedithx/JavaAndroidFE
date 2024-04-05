@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
@@ -102,7 +104,11 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
         //add images
-        loadImages(listing.getImageList());
+//        loadImages(listing.getImageList());
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        ImagePagerAdapter adapter = new ImagePagerAdapter(imageIndex);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(adapter);
 
         TextView productName = findViewById(R.id.productName);
         TextView minOrdersView = findViewById(R.id.numOrders2);
@@ -161,7 +167,56 @@ public class ViewProductActivity extends AppCompatActivity {
 
     }
 
+    private class ImagePagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
+        private ArrayList<String> mImages = listing.getImageList(); //instantiate the imagelist
+        private TextView imageIndex;
+        public ImagePagerAdapter(TextView imageIndex) {
+            this.imageIndex = imageIndex;
+        }
 
+
+        @Override
+        public int getCount() {
+            return mImages.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == ((ImageView) object);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Context context = ViewProductActivity.this;
+            ImageView imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            String imageUrl = mImages.get(position);
+            Glide.with(context)
+                    .load(imageUrl)
+                    .into(imageView);
+            ((ViewPager) container).addView(imageView, 0);
+            imageIndex.setText(String.format("%d/%d",  1, getCount()));
+            return imageView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            ((ViewPager) container).removeView((ImageView) object);
+        }
+        @Override
+        public void onPageSelected(int position) {
+            // Update image index text
+            imageIndex.setText(String.format("%d/%d", position + 1, getCount()));
+        }
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            // Not needed
+        }
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            // Not needed
+        }
+    }
     public static class BuyFragment extends Fragment {
 
         static LinearLayout popUpLayout;
@@ -348,40 +403,6 @@ public class ViewProductActivity extends AppCompatActivity {
         priceDollars.setText("S$" + ("" + df.format(displayedPrice)).split("\\.")[0]);
         String cents = df.format(displayedPrice).contains(".") ? df.format(displayedPrice).split("\\.")[1] : "00";
         priceCents.setText("." + (cents.length() > 1 ? cents : cents + "0"));
-    }
-
-
-    void loadImages(ArrayList<String> getImages) {
-
-        // in pdt class
-        ArrayList<String> imageList = new ArrayList<>(getImages);
-        ImageView productImages = findViewById(R.id.imageViewer);
-        RelativeLayout imageViewLayout = findViewById(R.id.imageViewLayout);
-        Glide.with(imageViewLayout).load(imageList.get(0)).into(productImages);
-        imageIndex.setText(String.format("1/%s", imageList.size()));
-        ImageButton prevBtn = findViewById(R.id.prevBtn);
-        ImageButton nextBtn = findViewById(R.id.nextBtn);
-        prevBtn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                // TODO - probably change to swipe and remove arrows. Use the dots to represent
-                count = count <= 0 ? imageList.size() - 1 : count - 1;
-                String image = imageList.get(count);
-                Glide.with(imageViewLayout).load(image).into(productImages);
-                imageIndex.setText(String.format("%s/%s",count+1, imageList.size()));
-            }
-        });
-
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                count = count < imageList.size() - 1 ? count + 1 : 0;
-                String image = imageList.get(count);
-                Glide.with(imageViewLayout).load(image).into(productImages);
-                imageIndex.setText(String.format("%s/%s",count+1, imageList.size()));
-            }
-        });
     }
 
     static void createBtnPanel(Listing listing, ArrayList<String> varBtnName, ArrayList<Double> varBtnPrice, LinearLayout variationBtnParentLayout) {
