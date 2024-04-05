@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,7 +25,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.adapters.CallbackAdapter;
+import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.modals.Order;
+import com.example.javaandroidapp.utils.Listings;
+import com.example.javaandroidapp.utils.Orders;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
@@ -33,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OrderConfirmationActivity extends AppCompatActivity {
@@ -55,10 +65,16 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     ApplicationInfo applicationInfo;
     ProgressBar loadingSpinner;
     MaterialCardView orderButton;
+    FirebaseFirestore db;
+    Order orderDetails;
+    String listingUID;
+    FirebaseUser fbUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        Bundle bundle = getIntent().getExtras();
-        System.out.println(bundle);
+        db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        fbUser = mAuth.getCurrentUser();
         // Get SECRET KEY
         try {
             applicationInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
@@ -70,8 +86,9 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             SECRET_KEY = applicationInfo.metaData.getString("secretKey");
             PUBLISH_KEY = applicationInfo.metaData.getString("publishKey");
         }
-        MakeOrder orderDetails = (MakeOrder) bundle.getSerializable("new_order");
-//        Listing listing = orderDetails.getListing();
+        // get order object from previous page
+        orderDetails = (Order) getIntent().getSerializableExtra("Order");
+        listingUID = (String) getIntent().getSerializableExtra("ListingUid");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_confirmation);
         //transition from loading to order after ClientSecret has been obtained
@@ -155,6 +172,21 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             //add order object to order collection with userid
             //add reference to order on Listing
             //add reference to order on User
+            //Store client secret
+//           String delivery, Listing listing, Double paidAmount, Date createdDate,
+//           String paymentStatus, Integer quantity, User user, String variant
+            Orders.createOrder(db, orderDetails, fbUser, listingUID, new CallbackAdapter() {
+                @Override
+                public void getOrder(Order order) {
+                    Orders.storeClientSecret(db, order, ClientSecret, new CallbackAdapter() {
+                        @Override
+                        public void onResult(boolean isSuccess) {
+                            Log.d("success", "success");
+                        }
+                    });
+                }
+            });
+
             Intent Main = new Intent(OrderConfirmationActivity.this, PaymentSuccessActivity.class);
             startActivity(Main);
         } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
@@ -215,9 +247,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                         try {
                             JSONObject object = new JSONObject(response);
                             ClientSecret=object.getString("client_secret");
-                            //TODO - store client secret in array of listing
                             // At this point we have all variables needed to proceed with paymentSheetIntent
-                            // Change loading button to actual button
                             loadingSpinner.setVisibility(View.GONE);
                             orderButton.setVisibility(View.VISIBLE);
                         } catch (JSONException e) {
@@ -241,7 +271,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("customer", customerID);
-                params.put("amount", "10" + "00");
+                Log.d("amount", "amount: " + String.format("%.0f",orderDetails.getPaidAmount() * 100));
+                params.put("amount", String.format("%.0f",orderDetails.getPaidAmount() * 100));
                 params.put("currency", "sgd");
                 params.put("automatic_payment_methods[enabled]", "true");
                 //changes to withold. Need to store all clientsecrets to be used to capture later on

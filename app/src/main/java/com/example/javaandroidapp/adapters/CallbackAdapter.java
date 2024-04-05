@@ -25,10 +25,15 @@ public class CallbackAdapter implements Callbacks{
     }
 
     @Override
-    public void getOrder(List<Order> orders) {
+    public void getOrders(List<Order> orders) {
+
 
     }
+    @Override
+    public void getOrder(Order order) {
 
+
+    }
     @Override
     public void getCategory(List<CategoryModel> categories) {
 

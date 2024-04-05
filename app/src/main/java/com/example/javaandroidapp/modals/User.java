@@ -1,12 +1,15 @@
 package com.example.javaandroidapp.modals;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
+    @DocumentId
+    private String uid;
     private String name;
     private Integer phoneNumber;
     private String address;
@@ -31,6 +34,10 @@ public class User {
         this.saved  = new ArrayList<>();
         this.orders = new ArrayList<>();
         this.listings = new ArrayList<>();
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public List<DocumentReference> getOrders() {

@@ -32,14 +32,18 @@ import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.modals.Order;
 import com.example.javaandroidapp.utils.Users;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ViewProductActivity extends AppCompatActivity {
@@ -63,6 +67,8 @@ public class ViewProductActivity extends AppCompatActivity {
     public static FirebaseFirestore db;
 
     public static FirebaseUser fbUser;
+
+    static double totalPrice;
 
     // get images for product id
 
@@ -300,13 +306,14 @@ public class ViewProductActivity extends AppCompatActivity {
             varSpinner.setAdapter(adapter);
             TextView subTotal = view.findViewById(R.id.subTotalText);
             displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-            subTotal.setText("S$ " + df.format(amt * displayedPrice));
+            subTotal.setText("S$ " + df.format(amt*displayedPrice));
             varSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     focusedBtnId = position;
                     displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
                     subTotal.setText("S$ " + df.format(amt * displayedPrice));
+                    totalPrice = amt * displayedPrice;
                 }
 
                 @Override
@@ -324,11 +331,12 @@ public class ViewProductActivity extends AppCompatActivity {
                         blankFillLayout.setVisibility(View.VISIBLE);
                         buyClicked = true;
                     } else if (popUpLayout.getVisibility() == View.VISIBLE) {
-                        MakeOrder newOrder = new MakeOrder(amt, listing, varBtnName.get(focusedBtnId));
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("new_order", (Serializable) newOrder);
+
+                        Order newOrder = new Order(amt, Date.valueOf(String.valueOf(LocalDate.now()))
+                                , varBtnName.get(focusedBtnId), totalPrice);
                         Intent joinOrderIntent = new Intent(getContext(), OrderConfirmationActivity.class);
-                        joinOrderIntent.putExtra("new_order", bundle);
+                        joinOrderIntent.putExtra("Order", newOrder);
+                        joinOrderIntent.putExtra("ListingUid", listing.getUid());
                         startActivity(joinOrderIntent);
 
                     }
@@ -465,29 +473,5 @@ public class ViewProductActivity extends AppCompatActivity {
             drawable.setCornerRadius(rad);
             return drawable;
         }
-    }
-}
-
-class MakeOrder implements Serializable {
-    int amount;
-    Listing listing;
-    String variantName;
-
-    MakeOrder(int amount, Listing listing, String variantName) {
-        amount = amount;
-        listing = listing;
-        variantName = variantName;
-    }
-
-    public String getVariantName() {
-        return variantName;
-    }
-
-    public Listing getListing() {
-        return listing;
-    }
-
-    public int getAmount() {
-        return amount;
     }
 }

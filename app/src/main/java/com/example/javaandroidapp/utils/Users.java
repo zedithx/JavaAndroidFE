@@ -161,14 +161,14 @@ public class Users {
                     if (items != null) {
                         Orders.getOrdersUser(items, new CallbackAdapter() {
                             @Override
-                            public void getOrder(List<Order> orders) {
+                            public void getOrders(List<Order> orders) {
                                 if (orders.size() != 0) {
-                                    callback.getOrder(orders);
+                                    callback.getOrders(orders);
                                 }
                             }
                         });
                     } else {
-                        callback.getOrder(new ArrayList<Order>());
+                        callback.getOrders(new ArrayList<Order>());
                     }
                 }
             }

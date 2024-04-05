@@ -12,7 +12,8 @@ public interface Callbacks {
     void onResult(boolean isSuccess);
     void getResult(String result);
     void getList(List<Listing> listings);
-    void getOrder(List<Order> orders);
+    void getOrders(List<Order> orders);
+    void getOrder(Order order);
     void getCategory(List<CategoryModel> categories);
     void getListOfString(List<String> strings);
 
