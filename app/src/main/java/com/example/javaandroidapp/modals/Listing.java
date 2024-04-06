@@ -2,6 +2,7 @@ package com.example.javaandroidapp.modals;
 
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -25,15 +26,16 @@ public class Listing implements Serializable{
     private ArrayList<String> variationNames = new ArrayList<>();
     private ArrayList<Double> variationAdditionalPrice = new ArrayList<>();
     private ArrayList<String> imageList = new ArrayList<>();
+    private ArrayList<DocumentReference> orders = new ArrayList<>();
 
     public Listing() {}
 
-    public Listing(Double price, String name, Integer minOrder, Integer currentOrder, Date expiry, ArrayList<String> imageList,
+    public Listing(Double price, String name, Integer minOrder, Date expiry, ArrayList<String> imageList,
                    String createdBy, String description, Double oldPrice, String category, ArrayList<String> variationNames, ArrayList<Double> variationAdditionalPrice) {
         this.price = price;
         this.name = name;
         this.minOrder = minOrder;
-        this.currentOrder = currentOrder;
+        this.currentOrder = 0;
         this.expiry = expiry;
         this.imageList = imageList;
         this.description = description;

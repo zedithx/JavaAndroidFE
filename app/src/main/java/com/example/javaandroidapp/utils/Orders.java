@@ -25,7 +25,7 @@ import java.util.List;
 public class Orders {
     public static void getOrdersUser(List<DocumentReference> items, Callbacks callback) {
         List<Order> orders = new ArrayList<>();
-        for (DocumentReference item: items) {
+        for (DocumentReference item : items) {
             item.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -60,22 +60,88 @@ public class Orders {
             }
         });
     }
-    public static void storeClientSecret(FirebaseFirestore db, String orderID, String ClientSecret, Callbacks callback) {
-        db.collection("orders").document(orderID).update("clientSecret", ClientSecret)
+
+    public static void storeClientSecret(FirebaseFirestore db, String orderId, String ClientSecret, Callbacks callback) {
+        db.collection("orders").document(orderId).update("clientSecret", ClientSecret)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Callback for success
-                        callback.onResult(true);
+                        callback.getResult(orderId);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Callback for failure
-                        callback.onResult(false);
+                        callback.getResult(null);
                     }
                 });
+    }
+
+    public static void listingReference(FirebaseFirestore db, String listingUid, String orderId, Callbacks callback) {
+        db.collection("listings").document(listingUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot listingRef = task.getResult();
+                if (listingRef.exists()) {
+                    List<DocumentReference> orders = (List<DocumentReference>) listingRef.get("Orders");
+                    if (orders == null) {
+                        orders = new ArrayList<>();
+                    }
+                    DocumentReference orderReference = db.collection("orders").document(orderId);
+                    orders.add(orderReference);
+                    db.collection("listings").document(listingUid).update("orders", orders)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Callback for success
+                                    callback.getResult(orderId);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Callback for failure
+                                    callback.getResult(null);
+                                }
+                            });
+                }
+            }
+        });
+    }
+
+    public static void userReference(FirebaseFirestore db, FirebaseUser fbUser, String orderId, Callbacks callback) {
+        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot userRef = task.getResult();
+                if (userRef.exists()) {
+                    List<DocumentReference> orders = (List<DocumentReference>) userRef.get("Orders");
+                    if (orders == null) {
+                        orders = new ArrayList<>();
+                    }
+                    DocumentReference orderReference = db.collection("orders").document(orderId);
+                    orders.add(orderReference);
+                    db.collection("users").document(fbUser.getUid()).update("orders", orders)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Callback for success
+                                    callback.onResult(true);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Callback for failure
+                                    callback.onResult(false);
+                                }
+                            });
+                }
+            }
+        });
+
     }
 }
 

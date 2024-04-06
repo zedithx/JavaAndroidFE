@@ -206,7 +206,7 @@ public class AddListingActivity extends AppCompatActivity {
                         LocalDate parsedDateTime = LocalDate.parse(datetime, formatter);
                         Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
                         Listings.addListing(db, fbUser, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
-                                Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, imageList, description.getText().toString(),
+                                Integer.parseInt(minOrder.getText().toString()), parsedDate, imageList, description.getText().toString(),
                                 Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), variantNames, variantAdditionalPrice, new CallbackAdapter() {
                             @Override
                             public void onResult(boolean isSuccess) {

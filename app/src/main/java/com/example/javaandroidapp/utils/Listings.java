@@ -60,10 +60,10 @@ public class Listings {
             });
         }
     }
-    public static void addListing(FirebaseFirestore db, FirebaseUser fbUser, Double price, String name, Integer minOrder, Integer currentOrder, Date expiryDate,
+    public static void addListing(FirebaseFirestore db, FirebaseUser fbUser, Double price, String name, Integer minOrder, Date expiryDate,
                                   ArrayList<String> imageList, String description, Double oldPrice, String category, ArrayList<String> variationNames,
                                   ArrayList<Double> variationAdditionalPrice, Callbacks callback) {
-        Listing listing = new Listing(price, name, minOrder, currentOrder, expiryDate,
+        Listing listing = new Listing(price, name, minOrder, expiryDate,
                 imageList, fbUser.getEmail(), description, oldPrice, category, variationNames, variationAdditionalPrice);
         db.collection("listings").add(listing).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override

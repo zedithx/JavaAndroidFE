@@ -165,20 +165,29 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     // This is the callback for success on payment
     private void onPaymentResult(PaymentSheetResult paymentSheetResult) {
         if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
-            // Payment was successful
-            Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show();
-            //add reference to order on Listing
-            //add reference to order on User
             //add order object to order collection with userid
             Orders.createOrder(db, orderDetails, fbUser, listingUID, new CallbackAdapter() {
                 @Override
-                public void getResult(String orderID) {
-                    if (orderID != null) {
+                public void getResult(String orderId) {
+                    if (orderId != null) {
                         //Store client secret
-                        Orders.storeClientSecret(db, orderID, ClientSecret, new CallbackAdapter() {
+                        Orders.storeClientSecret(db, orderId, ClientSecret, new CallbackAdapter() {
                             @Override
-                            public void onResult(boolean isSuccess) {
-                                Log.d("success", "success");
+                            public void getResult(String orderId) {
+                                //add reference to order on Listing increment number of orders
+                                Orders.listingReference(db, listingUID, orderId, new CallbackAdapter(){
+                                    @Override
+                                    public void getResult(String orderId){
+                                        //add order to user list
+                                        Orders.userReference(db, fbUser, orderId, new CallbackAdapter(){
+                                            @Override
+                                            public void onResult(boolean isSuccess){
+                                                // Notify user
+                                                Toast.makeText(getApplicationContext(), "Payment successful", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         });
                     }

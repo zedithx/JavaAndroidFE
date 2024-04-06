@@ -82,22 +82,6 @@ public class Users {
         }
     }
 
-    public static void getName(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
-        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        callback.getResult(document.getData().get("name").toString());
-                    } else {
-                        callback.getResult("");
-                    }
-                }
-            }
-        });
-    }
-
     public static void savedListing(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
         db.collection("users").document(fbUser.getUid().toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
