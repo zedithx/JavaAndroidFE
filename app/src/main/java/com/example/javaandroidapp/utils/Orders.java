@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Orders {
     public static void getOrdersUser(List<DocumentReference> items, Callbacks callback) {
@@ -85,13 +86,16 @@ public class Orders {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot listingRef = task.getResult();
                 if (listingRef.exists()) {
-                    List<DocumentReference> orders = (List<DocumentReference>) listingRef.get("Orders");
+                    List<DocumentReference> orders = (List<DocumentReference>) listingRef.get("orders");
                     if (orders == null) {
                         orders = new ArrayList<>();
                     }
                     DocumentReference orderReference = db.collection("orders").document(orderId);
                     orders.add(orderReference);
-                    db.collection("listings").document(listingUid).update("orders", orders)
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("orders", orders);
+                    data.put("currentOrder", orders.size());
+                    db.collection("listings").document(listingUid).update(data)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -117,7 +121,7 @@ public class Orders {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot userRef = task.getResult();
                 if (userRef.exists()) {
-                    List<DocumentReference> orders = (List<DocumentReference>) userRef.get("Orders");
+                    List<DocumentReference> orders = (List<DocumentReference>) userRef.get("orders");
                     if (orders == null) {
                         orders = new ArrayList<>();
                     }

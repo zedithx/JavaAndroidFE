@@ -184,6 +184,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                                             public void onResult(boolean isSuccess){
                                                 // Notify user
                                                 Toast.makeText(getApplicationContext(), "Payment successful", Toast.LENGTH_SHORT).show();
+                                                Intent Main = new Intent(OrderConfirmationActivity.this, PaymentSuccessActivity.class);
+                                                startActivity(Main);
                                             }
                                         });
                                     }
@@ -193,9 +195,6 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                     }
                 }
             });
-
-            Intent Main = new Intent(OrderConfirmationActivity.this, PaymentSuccessActivity.class);
-            startActivity(Main);
         } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
             // Payment failed
             Toast.makeText(this, "Payment failed", Toast.LENGTH_SHORT).show();

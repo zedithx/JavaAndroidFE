@@ -318,7 +318,7 @@ public class ViewProductActivity extends AppCompatActivity {
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-
+                    totalPrice = amt * displayedPrice;
 
                 }
             });
