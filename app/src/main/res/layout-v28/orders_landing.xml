@@ -92,13 +92,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="end"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true">
         <LinearLayout
             android:id="@+id/ordernumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_gravity="end"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"

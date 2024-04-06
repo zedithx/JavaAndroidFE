@@ -22,6 +22,7 @@ public class Order implements Serializable {
     private Integer quantity;
     private String variant;
     private Date createdDate;
+    private Double itemPrice;
     private Double paidAmount;
 
     public Order() {
@@ -42,14 +43,22 @@ public class Order implements Serializable {
     public void setUser(DocumentReference user) {
         this.user = user;
     }
+    public Double getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(Double itemPrice) {
+        this.itemPrice = itemPrice;
+    }
 
     public Order(Integer quantity,
-                 Date createdDate, String variant, Double paidAmount) {
+                 Date createdDate, String variant,Double itemPrice, Double paidAmount) {
         this.delivery = "Unfulfilled";
         this.paymentStatus = "Not Paid";
         this.createdDate = createdDate;
         this.quantity = quantity;
         this.variant = variant;
+        this.itemPrice = itemPrice;
         this.paidAmount = paidAmount;
     }
 

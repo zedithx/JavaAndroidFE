@@ -75,6 +75,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             TextView orderQuantityView = itemView.findViewById(R.id.order_quantity);
             TextView orderStatusView = itemView.findViewById(R.id.order_status);
             TextView orderPaidAmountView = itemView.findViewById(R.id.order_paid_amount);
+            TextView currentOrderView = itemView.findViewById(R.id.currentorder);
+            TextView minorderView = itemView.findViewById(R.id.minorder);
             // Bind data to the views in the item layout
             String orderDelivery = order.getDelivery();
             order.getListing(new CallbackAdapter(){
@@ -83,6 +85,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                     if (listing != null) {
                         orderNameView.setText(listing.getName());
                         Glide.with(orderView).load(listing.getImageList().get(0)).into(productImageView);
+                        currentOrderView.setText(String.valueOf(listing.getCurrentOrder()));
+                        minorderView.setText(String.valueOf(listing.getMinOrder()));
                     }
                 }
             });

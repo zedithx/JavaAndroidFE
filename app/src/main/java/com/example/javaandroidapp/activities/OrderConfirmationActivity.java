@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.modals.Listing;
@@ -56,7 +57,11 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     String PUBLISH_KEY;
     ImageView listingImageView;
     TextView listingNameTextView;
-    TextView orderAmountTextView;
+    TextView orderQtyTextView;
+    TextView totalPriceTextView;
+    TextView itemPriceTextView;
+    TextView sellerNameTextView;
+    TextView expiryDateTextView;
     TextView variantNameTextView;
     LinearLayout imageViewLayout;
     ImageButton backBtn;
@@ -66,6 +71,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     MaterialCardView orderButton;
     FirebaseFirestore db;
     Order orderDetails;
+    Listing listingDetails;
     String listingUID;
     FirebaseUser fbUser;
 
@@ -87,9 +93,30 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         }
         // get order object from previous page
         orderDetails = (Order) getIntent().getSerializableExtra("Order");
-        listingUID = (String) getIntent().getSerializableExtra("ListingUid");
+        listingDetails = (Listing) getIntent().getSerializableExtra("Listing");
+        listingUID = listingDetails.getUid();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_confirmation);
+        //dynamic setting of text on order confirmation page
+        listingNameTextView = findViewById(R.id.productName);
+        imageViewLayout = findViewById(R.id.imageViewLayout);
+        listingImageView = findViewById(R.id.listingImage);
+        sellerNameTextView = findViewById(R.id.sellerName);
+        expiryDateTextView = findViewById(R.id.expiryDate);
+        variantNameTextView = findViewById(R.id.variationName);
+        itemPriceTextView = findViewById(R.id.itemPrice);
+        orderQtyTextView = findViewById(R.id.qtyToOrder);
+        totalPriceTextView = findViewById(R.id.totalPaymentAmt);
+
+        // Need listing intent as well
+        listingNameTextView.setText(listingDetails.getName());
+        Glide.with(imageViewLayout).load(listingDetails.getImageList().get(0)).into(listingImageView);
+        sellerNameTextView.setText(listingDetails.getCreatedBy());
+        expiryDateTextView.setText(listingDetails.getExpiryCountdown());
+        orderQtyTextView.setText(String.valueOf(orderDetails.getQuantity()));
+        variantNameTextView.setText(orderDetails.getVariant());
+        itemPriceTextView.setText("$" + orderDetails.getItemPrice());
+        totalPriceTextView.setText("$" + orderDetails.getPaidAmount());
         //transition from loading to order after ClientSecret has been obtained
         loadingSpinner = findViewById(R.id.loadingSpinner);
         orderButton = findViewById(R.id.confirmButton);
@@ -129,19 +156,6 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(OrderConfirmationActivity.this);
         requestQueue.add(stringRequest);
-//
-//
-//
-//        listingNameTextView = findViewById(R.id.productName);
-//        imageViewLayout = findViewById(R.id.imageViewLayout);
-//        listingImageView = findViewById(R.id.listingImage);
-//        variantNameTextView = findViewById(R.id.variant_name);
-//        orderAmountTextView = findViewById(R.id.variant_amt);
-//
-//        listingNameTextView.setText(listing.getName());
-//        Glide.with(imageViewLayout).load(listing.getImageList().get(0)).into(listingImageView);
-//        variantNameTextView.setText(orderDetails.getVariantName());
-//        orderAmountTextView.setText("" + orderDetails.getAmount());
         backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +199,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                                                 // Notify user
                                                 Toast.makeText(getApplicationContext(), "Payment successful", Toast.LENGTH_SHORT).show();
                                                 Intent Main = new Intent(OrderConfirmationActivity.this, PaymentSuccessActivity.class);
+                                                Main.putExtra("Order", orderDetails);
+                                                Main.putExtra("Listing", listingDetails);
                                                 startActivity(Main);
                                             }
                                         });

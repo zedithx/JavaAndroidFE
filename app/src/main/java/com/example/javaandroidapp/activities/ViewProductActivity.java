@@ -333,10 +333,10 @@ public class ViewProductActivity extends AppCompatActivity {
                     } else if (popUpLayout.getVisibility() == View.VISIBLE) {
 
                         Order newOrder = new Order(amt, Date.valueOf(String.valueOf(LocalDate.now()))
-                                , varBtnName.get(focusedBtnId), totalPrice);
+                                , varBtnName.get(focusedBtnId), displayedPrice, totalPrice);
                         Intent joinOrderIntent = new Intent(getContext(), OrderConfirmationActivity.class);
                         joinOrderIntent.putExtra("Order", newOrder);
-                        joinOrderIntent.putExtra("ListingUid", listing.getUid());
+                        joinOrderIntent.putExtra("Listing", listing);
                         startActivity(joinOrderIntent);
 
                     }
