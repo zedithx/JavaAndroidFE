@@ -52,7 +52,6 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     String ephemeralKey;
     String ClientSecret;
 
-    //TODO - move to environment var
     String SECRET_KEY;
     String PUBLISH_KEY;
     ImageView listingImageView;
@@ -168,22 +167,21 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
             // Payment was successful
             Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show();
-            //query User
-            //add order object to order collection with userid
             //add reference to order on Listing
             //add reference to order on User
-            //Store client secret
-//           String delivery, Listing listing, Double paidAmount, Date createdDate,
-//           String paymentStatus, Integer quantity, User user, String variant
+            //add order object to order collection with userid
             Orders.createOrder(db, orderDetails, fbUser, listingUID, new CallbackAdapter() {
                 @Override
-                public void getOrder(Order order) {
-                    Orders.storeClientSecret(db, order, ClientSecret, new CallbackAdapter() {
-                        @Override
-                        public void onResult(boolean isSuccess) {
-                            Log.d("success", "success");
-                        }
-                    });
+                public void getResult(String orderID) {
+                    if (orderID != null) {
+                        //Store client secret
+                        Orders.storeClientSecret(db, orderID, ClientSecret, new CallbackAdapter() {
+                            @Override
+                            public void onResult(boolean isSuccess) {
+                                Log.d("success", "success");
+                            }
+                        });
+                    }
                 }
             });
 
@@ -271,7 +269,6 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("customer", customerID);
-                Log.d("amount", "amount: " + String.format("%.0f",orderDetails.getPaidAmount() * 100));
                 params.put("amount", String.format("%.0f",orderDetails.getPaidAmount() * 100));
                 params.put("currency", "sgd");
                 params.put("automatic_payment_methods[enabled]", "true");
