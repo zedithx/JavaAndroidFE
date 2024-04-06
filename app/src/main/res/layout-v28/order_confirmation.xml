@@ -323,15 +323,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/item_variation"
-                        android:textColor="@color/listing" add
-                        android:layout_marginBottom="2dp"/>
+                        android:textColor="@color/listing" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/quantity"
-                        android:textColor="@color/listing"
-                        android:layout_marginBottom="2dp"/>
+                        android:textColor="@color/listing" />
 
                     <TextView
                         android:layout_width="wrap_content"

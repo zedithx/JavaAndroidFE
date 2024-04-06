@@ -72,7 +72,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             ImageView productImageView = itemView.findViewById(R.id.product_image);
             TextView orderNameView = itemView.findViewById(R.id.order_name);
             TextView orderVariantView = itemView.findViewById(R.id.order_variant);
-            TextView orderQuantityView = itemView.findViewById(R.id.order_quantity);
             TextView orderStatusView = itemView.findViewById(R.id.order_status);
             TextView orderPaidAmountView = itemView.findViewById(R.id.order_paid_amount);
             TextView currentOrderView = itemView.findViewById(R.id.currentorder);
@@ -93,8 +92,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             Integer orderQuantity = order.getQuantity();
             String orderVariant = order.getVariant();
             Double orderPaidAmount = order.getPaidAmount();
-            orderVariantView.setText(orderVariant);
-            orderQuantityView.setText(String.format("Qty: %s", String.valueOf(orderQuantity)));
+            orderVariantView.setText(String.format("%s x%s",orderVariant, orderQuantity));
             orderStatusView.setText(orderDelivery);
             orderPaidAmountView.setText(String.format("$%s", String.valueOf(orderPaidAmount)));
         }
