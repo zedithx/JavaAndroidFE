@@ -63,4 +63,5 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">17sp</item>
     </style>
+
 </resources>
