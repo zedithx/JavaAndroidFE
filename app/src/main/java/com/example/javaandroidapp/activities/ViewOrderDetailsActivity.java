@@ -5,12 +5,15 @@ import static com.example.javaandroidapp.activities.ViewProductActivity.listing;
 
 import android.content.Intent;
 
+import android.graphics.Canvas;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +25,7 @@ import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.modals.Order;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,22 +46,52 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
-        // get order object from previous page
-        Order orderDetails = (Order) getIntent().getSerializableExtra("Order");
-//        Listing listingDetails = (Listing) getIntent().getSerializableExtra("Listing");
 
+        Order orderDetails = (Order) getIntent().getSerializableExtra("Order");
+        ImageView processProgress = findViewById(R.id.process_progress);
+        RelativeLayout productDetailsLayout = findViewById(R.id.product_details_layout);
         ImageButton backBtn = findViewById(R.id.backBtn);
+        MaterialCardView backToMyPageBtn = findViewById(R.id.back_to_my_page_btn);
         TextView orderName = findViewById(R.id.orderName);
         TextView sellerName = findViewById(R.id.seller);
         TextView variantTextView = findViewById(R.id.order_variant);
         TextView expiryTextView = findViewById(R.id.date);
         ImageView productImage = findViewById(R.id.product_image);
-        Log.d("listing log", "" + orderDetails.getListingId());
 
+        switch (orderDetails.getDelivery()){
+            case "Unfulfilled":
+                processProgress.setImageResource(R.drawable.process_progress_1);
+                break;
+            case "Finalised":
+                processProgress.setImageResource(R.drawable.progress_process_2);
+                break;
+            case "Dispatched":
+                processProgress.setImageResource(R.drawable.progress_process_3);
+                break;
+            case "Ready":
+                processProgress.setImageResource(R.drawable.progress_process_4);
+                break;
+            default:
+                processProgress.setImageResource(R.drawable.process_progress);
+        }
+        productDetailsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewProduct = new Intent(ViewOrderDetailsActivity.this, ViewProductActivity.class);
+            }
+        });
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        backToMyPageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Main = new Intent(ViewOrderDetailsActivity.this, TransitionLandingActivity.class);
+                startActivity(Main);
             }
         });
 
