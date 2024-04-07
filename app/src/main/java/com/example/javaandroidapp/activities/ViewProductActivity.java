@@ -25,19 +25,25 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.modals.Order;
 import com.example.javaandroidapp.utils.Users;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ViewProductActivity extends AppCompatActivity {
@@ -61,6 +67,8 @@ public class ViewProductActivity extends AppCompatActivity {
     public static FirebaseFirestore db;
 
     public static FirebaseUser fbUser;
+
+    static double totalPrice;
 
     // get images for product id
 
@@ -102,7 +110,11 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
         //add images
-        loadImages(listing.getImageList());
+//        loadImages(listing.getImageList());
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        ImagePagerAdapter adapter = new ImagePagerAdapter(imageIndex);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(adapter);
 
         TextView productName = findViewById(R.id.productName);
         TextView minOrdersView = findViewById(R.id.numOrders2);
@@ -141,7 +153,7 @@ public class ViewProductActivity extends AppCompatActivity {
 //        GradientDrawable descriptionBg = RoundedButton.RoundedRect(25);
 //        descriptionBg.setColor(Color.argb(15, 10, 10, 10));
 //        descriptionLayout.setBackground(descriptionBg);
-        productDescription.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        productDescription.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 //        productDescription.setMaxLines(8);
         ownerLayout = findViewById(R.id.productOwnerLayout);
 //        ownerLayout.setBackground(descriptionBg);
@@ -161,7 +173,57 @@ public class ViewProductActivity extends AppCompatActivity {
 
     }
 
+    //carousel
+    private class ImagePagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
+        private ArrayList<String> mImages = listing.getImageList(); //instantiate the imagelist
+        private TextView imageIndex;
+        public ImagePagerAdapter(TextView imageIndex) {
+            this.imageIndex = imageIndex;
+            imageIndex.setText(String.format("%d/%d",  1, getCount()));
+        }
 
+
+        @Override
+        public int getCount() {
+            return mImages.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == ((ImageView) object);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Context context = ViewProductActivity.this;
+            ImageView imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            String imageUrl = mImages.get(position);
+            Glide.with(context)
+                    .load(imageUrl)
+                    .into(imageView);
+            ((ViewPager) container).addView(imageView, 0);
+            return imageView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            ((ViewPager) container).removeView((ImageView) object);
+        }
+        @Override
+        public void onPageSelected(int position) {
+            // Update image index text
+            imageIndex.setText(String.format("%d/%d", position + 1, getCount()));
+        }
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            // Not needed
+        }
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            // Not needed
+        }
+    }
     public static class BuyFragment extends Fragment {
 
         static LinearLayout popUpLayout;
@@ -244,18 +306,19 @@ public class ViewProductActivity extends AppCompatActivity {
             varSpinner.setAdapter(adapter);
             TextView subTotal = view.findViewById(R.id.subTotalText);
             displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-            subTotal.setText("S$ " + df.format(amt * displayedPrice));
+            subTotal.setText("S$ " + df.format(amt*displayedPrice));
             varSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     focusedBtnId = position;
                     displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
                     subTotal.setText("S$ " + df.format(amt * displayedPrice));
+                    totalPrice = amt * displayedPrice;
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-
+                    totalPrice = amt * displayedPrice;
 
                 }
             });
@@ -268,11 +331,12 @@ public class ViewProductActivity extends AppCompatActivity {
                         blankFillLayout.setVisibility(View.VISIBLE);
                         buyClicked = true;
                     } else if (popUpLayout.getVisibility() == View.VISIBLE) {
-                        MakeOrder newOrder = new MakeOrder(amt, listing, varBtnName.get(focusedBtnId));
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("new_order", (Serializable) newOrder);
+
+                        Order newOrder = new Order(amt, Date.valueOf(String.valueOf(LocalDate.now()))
+                                , varBtnName.get(focusedBtnId), displayedPrice, totalPrice);
                         Intent joinOrderIntent = new Intent(getContext(), OrderConfirmationActivity.class);
-                        joinOrderIntent.putExtra("new_order", bundle);
+                        joinOrderIntent.putExtra("Order", newOrder);
+                        joinOrderIntent.putExtra("Listing", listing);
                         startActivity(joinOrderIntent);
 
                     }
@@ -350,40 +414,6 @@ public class ViewProductActivity extends AppCompatActivity {
         priceCents.setText("." + (cents.length() > 1 ? cents : cents + "0"));
     }
 
-
-    void loadImages(ArrayList<String> getImages) {
-
-        // in pdt class
-        ArrayList<String> imageList = new ArrayList<>(getImages);
-        ImageView productImages = findViewById(R.id.imageViewer);
-        RelativeLayout imageViewLayout = findViewById(R.id.imageViewLayout);
-        Glide.with(imageViewLayout).load(imageList.get(0)).into(productImages);
-        imageIndex.setText(String.format("1/%s", imageList.size()));
-        ImageButton prevBtn = findViewById(R.id.prevBtn);
-        ImageButton nextBtn = findViewById(R.id.nextBtn);
-        prevBtn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                // TODO - probably change to swipe and remove arrows. Use the dots to represent
-                count = count <= 0 ? imageList.size() - 1 : count - 1;
-                String image = imageList.get(count);
-                Glide.with(imageViewLayout).load(image).into(productImages);
-                imageIndex.setText(String.format("%s/%s",count+1, imageList.size()));
-            }
-        });
-
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                count = count < imageList.size() - 1 ? count + 1 : 0;
-                String image = imageList.get(count);
-                Glide.with(imageViewLayout).load(image).into(productImages);
-                imageIndex.setText(String.format("%s/%s",count+1, imageList.size()));
-            }
-        });
-    }
-
     static void createBtnPanel(Listing listing, ArrayList<String> varBtnName, ArrayList<Double> varBtnPrice, LinearLayout variationBtnParentLayout) {
 
         LinearLayout.LayoutParams varBtnParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -443,29 +473,5 @@ public class ViewProductActivity extends AppCompatActivity {
             drawable.setCornerRadius(rad);
             return drawable;
         }
-    }
-}
-
-class MakeOrder implements Serializable {
-    int amount;
-    Listing listing;
-    String variantName;
-
-    MakeOrder(int amount, Listing listing, String variantName) {
-        amount = amount;
-        listing = listing;
-        variantName = variantName;
-    }
-
-    public String getVariantName() {
-        return variantName;
-    }
-
-    public Listing getListing() {
-        return listing;
-    }
-
-    public int getAmount() {
-        return amount;
     }
 }

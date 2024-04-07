@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.example.javaandroidapp.adapters.Callbacks;
 import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.modals.Order;
+import com.example.javaandroidapp.modals.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,11 +61,11 @@ public class Listings {
             });
         }
     }
-    public static void addListing(FirebaseFirestore db, FirebaseUser fbUser, Double price, String name, Integer minOrder, Integer currentOrder, Date expiryDate,
+    public static void addListing(FirebaseFirestore db, User user, Double price, String name, Integer minOrder, Date expiryDate,
                                   ArrayList<String> imageList, String description, Double oldPrice, String category, ArrayList<String> variationNames,
                                   ArrayList<Double> variationAdditionalPrice, Callbacks callback) {
-        Listing listing = new Listing(price, name, minOrder, currentOrder, expiryDate,
-                imageList, fbUser.getEmail(), description, oldPrice, category, variationNames, variationAdditionalPrice);
+        Listing listing = new Listing(price, name, minOrder, expiryDate,
+                imageList, user.getName(), description, oldPrice, category, variationNames, variationAdditionalPrice);
         db.collection("listings").add(listing).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {

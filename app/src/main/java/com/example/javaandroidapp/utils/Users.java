@@ -82,37 +82,6 @@ public class Users {
         }
     }
 
-    public static void getName(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
-        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        callback.getResult(document.getData().get("name").toString());
-                    } else {
-                        callback.getResult("");
-                    }
-                }
-            }
-        });
-    }
-
-    public static void savedListing(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
-        db.collection("users").document(fbUser.getUid().toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    User user = document.toObject(User.class);
-                    assert user != null;
-                    user.setUserRef(fbUser);
-                    callback.getUser(user);
-                }
-            }
-        });
-    }
-
     public static void getUser(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
         db.collection("users").document(fbUser.getUid().toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -161,14 +130,14 @@ public class Users {
                     if (items != null) {
                         Orders.getOrdersUser(items, new CallbackAdapter() {
                             @Override
-                            public void getOrder(List<Order> orders) {
+                            public void getOrders(List<Order> orders) {
                                 if (orders.size() != 0) {
-                                    callback.getOrder(orders);
+                                    callback.getOrders(orders);
                                 }
                             }
                         });
                     } else {
-                        callback.getOrder(new ArrayList<Order>());
+                        callback.getOrders(new ArrayList<Order>());
                     }
                 }
             }
@@ -204,7 +173,7 @@ public class Users {
                 DocumentSnapshot userRef = task.getResult();
                 if (userRef.exists()) {
                     List<DocumentReference> saved = (List<DocumentReference>) userRef.get("saved");
-                    DocumentReference listingReference = db.collection("Listings").document(listing.getUid());
+                    DocumentReference listingReference = db.collection("listings").document(listing.getUid());
                     // Check if listingReference is in saved, then remove
                     if (saved == null) {
                         callback.onResult(false);
@@ -233,7 +202,7 @@ public class Users {
                     if (saved == null) {
                         saved = new ArrayList<>();
                     }
-                    DocumentReference listingReference = db.collection("Listings").document(listing.getUid());
+                    DocumentReference listingReference = db.collection("listings").document(listing.getUid());
                     saved.add(listingReference);
                     db.collection("users").document(fbUser.getUid()).update("saved", saved)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -261,7 +230,7 @@ public class Users {
                 DocumentSnapshot userRef = task.getResult();
                 if (userRef.exists()) {
                     List<DocumentReference> saved = (List<DocumentReference>) userRef.get("saved");
-                    DocumentReference listingReference = db.collection("Listings").document(listing.getUid());
+                    DocumentReference listingReference = db.collection("listings").document(listing.getUid());
                     // Check if listingReference is in saved, then remove
                     Iterator<DocumentReference> iterator = saved.iterator();
                     while (iterator.hasNext()) {

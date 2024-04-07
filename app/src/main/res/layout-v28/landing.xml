@@ -131,9 +131,9 @@
             <LinearLayout
             android:id="@+id/navigation_bar"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/red_navigation">
+            android:background="@color/lightred">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="80dp"

@@ -27,7 +27,7 @@
                 app:srcCompat="@drawable/test_kangol"/>
         </androidx.cardview.widget.CardView>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
@@ -40,51 +40,38 @@
                 android:fontFamily="@font/interfont"
                 android:textColor="@color/listing"
                 android:textFontWeight="600"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 >
             </TextView>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/order_variant"
-                android:text="Medium"
-                android:fontFamily="@font/interfont"
-                android:textColor="@color/listing"
-                android:textSize="14sp">
-            </TextView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/order_quantity"
-                android:text="Qty: 2"
+                android:text="Medium x2"
                 android:fontFamily="@font/interfont"
                 android:textColor="@color/listing"
                 android:textSize="12sp">
             </TextView>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/order_status"
-                    android:text="3 Days Left"
-                    android:layout_alignParentStart="true"
-                    android:fontFamily="@font/interfont"
-                    android:textColor="@color/lightred"
-                    android:textSize="12sp"/>
-                <TextView
-                    android:id="@+id/order_paid_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:fontFamily="@font/interfont"
-                    android:textSize="12sp"
-                    android:textFontWeight="600"
-                    android:text="$23.40"
-                    />
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/order_paid_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/interfont"
+                android:textSize="12sp"
+                android:textFontWeight="600"
+                android:text="$23.40"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/order_status"
+                android:text="3 Days Left"
+                android:layout_alignParentStart="true"
+                android:fontFamily="@font/interfont"
+                android:textColor="@color/lightred"
+                android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -92,13 +79,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="end"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true">
         <LinearLayout
             android:id="@+id/ordernumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_gravity="end"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
@@ -109,7 +97,7 @@
                 android:fontFamily="@font/interfont"
                 android:textFontWeight="800"
                 android:layout_marginHorizontal="2dp"
-                android:textSize="30sp"
+                android:textSize="22sp"
                 >
             </TextView>
             <TextView
@@ -118,7 +106,7 @@
                 android:text="/"
                 android:textColor="@color/black"
                 android:fontFamily="@font/interfont"
-                android:textSize="30sp"
+                android:textSize="22sp"
                 android:layout_marginLeft="2dp"
                 >
             </TextView>
@@ -130,7 +118,7 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/interfont"
                 android:textFontWeight="800"
-                android:textSize="30sp"
+                android:textSize="22sp"
                 android:layout_marginHorizontal="2dp"
                 >
             </TextView>

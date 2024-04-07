@@ -5,33 +5,60 @@ import androidx.annotation.NonNull;
 import com.example.javaandroidapp.adapters.Callbacks;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Order {
+public class Order implements Serializable {
+    @DocumentId
+    private String uid;
     private String delivery;
-    private DocumentReference listing;
-    private DocumentReference user;
+    private transient DocumentReference listing;
+    private transient DocumentReference user;
     private String paymentStatus;
     private Integer quantity;
     private String variant;
     private Date createdDate;
+    private Double itemPrice;
     private Double paidAmount;
 
     public Order() {
 
     }
+    public String getUid() {
+        return uid;
+    }
 
-    public Order(String delivery, DocumentReference listing, String paymentStatus, Integer quantity, Date createdDate, DocumentReference user, String variant, Double paidAmount) {
-        this.delivery = delivery;
+    public DocumentReference getListing() {
+        return listing;
+    }
+
+    public void setListing(DocumentReference listing) {
         this.listing = listing;
-        this.paymentStatus = paymentStatus;
-        this.createdDate = createdDate;
+    }
+
+    public void setUser(DocumentReference user) {
         this.user = user;
+    }
+    public Double getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(Double itemPrice) {
+        this.itemPrice = itemPrice;
+    }
+
+    public Order(Integer quantity,
+                 Date createdDate, String variant,Double itemPrice, Double paidAmount) {
+        this.delivery = "Unfulfilled";
+        this.paymentStatus = "Not Paid";
+        this.createdDate = createdDate;
         this.quantity = quantity;
         this.variant = variant;
+        this.itemPrice = itemPrice;
         this.paidAmount = paidAmount;
     }
 
@@ -40,7 +67,7 @@ public class Order {
     }
 
     public Double getPaidAmount() {
-        return this.paidAmount;
+        return Double.valueOf(String.format("%.2f", this.paidAmount));
     }
 
     public DocumentReference getUser() {

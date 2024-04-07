@@ -39,9 +39,12 @@ import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.fragments.DatePickerFragment;
 import com.example.javaandroidapp.fragments.TimePickerFragment;
+import com.example.javaandroidapp.modals.CategoryModel;
+import com.example.javaandroidapp.modals.User;
 import com.example.javaandroidapp.utils.Categories;
 import com.example.javaandroidapp.utils.Images;
 import com.example.javaandroidapp.utils.Listings;
+import com.example.javaandroidapp.utils.Users;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -70,6 +73,7 @@ public class AddListingActivity extends AppCompatActivity {
     ArrayList<Uri> uriArrList = new ArrayList<>();
     ArrayList<String> uriImageList = new ArrayList<>();
     LinearLayout displayImageLayout;
+    User user;
     private List<String> categories = new ArrayList<String>();
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -98,6 +102,12 @@ public class AddListingActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
+        Users.getUser(db, fbUser, new CallbackAdapter(){
+            @Override
+            public void getUser(User new_user) {
+                user = new_user;
+            }
+        });
         if (fbUser == null) {
             Intent notSignedIn = new Intent(AddListingActivity.this, LogInActivity.class);
             startActivity(notSignedIn);
@@ -205,8 +215,8 @@ public class AddListingActivity extends AppCompatActivity {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy HH:mm");
                         LocalDate parsedDateTime = LocalDate.parse(datetime, formatter);
                         Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-                        Listings.addListing(db, fbUser, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
-                                Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, imageList, description.getText().toString(),
+                        Listings.addListing(db, user, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
+                                Integer.parseInt(minOrder.getText().toString()), parsedDate, imageList, description.getText().toString(),
                                 Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), variantNames, variantAdditionalPrice, new CallbackAdapter() {
                             @Override
                             public void onResult(boolean isSuccess) {

@@ -42,6 +42,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
+        categories.get(0).setSelected(true);
         return new CategoryViewHolder(view);
     }
 
@@ -63,7 +64,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (selectedCategory != null) {
+                    if (!categories.get(0).isSelected()) {
                         selectedCategory.setSelected(false);
                     }
                     else {
@@ -71,7 +72,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                     }
                     Log.d("categories", "category:" + categories);
                     // Get the clicked category
-                    CategoryModel clickedCategory = categories.get(getAdapterPosition());
+                    CategoryModel clickedCategory = categories.get(getBindingAdapterPosition());
                     Listings.getAllListings(db, clickedCategory.getCategoryName(), new CallbackAdapter() {
                         @Override
                         public void getList(List<Listing> listings_new) {
