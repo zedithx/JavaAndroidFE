@@ -79,6 +79,7 @@
     <string name="payment_vieworderbutton">View Order Details</string>
     <string name="date_hint">dd/MM/yy</string>
     <string name="time_hint">hh:mm</string>
+    <string name="my_orders">My Orders</string>
 
 
 </resources>

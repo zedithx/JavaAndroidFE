@@ -1,7 +1,9 @@
 package com.example.javaandroidapp.activities;
 
 import static com.example.javaandroidapp.activities.ViewProductActivity.df;
+import static com.example.javaandroidapp.activities.ViewProductActivity.productDescription;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -24,6 +26,8 @@ import androidx.cardview.widget.CardView;
 
 import com.example.javaandroidapp.R;
 
+import com.example.javaandroidapp.adapters.ListingAdapter;
+import com.example.javaandroidapp.modals.Listing;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
@@ -34,8 +38,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 public class SellerListingActivity extends AppCompatActivity {
@@ -69,16 +76,24 @@ public class SellerListingActivity extends AppCompatActivity {
 
                             String listingId = document.getId();
                             String productName = document.getString("name");
-                            String price = "S$" + df.format(document.getDouble("price"));
+                            double priceDouble = document.getDouble("price");
+                            String price = "S$" + df.format(priceDouble);
                             String expiry = document.getString("expiryCountdown");
+                            Date expiryDate = new Date();
                             List<String> imageList = (List<String>) document.get("imageList");
 
                             int minOrder = document.getDouble("minOrder").intValue();
                             int currOrder = document.getDouble("currentOrder").intValue();
-                            Log.d("listingDetails", "" + listingId + "\n" + productName + "\n" + price + "\n" + expiry + "\n" + "minOrder: " + minOrder + "\n" + "currentOrder: " + currOrder + "\n" + "img str: " + imageList.get(0));
 
 
-                            listingsGrid.addView(createNewMatCard(count, productName, price, minOrder, currOrder, expiry, imageList));
+                            ArrayList<String> variationNames = (ArrayList<String>) document.get("variationNames");
+                            ArrayList<Double> variationAdditionalPrice = (ArrayList<Double>) document.get("variationAdditionalPrice");
+                            String description = document.getString("description");
+
+                            //                            Log.d("listingDetails", "" + listingId + "\n" + productName + "\n" + price + "\n" + expiry + "\n" + "minOrder: " + minOrder + "\n" + "currentOrder: " + currOrder + "\n" + "img str: " + imageList.get(0));
+                            Listing listing = new Listing(priceDouble, productName, minOrder, expiryDate,(ArrayList<String>) imageList, sellerEmail, description, document.getDouble("oldPrice"),document.getString("category"), variationNames, variationAdditionalPrice );
+//                            Log.d("print listing", ""+listing.getCreatedBy()+"\n"+listing.getMinOrder());
+                            listingsGrid.addView(createNewMatCard(count, productName, price, minOrder, currOrder, expiry, imageList, listing));
                             count += 1;
                         }
 
@@ -105,7 +120,7 @@ public class SellerListingActivity extends AppCompatActivity {
 
     }
 
-    public MaterialCardView createNewMatCard(int count, String name, String price, int minOrder, int currentOrder, String expiry, List<String> imageList) {
+    public MaterialCardView createNewMatCard(int count, String name, String price, int minOrder, int currentOrder, String expiry, List<String> imageList, Listing listing) {
 
         GridLayout.LayoutParams cardMaterialParams = new GridLayout.LayoutParams();
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -199,16 +214,43 @@ public class SellerListingActivity extends AppCompatActivity {
         cardMat.setCardBackgroundColor(null);
         cardMat.setCardElevation(0);
         cardMat.setStrokeWidth(0);
+//        ArrayList<Listing> listingList = new ArrayList<>();
+//        listingList.add(listing);
+//        ListingAdapter listings = new ListingAdapter(listingList);
+//        final Listing[] listingData = new Listing[1];
+//        listings.setOnItemClickListener(new ListingAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(Listing data) {
+//                // Handle item click, e.g., start a new activity
+//                listingData[0] = data;
+//                Log.d("seller view", Objects.toString(data));
+//
+//                Intent intent = new Intent(SellerListingActivity.this, TransitionViewProductActivity.class);
+//                intent.putExtra("listing", data);
+//                startActivity(intent);
+//            }
+//        });
+//        cardMat.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent getProduct = new Intent(SellerListingActivity.this, TransitionViewProductActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("bundle", listingData[0]);
+//                getProduct.putExtra("listing", bundle);
+//                startActivity(getProduct);
+//            }
+//        });
 
-        cardMat.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-//                Intent viewProductIntent = new Intent(SellerListingActivity.this, TransitionViewProductActivity.class);
-//                listing =
-//                viewProductIntent.putExtra("listing", );
-//                startActivity(viewProductIntent);
-            }
-        });
+//        cardMat.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent getProduct = new Intent(SellerListingActivity.this, TransitionViewProductActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("bundle", listing);
+//                getProduct.putExtra("listing", bundle);
+//                startActivity(getProduct);
+//            }
+//        });
         cardMaterialParams.rowSpec = GridLayout.spec(count / 2);
         cardMaterialParams.columnSpec = GridLayout.spec(count % 2);
         cardMat.setLayoutParams(cardMaterialParams);
@@ -228,6 +270,7 @@ class ListingPlaceholder {
     Double price;
 
 }
+
 class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
 
     private String url;

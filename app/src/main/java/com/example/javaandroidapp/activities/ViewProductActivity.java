@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ import java.sql.Date;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ViewProductActivity extends AppCompatActivity {
     static DecimalFormat df = new DecimalFormat("#.00");
@@ -80,6 +82,7 @@ public class ViewProductActivity extends AppCompatActivity {
         // get listing object from listing clicked
         // Change to multithread
         listing = (Listing) getIntent().getSerializableExtra("listing");
+        Log.d("redirect", Objects.toString(listing));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_page);
         amt = 1;
@@ -334,7 +337,7 @@ public class ViewProductActivity extends AppCompatActivity {
                         buyClicked = true;
                     } else if (popUpLayout.getVisibility() == View.VISIBLE) {
 
-                        Order newOrder = new Order(amt, Date.valueOf(String.valueOf(LocalDate.now()))
+                        Order newOrder = new Order(listing.getUid(), amt, Date.valueOf(String.valueOf(LocalDate.now()))
                                 , varBtnName.get(focusedBtnId), displayedPrice, totalPrice);
                         Intent joinOrderIntent = new Intent(getContext(), OrderConfirmationActivity.class);
                         joinOrderIntent.putExtra("Order", newOrder);
