@@ -52,8 +52,8 @@ public class SellerListingActivity extends AppCompatActivity {
         sellerEmail = (String) getIntent().getSerializableExtra("sellerEmail");
         setContentView(R.layout.view_pdt_owner_listing);
 
-        TextView emailTextView = findViewById(R.id.email);
-        emailTextView.setText(sellerEmail);
+        TextView ownerTextView = findViewById(R.id.owner);
+        ownerTextView.setText(sellerEmail);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("listings").whereEqualTo("createdBy", sellerEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -146,7 +146,7 @@ public class SellerListingActivity extends AppCompatActivity {
         TextView cardPrice = new TextView(SellerListingActivity.this);
         cardPrice.setLayoutParams(textParams);
         cardPrice.setTextSize(20);
-        cardPrice.setText("S$" + ViewProductActivity.df.format(40.80));
+        cardPrice.setText(price);
         cardPrice.setTypeface(Typeface.DEFAULT_BOLD);
 
         // Horizontal Layout for order num text and icon

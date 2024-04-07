@@ -119,7 +119,9 @@ public class ViewProductActivity extends AppCompatActivity {
         TextView productName = findViewById(R.id.productName);
         TextView minOrdersView = findViewById(R.id.numOrders2);
         TextView currOrdersView = findViewById(R.id.numOrders1);
+        TextView ownerName = findViewById(R.id.owner);
         productName.setText(listing.getName());
+        ownerName.setText(listing.getCreatedBy());
         currOrdersView.setText("" + listing.getCurrentOrder());
         minOrdersView.setText("/" + listing.getMinOrder());
         priceDollars = findViewById(R.id.priceDollars);

@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:ellipsize="end"
-                        android:text="email address" />
+                        android:text="Seller's Profile" />
 
                     <LinearLayout
                         android:id="@+id/rating"
