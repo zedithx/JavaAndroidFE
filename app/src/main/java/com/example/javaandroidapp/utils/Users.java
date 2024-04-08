@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import io.getstream.chat.java.exceptions.StreamException;
+
 public class Users {
     public static void signInUser(FirebaseAuth mAuth, Context context, String email, String password, Callbacks callback) {
         if (email.equals("")) {
@@ -91,7 +93,11 @@ public class Users {
                     User user = document.toObject(User.class);
                     assert user != null;
                     user.setUserRef(fbUser);
-                    callback.getUser(user);
+                    try {
+                        callback.getUser(user);
+                    } catch (StreamException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
