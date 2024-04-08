@@ -15,6 +15,7 @@ import java.util.Date;
 public class Order implements Serializable {
     @DocumentId
     private String uid;
+    private String listingId;
     private String delivery;
     private transient DocumentReference listing;
     private transient DocumentReference user;
@@ -31,7 +32,7 @@ public class Order implements Serializable {
     public String getUid() {
         return uid;
     }
-
+    public String getListingId(){return listingId;}
     public DocumentReference getListing() {
         return listing;
     }
@@ -51,8 +52,9 @@ public class Order implements Serializable {
         this.itemPrice = itemPrice;
     }
 
-    public Order(Integer quantity,
+    public Order(String listingId, Integer quantity,
                  Date createdDate, String variant,Double itemPrice, Double paidAmount) {
+        this.listingId = listingId;
         this.delivery = "Unfulfilled";
         this.paymentStatus = "Not Paid";
         this.createdDate = createdDate;

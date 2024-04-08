@@ -1,8 +1,13 @@
 package com.example.javaandroidapp.adapters;
 
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.activities.LandingActivity;
+import com.example.javaandroidapp.activities.LandingOrdersActivity;
+import com.example.javaandroidapp.activities.ViewOrderDetailsActivity;
 import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.modals.Order;
 
@@ -47,9 +55,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (clickListener != null) {
-                    clickListener.onItemClick(data);
-                }
+                // change
+//                    clickListener.onItemClick(data);
+                    Context context = view.getContext();
+                    Intent Main = new Intent(context, ViewOrderDetailsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Order", data);;
+                    Main.putExtra("Order", data);
+                    context.startActivity(Main);
+
+//                    Main.putExtra("Listing", listing);
+
             }
         });
     }
