@@ -66,21 +66,8 @@ public class ChannelActivity extends AppCompatActivity {
         });
         Users.getUser(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance().getCurrentUser(), new CallbackAdapter() {
             @Override
-            public void getUser(com.example.javaandroidapp.modals.User user_acc) throws StreamException {
+            public void getUser(com.example.javaandroidapp.modals.User user_acc) {
                 User user = new User.Builder().withId(uid).withName(user_acc.getName()).withImage(user_acc.getProfileImage()).build();
-
-//                    try {
-//                        ChatSystem.createChannel(client, new ArrayList<String>(), new CallbackAdapter(){
-//                            @Override
-//                            public void onResult(boolean result) {
-//                                if (result) {
-//                                    System.out.println("Testing");
-//                                }
-//                            }
-//                        });
-//                    } catch (StreamException e) {
-//                        throw new RuntimeException(e);
-//                    }
                 FilterObject filter = Filters.and(
                         Filters.in("members", singletonList(user.getId()))
                 );
