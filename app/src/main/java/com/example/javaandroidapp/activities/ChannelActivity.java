@@ -51,15 +51,11 @@ public class ChannelActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         ChannelListBinding binding = ChannelListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        String apiKey = "4n8ad58drzz3";
         TextView header_name = findViewById(R.id.header_saved);
         header_name.setText("Chats");
         TextView title_name = findViewById(R.id.title_saved);
         title_name.setVisibility(View.GONE);
-        StreamStatePluginFactory statePluginFactory = new StreamStatePluginFactory(new StatePluginConfig(), this);
-        ChatClient client = new ChatClient.Builder(apiKey, getApplicationContext()).withPlugins(statePluginFactory).build();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String token = ChatSystem.getToken(uid);
         ImageView back_arrow = findViewById(R.id.back_arrow);
         back_arrow.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -72,7 +68,7 @@ public class ChannelActivity extends AppCompatActivity {
             @Override
             public void getUser(com.example.javaandroidapp.modals.User user_acc) throws StreamException {
                 User user = new User.Builder().withId(uid).withName(user_acc.getName()).withImage(user_acc.getProfileImage()).build();
-                client.connectUser(user, token).enqueue(result -> {
+
 //                    try {
 //                        ChatSystem.createChannel(client, new ArrayList<String>(), new CallbackAdapter(){
 //                            @Override
@@ -85,21 +81,20 @@ public class ChannelActivity extends AppCompatActivity {
 //                    } catch (StreamException e) {
 //                        throw new RuntimeException(e);
 //                    }
-                    FilterObject filter = Filters.and(
-                            Filters.in("members", singletonList(user.getId()))
-                    );
+                FilterObject filter = Filters.and(
+                        Filters.in("members", singletonList(user.getId()))
+                );
 
-                    ViewModelProvider.Factory factory = new ChannelListViewModelFactory.Builder()
-                            .filter(filter)
-                            .sort(ChannelListViewModel.DEFAULT_SORT)
-                            .build();
+                ViewModelProvider.Factory factory = new ChannelListViewModelFactory.Builder()
+                        .filter(filter)
+                        .sort(ChannelListViewModel.DEFAULT_SORT)
+                        .build();
 
-                    ChannelListViewModel channelsViewModel = new ViewModelProvider(ChannelActivity.this, factory).get(ChannelListViewModel.class);
-                    ChannelListViewModelBinding.bind(channelsViewModel, binding.channelListView, ChannelActivity.this);
-                    binding.channelListView.setChannelItemClickListener(
-                            channel -> startActivity(ChatActivity.newIntent(ChannelActivity.this, channel))
-                    );
-                });
+                ChannelListViewModel channelsViewModel = new ViewModelProvider(ChannelActivity.this, factory).get(ChannelListViewModel.class);
+                ChannelListViewModelBinding.bind(channelsViewModel, binding.channelListView, ChannelActivity.this);
+                binding.channelListView.setChannelItemClickListener(
+                        channel -> startActivity(ChatActivity.newIntent(ChannelActivity.this, channel))
+                );
 
             }
         });
