@@ -86,6 +86,8 @@
     <string name="finalise_group_order">Finalised\nGroup Order</string>
     <string name="item_dispatched">Items\nDispatched</string>
     <string name="collect_items">Collect\nItems</string>
+    <string name="collection_qr_code">View Locker QR Code</string>
+    <string name="collection_details">Collection Details</string>
 
 
 </resources>
