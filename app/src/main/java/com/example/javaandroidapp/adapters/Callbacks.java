@@ -8,6 +8,9 @@ import com.example.javaandroidapp.modals.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.getstream.chat.android.models.Channel;
+import io.getstream.chat.java.exceptions.StreamException;
+
 public interface Callbacks {
     void onResult(boolean isSuccess);
     void getResult(String result);
@@ -19,5 +22,6 @@ public interface Callbacks {
 
     void getArrayListOfString(ArrayList<String> strings);
     void getOrderList(Listing listing);
-    void getUser(User user);
+    void getUser(User user) throws StreamException;
+    void getChannel(Channel channel);
 }
