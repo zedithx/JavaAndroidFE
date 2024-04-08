@@ -3,12 +3,14 @@ package com.example.javaandroidapp.modals;
 
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Listing implements Serializable{
     @DocumentId
@@ -165,5 +167,24 @@ public class Listing implements Serializable{
 
     public void setVariationAdditionalPrice(ArrayList<Double> variationAdditionalPrice) {
         this.variationAdditionalPrice = variationAdditionalPrice;
+    }
+    public void setUid(String uid){
+        this.uid = uid;
+    }
+    public static Listing createListing(DocumentSnapshot doc){
+        Listing newListing = new Listing();
+        newListing.setImageList((ArrayList<String>) doc.get("imageList"));
+        newListing.setCreatedBy(doc.getString("createdBy"));
+        newListing.setCategory(doc.getString("category"));
+        newListing.setDescription(doc.getString("description"));
+        newListing.setCurrentOrder((doc.getDouble("currentOrder")).intValue());
+        newListing.setMinOrder((doc.getDouble("minOrder")).intValue());
+        newListing.setName(doc.getString("name"));
+        newListing.setPrice(doc.getDouble("price"));
+        newListing.setOldPrice(doc.getDouble("oldPrice"));
+        newListing.setVariationNames((ArrayList<String>) doc.get("variationNames"));
+        newListing.setVariationAdditionalPrice((ArrayList<Double>) doc.get("variationAdditionalPrice") );
+        newListing.setUid(doc.getId());
+        return newListing;
     }
 }

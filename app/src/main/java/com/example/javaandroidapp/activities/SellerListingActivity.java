@@ -2,6 +2,7 @@ package com.example.javaandroidapp.activities;
 
 import static com.example.javaandroidapp.activities.ViewProductActivity.df;
 import static com.example.javaandroidapp.activities.ViewProductActivity.productDescription;
+import static com.example.javaandroidapp.modals.Listing.createListing;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -57,8 +58,6 @@ import io.getstream.chat.java.exceptions.StreamException;
 
 public class SellerListingActivity extends AppCompatActivity {
 
-    public static String sellerEmail;
-    //    ArrayList<String> listingsIdList;
     public static int count = 0;
 
     @Override
@@ -66,13 +65,13 @@ public class SellerListingActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         // get sellerEmail from extra
-        sellerEmail = (String) getIntent().getSerializableExtra("sellerEmail");
+        Listing listingExtra = (Listing) getIntent().getSerializableExtra("listing");
         setContentView(R.layout.view_pdt_owner_listing);
 
         TextView ownerTextView = findViewById(R.id.owner);
-        ownerTextView.setText(sellerEmail);
+        ownerTextView.setText(listingExtra.getCreatedBy());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("listings").whereEqualTo("createdBy", sellerEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("listings").whereEqualTo("createdBy", listingExtra.getCreatedBy()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 int numItems = task.getResult().size();
@@ -83,27 +82,10 @@ public class SellerListingActivity extends AppCompatActivity {
                     listingsGrid.setRowCount(numItems);
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if (document.exists()) {
-
-                            String listingId = document.getId();
-                            String productName = document.getString("name");
-                            double priceDouble = document.getDouble("price");
-                            String price = "S$" + df.format(priceDouble);
                             String expiry = document.getString("expiryCountdown");
-                            Date expiryDate = new Date();
-                            List<String> imageList = (List<String>) document.get("imageList");
-
-                            int minOrder = document.getDouble("minOrder").intValue();
-                            int currOrder = document.getDouble("currentOrder").intValue();
-
-
-                            ArrayList<String> variationNames = (ArrayList<String>) document.get("variationNames");
-                            ArrayList<Double> variationAdditionalPrice = (ArrayList<Double>) document.get("variationAdditionalPrice");
-                            String description = document.getString("description");
-
                             //                            Log.d("listingDetails", "" + listingId + "\n" + productName + "\n" + price + "\n" + expiry + "\n" + "minOrder: " + minOrder + "\n" + "currentOrder: " + currOrder + "\n" + "img str: " + imageList.get(0));
-                            Listing listing = new Listing(priceDouble, productName, minOrder, expiryDate,(ArrayList<String>) imageList, sellerEmail, description, document.getDouble("oldPrice"),document.getString("category"), variationNames, variationAdditionalPrice );
-//                            Log.d("print listing", ""+listing.getCreatedBy()+"\n"+listing.getMinOrder());
-                            listingsGrid.addView(createNewMatCard(count, productName, price, minOrder, currOrder, expiry, imageList, listing));
+                            Listing listing = createListing(document);
+                            listingsGrid.addView(createNewMatCard(count, listing.getName(), "S$" + df.format(listing.getPrice()), listing.getMinOrder(), listing.getCurrentOrder(), expiry, listing.getImageList(), listing));
                             count += 1;
                         }
 
@@ -268,27 +250,16 @@ public class SellerListingActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
-//        cardMat.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent getProduct = new Intent(SellerListingActivity.this, TransitionViewProductActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("bundle", listingData[0]);
-//                getProduct.putExtra("listing", bundle);
-//                startActivity(getProduct);
-//            }
-//        });
 
-//        cardMat.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent getProduct = new Intent(SellerListingActivity.this, TransitionViewProductActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("bundle", listing);
-//                getProduct.putExtra("listing", bundle);
-//                startActivity(getProduct);
-//            }
-//        });
+
+        cardMat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent getProduct = new Intent(SellerListingActivity.this, TransitionViewProductActivity.class);
+                getProduct.putExtra("listing", listing);
+                startActivity(getProduct);
+            }
+        });
         cardMaterialParams.rowSpec = GridLayout.spec(count / 2);
         cardMaterialParams.columnSpec = GridLayout.spec(count % 2);
         cardMat.setLayoutParams(cardMaterialParams);
