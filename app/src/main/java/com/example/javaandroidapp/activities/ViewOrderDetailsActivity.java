@@ -67,7 +67,7 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         TextView orderName = findViewById(R.id.orderName);
         TextView sellerName = findViewById(R.id.seller);
         TextView variantTextView = findViewById(R.id.order_variant);
-        TextView expiryTextView = findViewById(R.id.date);
+//        TextView expiryTextView = findViewById(R.id.date);
         ImageView productImage = findViewById(R.id.product_image);
         String deliveryStatus = orderDetails.getDelivery();
 
@@ -79,7 +79,7 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         variationNameLayout.addView(variationNameText);
         variationAmountLayout.addView(variationAmountText);
 
-        // hardcode testing, remove when done
+        //TODO: hardcode testing, remove the hardcoded deliveryStatus when done
         deliveryStatus = "Ready";
 
         switch (deliveryStatus) {
@@ -147,7 +147,7 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         productDetailsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent viewProduct = new Intent(ViewOrderDetailsActivity.this, ViewProductActivity.class);
+//                Intent viewProduct = new Intent(ViewOrderDetailsActivity.this, ViewProductActivity.class);
             }
         });
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +176,7 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
                         orderName.setText(document.getString("name"));
                         sellerName.setText(document.getString("createdBy"));
                         variantTextView.setText("Variant: " + orderDetails.getVariant());
-                        expiryTextView.setText(document.getString("expiryCountdown"));
+//                        expiryTextView.setText(document.getString("expiryCountdown"));
                         new ImageLoadTask(((ArrayList<String>) document.get("imageList")).get(0), productImage).execute();
 
                     }

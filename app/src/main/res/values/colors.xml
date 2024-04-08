@@ -10,4 +10,5 @@
     <color name="listing">#E6323232</color>
     <color name="palegray">#EFEFEF</color>
     <color name="unfocused">#0A0A0A26</color>
+    <color name="translucent_gray">#99000000</color>
 </resources>

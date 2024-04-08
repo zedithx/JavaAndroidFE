@@ -88,6 +88,12 @@
     <string name="collect_items">Collect\nItems</string>
     <string name="collection_qr_code">View Locker QR Code</string>
     <string name="collection_details">Collection Details</string>
+    <string name="scan_to_collect">Scan To Collect</string>
+    <string name="items_delivered">Items Delivered</string>
+    <string name="items_delivered_on">"Items have been delivered on "</string>
+    <string name="locker_no">Locker Number</string>
+    <string name="mark_as_collected">Mark As Collected</string>
+    <string name="items_collected">Items\nCollected</string>
 
 
 </resources>

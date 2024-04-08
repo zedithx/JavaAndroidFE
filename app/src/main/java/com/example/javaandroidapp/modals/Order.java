@@ -17,6 +17,7 @@ public class Order implements Serializable {
     private String uid;
     private String listingId;
     private String delivery;
+    private boolean collectionStatus;
     private transient DocumentReference listing;
     private transient DocumentReference user;
     private String paymentStatus;
@@ -29,10 +30,15 @@ public class Order implements Serializable {
     public Order() {
 
     }
+
     public String getUid() {
         return uid;
     }
-    public String getListingId(){return listingId;}
+
+    public String getListingId() {
+        return listingId;
+    }
+
     public DocumentReference getListing() {
         return listing;
     }
@@ -44,6 +50,7 @@ public class Order implements Serializable {
     public void setUser(DocumentReference user) {
         this.user = user;
     }
+
     public Double getItemPrice() {
         return itemPrice;
     }
@@ -53,7 +60,7 @@ public class Order implements Serializable {
     }
 
     public Order(String listingId, Integer quantity,
-                 Date createdDate, String variant,Double itemPrice, Double paidAmount) {
+                 Date createdDate, String variant, Double itemPrice, Double paidAmount) {
         this.listingId = listingId;
         this.delivery = "Unfulfilled";
         this.paymentStatus = "Not Paid";
@@ -62,10 +69,18 @@ public class Order implements Serializable {
         this.variant = variant;
         this.itemPrice = itemPrice;
         this.paidAmount = paidAmount;
+        this.collectionStatus = false;
     }
 
     public String getDelivery() {
         return this.delivery;
+    }
+
+    public void setCollectionStatus() {
+        collectionStatus = true;
+    }
+    public boolean getCollectionStatus() {
+        return collectionStatus;
     }
 
     public Double getPaidAmount() {
