@@ -26,11 +26,14 @@ import androidx.cardview.widget.CardView;
 
 import com.example.javaandroidapp.R;
 
-import com.example.javaandroidapp.adapters.ListingAdapter;
+import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.utils.ChatSystem;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -43,6 +46,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import io.getstream.chat.android.client.ChatClient;
+import io.getstream.chat.android.models.Channel;
+import io.getstream.chat.android.models.User;
+import io.getstream.chat.android.state.plugin.config.StatePluginConfig;
+import io.getstream.chat.android.state.plugin.factory.StreamStatePluginFactory;
+import io.getstream.chat.java.exceptions.StreamException;
 
 
 public class SellerListingActivity extends AppCompatActivity {
@@ -104,6 +114,34 @@ public class SellerListingActivity extends AppCompatActivity {
                     }
 
                 }
+            }
+        });
+
+        ImageButton chatBtn = findViewById(R.id.chatBtn);
+        chatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String token = ChatSystem.getToken(uid);
+                String apiKey = "4n8ad58drzz3";
+                StreamStatePluginFactory statePluginFactory = new StreamStatePluginFactory(new StatePluginConfig(), getApplicationContext());
+                ChatClient client = new ChatClient.Builder(apiKey, getApplicationContext()).withPlugins(statePluginFactory).build();
+                User user = new User.Builder().withId(uid).build();
+                List<String> list = new ArrayList<>();
+                list.add(uid);
+                list.add("a54RE0PmD5btc55qUadgu3AFGSU2");
+                client.connectUser(user, token).enqueue(result -> {
+                    try {
+                        ChatSystem.createChannel(client, list, new CallbackAdapter(){
+                            @Override
+                            public void getChannel(Channel channel) {
+                                startActivity(ChatActivity.newIntent(SellerListingActivity.this, channel));
+                            }
+                        });
+                    } catch (StreamException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
         });
 
