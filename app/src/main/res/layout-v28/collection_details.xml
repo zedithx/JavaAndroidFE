@@ -1,36 +1,495 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/lightred"
-        android:orientation="horizontal">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/topBanner"
-                style="@style/TopBanner"
-                android:text="@string/collection_details"
-                android:textColor="@color/white" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/backBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:background="@null"
-                android:contentDescription="Back button"
-                android:padding="15dp"
-                android:src="@drawable/white_back_arrow" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:orientation="vertical" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/Header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:text="@string/scan_to_collect" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/product_details_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:clickable="true">
+
+                    <LinearLayout
+                        android:id="@+id/listing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="5dp"
+                            android:clipChildren="false"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="8dp">
+
+                            <ImageView
+                                android:id="@+id/product_image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/lightgray"
+                                android:elevation="8dp"
+                                android:scaleType="centerCrop" />
+                        </androidx.cardview.widget.CardView>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="14dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/order_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:text="NaN"
+                                android:textSize="18sp"
+                                android:textStyle="bold"></TextView>
+
+                            <TextView
+                                android:id="@+id/order_variant"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/interfont"
+                                android:text="Variant: NaN"
+                                android:textSize="12sp"></TextView>
+
+                            <TextView
+                                android:id="@+id/order_amount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Amount: NaN"
+                                android:textSize="12sp"></TextView>
 
 
-        </RelativeLayout>
-    </LinearLayout>
+                            <!--                    <TextView-->
+                            <!--                        android:id="@+id/date"-->
+                            <!--                        android:layout_width="wrap_content"-->
+                            <!--                        android:layout_height="wrap_content"-->
+                            <!--                        android:fontFamily="@font/interfont"-->
+                            <!--                        android:text="NaN Days left"-->
+                            <!--                        android:textSize="12sp"></TextView>-->
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/order_unprocessed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/unprocessed_icon"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="2dp"
+                                android:backgroundTint="@android:color/holo_green_dark"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/green_tick" />
+
+                            <TextView
+                                android:id="@+id/unprocessed_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/items_delivered"
+                                android:textColor="@android:color/holo_green_dark" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="@string/items_delivered_on"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:id="@+id/delivery_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Date:NaN" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="15dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="130dp"
+                        android:layout_height="130dp">
+
+                        <ImageView
+                            android:id="@+id/qr_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/qr_placeholder" />
+
+                        <LinearLayout
+                            android:id="@+id/overlay"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/translucent_gray"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/error"
+                                app:tint="@color/white" />
+
+                            <TextView
+                                style="@style/H4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="0dp"
+                                android:text="@string/items_collected"
+                                android:textAlignment="center"
+                                android:textColor="@color/white" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="23"
+                        android:textColor="@color/stream_ui_grey"
+                        android:textSize="50sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/locker_no"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+                <!--               <LinearLayout-->
+                <!--                   android:layout_width="match_parent"-->
+                <!--                   android:layout_height="wrap_content"-->
+                <!--                   android:orientation="vertical">-->
+
+                <!--                   <RelativeLayout-->
+                <!--                       android:layout_width="match_parent"-->
+                <!--                       android:layout_height="wrap_content"-->
+                <!--                       android:layout_marginBottom="35dp"-->
+                <!--                       >-->
+
+                <!--                       <LinearLayout-->
+                <!--                           android:layout_width="wrap_content"-->
+                <!--                           android:layout_height="wrap_content"-->
+                <!--                           android:layout_alignParentStart="true"-->
+                <!--                           android:orientation="vertical">-->
+
+                <!--                           <TextView-->
+                <!--                               android:layout_width="wrap_content"-->
+                <!--                               android:layout_height="wrap_content"-->
+                <!--                               android:text="Variations"-->
+                <!--                               android:textAlignment="viewStart"-->
+
+                <!--                               android:textStyle="bold" />-->
+
+                <!--                           <LinearLayout-->
+                <!--                               android:id="@+id/variation_name_layout"-->
+                <!--                               android:layout_width="wrap_content"-->
+                <!--                               android:layout_height="wrap_content"-->
+                <!--                               android:orientation="vertical">-->
+
+                <!--                           </LinearLayout>-->
+                <!--                       </LinearLayout>-->
+
+                <!--                       <LinearLayout-->
+                <!--                           android:layout_width="wrap_content"-->
+                <!--                           android:layout_height="wrap_content"-->
+                <!--                           android:layout_alignParentEnd="true"-->
+                <!--                           android:orientation="vertical">-->
+
+                <!--                           <TextView-->
+                <!--                               android:layout_width="wrap_content"-->
+                <!--                               android:layout_height="wrap_content"-->
+                <!--                               android:text="Amount"-->
+                <!--                               android:textAlignment="viewEnd"-->
+                <!--                               android:textStyle="bold" />-->
+
+                <!--                           <LinearLayout-->
+                <!--                               android:id="@+id/variation_amount_layout"-->
+                <!--                               android:layout_width="wrap_content"-->
+                <!--                               android:layout_height="wrap_content"-->
+                <!--                               android:orientation="vertical">-->
+
+                <!--                           </LinearLayout>-->
+                <!--                       </LinearLayout>-->
+                <!--                   </RelativeLayout>-->
+
+                <!--               </LinearLayout>-->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/unfocused"
+                        app:cardCornerRadius="15dp"
+                        app:cardElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/H4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/locker_collection"
+                                    android:textColor="@color/lightred" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/self_collection"
+                                    android:textSize="12dp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginVertical="10dp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="60dp"
+                                        android:layout_height="50dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginRight="10dp"
+                                        android:src="@drawable/locker" />
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            style="@style/H4"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/collection_location"
+                                            android:textColor="@color/black" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/location_address" />
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:id="@+id/blank_fill_for_scroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/lightred"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/topBanner"
+                    style="@style/TopBanner"
+                    android:text="@string/collection_details"
+                    android:textColor="@color/white" />
+
+                <ImageButton
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:background="@null"
+                    android:contentDescription="Back button"
+                    android:padding="15dp"
+                    android:src="@drawable/white_back_arrow" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:backgroundTintMode="multiply"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="15dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/collection_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginVertical="10dp"
+                    android:clickable="true"
+                    android:padding="0dp"
+                    app:cardCornerRadius="15dp"
+                    app:strokeWidth="0dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/collection_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="0dp"
+                        app:cardBackgroundColor="@color/lightred">
+
+                        <TextView
+                            style="@style/H4"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="bottom"
+                            android:layout_margin="0dp"
+                            android:gravity="center"
+                            android:padding="0dp"
+                            android:text="@string/mark_as_collected"
+                            android:textColor="@color/white" />
+
+                    </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/back_to_my_page_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginVertical="10dp"
+                    android:clickable="true"
+                    android:padding="0dp"
+                    app:cardCornerRadius="15dp"
+                    app:strokeColor="@color/lightred"
+                    app:strokeWidth="2dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/back_to_my_page_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="0dp"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:cardElevation="0dp">
+
+                        <TextView
+                            android:id="@+id/back_to_my_page_text"
+                            style="@style/H4"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="0dp"
+                            android:gravity="center"
+                            android:padding="0dp"
+                            android:text="@string/back_to_my_page"
+                            android:textColor="@color/lightred" />
+
+                    </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
 
 </LinearLayout>

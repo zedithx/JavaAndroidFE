@@ -126,13 +126,13 @@
                             android:text="Variant: NaN"
                             android:textSize="12sp"></TextView>
 
-                        <TextView
-                            android:id="@+id/date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/interfont"
-                            android:text="NaN Days left"
-                            android:textSize="12sp"></TextView>
+<!--                        <TextView-->
+<!--                            android:id="@+id/date"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:fontFamily="@font/interfont"-->
+<!--                            android:text="NaN Days left"-->
+<!--                            android:textSize="12sp"></TextView>-->
                     </LinearLayout>
                 </LinearLayout>
 
@@ -310,9 +310,11 @@
 
                             <ImageView
                                 android:id="@+id/unprocessed_icon"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
                                 android:layout_margin="2dp"
+                                android:scaleType="fitCenter"
+                                android:layout_gravity="center"
                                 android:src="@drawable/error" />
 
                             <TextView
