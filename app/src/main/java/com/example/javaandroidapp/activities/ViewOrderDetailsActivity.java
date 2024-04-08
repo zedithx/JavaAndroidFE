@@ -79,8 +79,8 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         variationNameLayout.addView(variationNameText);
         variationAmountLayout.addView(variationAmountText);
 
-        //TODO: hardcode testing, remove the hardcoded deliveryStatus when done
-        deliveryStatus = "Ready";
+//        //TODO: hardcode testing, remove the hardcoded deliveryStatus when done
+//        deliveryStatus = "Ready";
 
         switch (deliveryStatus) {
             case "Unfulfilled":
