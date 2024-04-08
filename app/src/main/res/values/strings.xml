@@ -94,6 +94,8 @@
     <string name="locker_no">Locker Number</string>
     <string name="mark_as_collected">Mark As Collected</string>
     <string name="items_collected">Items\nCollected</string>
+    <string name="my_listings">My Listings</string>
+    <string name="NaN">NaN</string>
 
 
 </resources>

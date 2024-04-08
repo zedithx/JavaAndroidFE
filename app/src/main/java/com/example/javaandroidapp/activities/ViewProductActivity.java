@@ -96,8 +96,8 @@ public class ViewProductActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent backIntent = new Intent(ViewProductActivity.this, TransitionLandingActivity.class);
-                startActivity(backIntent);
+//                Intent backIntent = new Intent(ViewProductActivity.this, TransitionLandingActivity.class);
+//                startActivity(backIntent);
                 finish();
             }
         });

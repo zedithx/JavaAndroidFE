@@ -171,7 +171,7 @@ public class Listing implements Serializable{
     public void setUid(String uid){
         this.uid = uid;
     }
-    public static Listing createListing(DocumentSnapshot doc){
+    public static Listing createListingWithDocumentSnapshot(DocumentSnapshot doc){
         Listing newListing = new Listing();
         newListing.setImageList((ArrayList<String>) doc.get("imageList"));
         newListing.setCreatedBy(doc.getString("createdBy"));
