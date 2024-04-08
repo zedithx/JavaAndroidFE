@@ -8,6 +8,9 @@ import com.example.javaandroidapp.modals.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.getstream.chat.android.models.Channel;
+import io.getstream.chat.java.exceptions.StreamException;
+
 public class CallbackAdapter implements Callbacks{
     @Override
     public void onResult(boolean isSuccess) {
@@ -54,7 +57,12 @@ public class CallbackAdapter implements Callbacks{
     }
 
     @Override
-    public void getUser(User user) {
+    public void getUser(User user) throws StreamException {
+
+    }
+
+    @Override
+    public void getChannel(Channel channel) {
 
     }
 
