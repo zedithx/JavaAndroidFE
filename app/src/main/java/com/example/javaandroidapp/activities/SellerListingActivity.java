@@ -6,6 +6,8 @@ import static com.example.javaandroidapp.modals.Listing.createListingWithDocumen
 import static com.example.javaandroidapp.modals.Listing.createListingWithDocumentSnapshot;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -21,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,8 +33,10 @@ import com.example.javaandroidapp.R;
 
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.modals.User;
 import com.example.javaandroidapp.utils.ChatSystem;
 
+import com.example.javaandroidapp.utils.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
@@ -51,7 +56,6 @@ import java.util.Objects;
 
 import io.getstream.chat.android.client.ChatClient;
 import io.getstream.chat.android.models.Channel;
-import io.getstream.chat.android.models.User;
 import io.getstream.chat.android.state.plugin.config.StatePluginConfig;
 import io.getstream.chat.android.state.plugin.factory.StreamStatePluginFactory;
 import io.getstream.chat.java.exceptions.StreamException;
@@ -60,19 +64,34 @@ import io.getstream.chat.java.exceptions.StreamException;
 public class SellerListingActivity extends AppCompatActivity {
 
     public static int count = 0;
+    ApplicationInfo applicationInfo;
+    String apiKey;
+    String sellerName;
+    String sellerUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        // get sellerEmail from extra
+        try {
+            applicationInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (applicationInfo != null){
+            apiKey = applicationInfo.metaData.getString("apiKey");
+        }
         Listing listingExtra = (Listing) getIntent().getSerializableExtra("listing");
         setContentView(R.layout.view_pdt_owner_listing);
+        sellerName = listingExtra.getCreatedBy();
 
         TextView ownerTextView = findViewById(R.id.owner);
         ownerTextView.setText(listingExtra.getCreatedBy());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("listings").whereEqualTo("createdBy", listingExtra.getCreatedBy()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), uid);
+        db.collection("listings").whereEqualTo("createdBy", sellerName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 int numItems = task.getResult().size();
@@ -89,13 +108,7 @@ public class SellerListingActivity extends AppCompatActivity {
                             listingsGrid.addView(createNewMatCard(count, listing.getName(), "S$" + df.format(listing.getPrice()), listing.getMinOrder(), listing.getCurrentOrder(), expiry, listing.getImageList(), listing));
                             count += 1;
                         }
-
-
-// change this
-
-
                     }
-
                 }
             }
         });
@@ -104,27 +117,34 @@ public class SellerListingActivity extends AppCompatActivity {
         chatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                String token = ChatSystem.getToken(uid);
-                String apiKey = "4n8ad58drzz3";
-                StreamStatePluginFactory statePluginFactory = new StreamStatePluginFactory(new StatePluginConfig(), getApplicationContext());
-                ChatClient client = new ChatClient.Builder(apiKey, getApplicationContext()).withPlugins(statePluginFactory).build();
-                User user = new User.Builder().withId(uid).build();
                 List<String> list = new ArrayList<>();
+                //get person uid
                 list.add(uid);
-                list.add("a54RE0PmD5btc55qUadgu3AFGSU2");
-                client.connectUser(user, token).enqueue(result -> {
-                    try {
-                        ChatSystem.createChannel(list, new CallbackAdapter(){
+//                Users.getUserFromName(db, listingExtra.getCreatedBy(), new CallbackAdapter(){
+//                    @Override
+//                    public void getUser(User new_user) {
+//                        sellerUserId = new_user.getUid();
+//                    }
+//                });
+                sellerUserId = "pZDmZf7JtzZvCKtOf3JYonuf71m1";
+                list.add(sellerUserId);
+
+                try {
+                    // if seller is the person
+                    Log.d("see ids", "1stids" + uid + "2ndid" + sellerUserId);
+                    if (sellerUserId.equals(uid)) {
+                        Toast.makeText(getApplicationContext(), "You cannot chat with yourself", Toast.LENGTH_SHORT);
+                    } else {
+                        chatSystem.createChannel(list, new CallbackAdapter() {
                             @Override
                             public void getChannel(Channel channel) {
                                 startActivity(ChatActivity.newIntent(SellerListingActivity.this, channel));
                             }
                         });
-                    } catch (StreamException e) {
-                        throw new RuntimeException(e);
                     }
-                });
+                } catch (StreamException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -173,7 +193,7 @@ public class SellerListingActivity extends AppCompatActivity {
         TextView cardTitle = new TextView(SellerListingActivity.this);
         cardTitle.setTextSize(15);
         cardTitle.setEllipsize(TextUtils.TruncateAt.END);
-        cardTitle.setMaxLines(2);
+        cardTitle.setMaxLines(1);
         LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         textParams.setMargins(25, 10, 25, 0);
         cardTitle.setLayoutParams(textParams);
@@ -181,7 +201,7 @@ public class SellerListingActivity extends AppCompatActivity {
         // Price of Product displayed on each card
         TextView cardPrice = new TextView(SellerListingActivity.this);
         cardPrice.setLayoutParams(textParams);
-        cardPrice.setTextSize(20);
+        cardPrice.setTextSize(15);
         cardPrice.setText(price);
         cardPrice.setTypeface(Typeface.DEFAULT_BOLD);
 
@@ -194,7 +214,7 @@ public class SellerListingActivity extends AppCompatActivity {
         int currOrderNum = currentOrder;
         int minOrderNum = minOrder;
         TextView cardOrderNum = new TextView(SellerListingActivity.this);
-        cardOrderNum.setTextSize(15);
+        cardOrderNum.setTextSize(12);
         cardOrderNum.setText(currOrderNum + "/" + minOrderNum);
         cardOrderNum.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -209,7 +229,7 @@ public class SellerListingActivity extends AppCompatActivity {
 
         // Expiry time displayed on each card
         TextView expiryText = new TextView(SellerListingActivity.this);
-        expiryText.setTextSize(15);
+        expiryText.setTextSize(12);
         expiryText.setTextColor(Color.RED);
         expiryText.setText(expiry);
         expiryText.setLayoutParams(textParams);
