@@ -5,251 +5,267 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/lightred"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/topBanner"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/topBanner"
-                    style="@style/TopBanner"
-                    android:text="@string/my_listings"
-                    android:textColor="@color/white" />
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal"
+                android:paddingTop="20dp"
+                android:paddingBottom="0dp">
 
                 <ImageButton
                     android:id="@+id/backBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginRight="-15dp"
+                    android:background="@null"
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
+                    android:src="@drawable/red_back_arrow" />
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:background="@null"
-                    android:clickable="true"
-                    android:contentDescription="Back button"
-                    android:padding="15dp"
-                    android:src="@drawable/white_back_arrow" />
-                <ImageButton
-                    android:id="@+id/popupMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:background="@null"
-                    android:clickable="true"
-                    android:contentDescription="Back button"
-                    android:padding="15dp"
-                    android:src="@drawable/more_vert" />
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                   >
-
-                </Spinner>
-
-            </RelativeLayout>
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp">
-
-            <LinearLayout
-                android:id="@+id/productOwnerLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center"
-                    android:background="@null"
-                    android:src="@drawable/profile_pic" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/owner"
-                        style="@style/H2"
-                        android:layout_gravity="start"
-                        android:ellipsize="end"
-                        android:text="@string/NaN" />
-
-                    <TextView
-                        android:id="@+id/email"
+                        style="@style/Header"
+                        android:layout_width="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="bottom"
+                        android:text="@string/profile"
+                        android:textColor="@color/lightred"
+                        android:textSize="30sp" />
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:ellipsize="end"
-                        android:text="@string/email_address_placeholder" />
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/edit_info_card_mat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_marginTop="5dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/settings"
                         android:clickable="true"
-                        app:cardCornerRadius="8dp"
-                        app:strokeColor="@color/lightred"
-                        app:strokeWidth="1dp">
-
-                        <androidx.cardview.widget.CardView
+                        android:paddingVertical="10dp"
+                        android:background="@android:color/transparent"
+                        android:orientation="vertical">
+                        <ImageButton
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="5dp"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/setting"/>
+                    </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="5dp"
-                                android:layout_marginVertical="2dp"
-                                android:text="@string/edit_info"
-                                android:textColor="@color/lightred" />
-                        </androidx.cardview.widget.CardView>
-                    </com.google.android.material.card.MaterialCardView>
 
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
-
-        </RelativeLayout>
-
-
-        <LinearLayout
-            android:id="@+id/listingsContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-
-            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="5dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/productOwnerLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
-                    <TextView
-                        style="@style/H3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/my_listings" />
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:src="@drawable/profile_pic" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginHorizontal="5dp">
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <TextView
-                            style="@style/H3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="(" />
+                            android:id="@+id/owner"
+                            style="@style/H2"
+                            android:layout_gravity="start"
+                            android:ellipsize="end"
+                            android:text="@string/NaN" />
 
                         <TextView
-                            android:id="@+id/number_of_listings"
-                            style="@style/H3"
+                            android:id="@+id/email"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0" />
+                            android:layout_gravity="start"
+                            android:ellipsize="end"
+                            android:text="@string/email_address_placeholder" />
 
-                        <TextView
-                            style="@style/H3"
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/edit_info_card_mat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=")" />
+                            android:layout_gravity="start"
+                            android:layout_marginTop="5dp"
+                            android:clickable="true"
+                            app:cardCornerRadius="8dp"
+                            app:strokeColor="@color/lightred"
+                            app:strokeWidth="1dp"
+                            android:paddingHorizontal="5dp">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="5dp"
+                                    android:layout_marginVertical="2dp"
+                                    android:text="@string/edit_info"
+                                    android:textColor="@color/lightred" />
+                            </androidx.cardview.widget.CardView>
+                        </com.google.android.material.card.MaterialCardView>
+
                     </LinearLayout>
+
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:padding="5dp"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        android:id="@+id/add_listing_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/add_listing" />
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="@string/add_new"-->
-<!--                        android:textColor="@color/lightred" />-->
-                </LinearLayout>
-
 
             </RelativeLayout>
 
 
             <LinearLayout
+                android:id="@+id/listingsContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="10dp"
-                    app:strokeWidth="2dp">
+                android:orientation="vertical">
 
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <GridLayout
-
-                    android:id="@+id/listingsGrid"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:columnCount="2">
+                    android:orientation="horizontal">
 
-                </GridLayout>
-            </ScrollView>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/noListingsToShow"
-                style="@style/H4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="0dp"
-                android:text="@string/no_listings"
-                android:textColor="@color/lightgray" />
+                        <TextView
+                            style="@style/H3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_listings" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginHorizontal="5dp">
+
+                            <TextView
+                                style="@style/H3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="(" />
+
+                            <TextView
+                                android:id="@+id/number_of_listings"
+                                style="@style/H3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0" />
+
+                            <TextView
+                                style="@style/H3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=")" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <ImageButton
+                            android:id="@+id/add_listing_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/add_listing" />
+
+                        <!--                    <TextView-->
+                        <!--                        android:layout_width="wrap_content"-->
+                        <!--                        android:layout_height="wrap_content"-->
+                        <!--                        android:text="@string/add_new"-->
+                        <!--                        android:textColor="@color/lightred" />-->
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        app:strokeWidth="2dp">
+
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <GridLayout
+
+                        android:id="@+id/listingsGrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2">
+
+                    </GridLayout>
+                </ScrollView>
+
+                <TextView
+                    android:id="@+id/noListingsToShow"
+                    style="@style/H4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="0dp"
+                    android:text="@string/no_listings"
+                    android:textColor="@color/lightgray" />
+            </LinearLayout>
+
+
         </LinearLayout>
 
 
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
