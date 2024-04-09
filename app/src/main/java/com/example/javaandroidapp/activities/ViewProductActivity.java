@@ -82,7 +82,6 @@ public class ViewProductActivity extends AppCompatActivity {
         // get listing object from listing clicked
         // Change to multithread
         listing = (Listing) getIntent().getSerializableExtra("listing");
-        Log.d("redirect", Objects.toString(listing));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_page);
         amt = 1;
@@ -97,8 +96,8 @@ public class ViewProductActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent backIntent = new Intent(ViewProductActivity.this, TransitionLandingActivity.class);
-                startActivity(backIntent);
+//                Intent backIntent = new Intent(ViewProductActivity.this, TransitionLandingActivity.class);
+//                startActivity(backIntent);
                 finish();
             }
         });
@@ -167,8 +166,7 @@ public class ViewProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent sellerListing = new Intent(ViewProductActivity.this, SellerListingActivity.class);
-                String sellerEmail = listing.getCreatedBy();
-                sellerListing.putExtra("sellerEmail", sellerEmail);
+                sellerListing.putExtra("listing", listing);
                 startActivity(sellerListing);
             }
         });

@@ -34,6 +34,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.UriLoader;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
@@ -132,8 +133,7 @@ public class AddListingActivity extends AppCompatActivity {
         back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(AddListingActivity.this, MenuActivity.class);
-                startActivity(Main);
+                finish();
             }
         });
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, com.google.android.material.R.layout.support_simple_spinner_dropdown_item, categories);
@@ -244,7 +244,6 @@ public class AddListingActivity extends AppCompatActivity {
         newMatCard.setLayoutParams(cardMatParams);
         ImageView newImage = new ImageView(this);
         newImage.setImageURI(image);
-
         newImage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         newImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         CardView newCard = new CardView(this);
