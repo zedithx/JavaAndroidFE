@@ -59,8 +59,6 @@ import io.getstream.chat.java.exceptions.StreamException;
 
 public class SellerListingActivity extends AppCompatActivity {
 
-    public static int count = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -81,6 +79,7 @@ public class SellerListingActivity extends AppCompatActivity {
                     listingsGrid.removeAllViews();
                     listingsGrid.setColumnCount(2);
                     listingsGrid.setRowCount(numItems);
+                    int count = 0;
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if (document.exists()) {
                             String expiry = document.getString("expiryCountdown");
