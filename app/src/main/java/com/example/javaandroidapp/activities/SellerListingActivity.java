@@ -72,7 +72,10 @@ public class SellerListingActivity extends AppCompatActivity {
         TextView ownerTextView = findViewById(R.id.owner);
         ownerTextView.setText(listingExtra.getCreatedBy());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("listings").whereEqualTo("createdBy", listingExtra.getCreatedBy()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), uid);
+
+        db.collection("listings").whereEqualTo("createdBy", sellerEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 int numItems = task.getResult().size();
@@ -104,27 +107,20 @@ public class SellerListingActivity extends AppCompatActivity {
         chatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                String token = ChatSystem.getToken(uid);
-                String apiKey = "4n8ad58drzz3";
-                StreamStatePluginFactory statePluginFactory = new StreamStatePluginFactory(new StatePluginConfig(), getApplicationContext());
-                ChatClient client = new ChatClient.Builder(apiKey, getApplicationContext()).withPlugins(statePluginFactory).build();
-                User user = new User.Builder().withId(uid).build();
+                // TODO: Need to change to the seller's uid
                 List<String> list = new ArrayList<>();
                 list.add(uid);
                 list.add("a54RE0PmD5btc55qUadgu3AFGSU2");
-                client.connectUser(user, token).enqueue(result -> {
-                    try {
-                        ChatSystem.createChannel(client, list, new CallbackAdapter(){
-                            @Override
-                            public void getChannel(Channel channel) {
-                                startActivity(ChatActivity.newIntent(SellerListingActivity.this, channel));
-                            }
-                        });
-                    } catch (StreamException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                try {
+                    chatSystem.createChannel(list, new CallbackAdapter(){
+                        @Override
+                        public void getChannel(Channel channel) {
+                            startActivity(ChatActivity.newIntent(SellerListingActivity.this, channel));
+                        }
+                    });
+                } catch (StreamException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
