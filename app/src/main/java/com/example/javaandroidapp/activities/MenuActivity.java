@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.modals.User;
+import com.example.javaandroidapp.utils.ChatSystem;
 import com.example.javaandroidapp.utils.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -115,6 +116,10 @@ public class MenuActivity extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ChatSystem chatSystem = ChatSystem.getInstance();
+                if (chatSystem != null) {
+                    chatSystem.client.disconnect(true).enqueue();
+                }
                 mAuth.signOut();
                 Intent logout = new Intent(MenuActivity.this, LogInActivity.class);
                 startActivity(logout);
