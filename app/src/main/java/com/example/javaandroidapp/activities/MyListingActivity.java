@@ -82,6 +82,7 @@ public class MyListingActivity extends AppCompatActivity {
         TextView noListingToShowText = findViewById(R.id.noListingsToShow);
         TextView numberOfListingsText = findViewById(R.id.number_of_listings);
         ImageButton backBtn = findViewById(R.id.backBtn);
+        ImageButton addListingBtn = findViewById(R.id.add_listing_btn);
         MaterialCardView editInfoCardMat = findViewById(R.id.edit_info_card_mat);
 
         DocumentReference userDocRef = db.collection("users").document(fbUser.getUid());
@@ -134,13 +135,20 @@ public class MyListingActivity extends AppCompatActivity {
                 finish();
             }
         });
-editInfoCardMat.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        Intent Main = new Intent(MyListingActivity.this, EditInfoActivity.class);
-        startActivity(Main);
-    }
-});
+        editInfoCardMat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Main = new Intent(MyListingActivity.this, EditInfoActivity.class);
+                startActivity(Main);
+            }
+        });
+        addListingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Main = new Intent(MyListingActivity.this, AddListingActivity.class);
+                startActivity(Main);
+            }
+        });
 
     }
 
@@ -192,7 +200,7 @@ editInfoCardMat.setOnClickListener(new View.OnClickListener() {
         chatNumText.setTextColor(Color.RED);
         chatNumText.setLayoutParams(textParams);
         chatNumText.setTextSize(15);
-        chatNumText.setText(""+chats);
+        chatNumText.setText("" + chats);
         chatNumText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
 
@@ -200,7 +208,7 @@ editInfoCardMat.setOnClickListener(new View.OnClickListener() {
         ImageView chatIcon = new ImageView(this);
         chatIcon.setImageResource(R.drawable.red_chatbox);
         LinearLayout.LayoutParams chatIconParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        chatIcon.setPadding(5,0,0,0);
+        chatIcon.setPadding(5, 0, 0, 0);
         chatIcon.setLayoutParams(chatIconParams);
         chatIcon.setScaleX((float) 0.7);
         chatIcon.setScaleY((float) 0.7);

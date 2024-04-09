@@ -24,7 +24,7 @@ import io.getstream.chat.java.models.User;
 public class ChatSystem {
     private static ChatSystem chatSystem = null;
 
-    public ChatClient client;
+    public static ChatClient client;
     public boolean signedIn;
 
     private ChatSystem(Context context, String uid) {
@@ -50,11 +50,11 @@ public class ChatSystem {
         return chatSystem;
     }
 
-    public String getToken(String uid) {
+    public static String getToken(String uid) {
         return User.createToken("4cr5hf963b2u9vde9uv32un2pjweaqkwupsau6q4cwwqxa88khzp3r5tdskxeb5c", uid, null, null);
     }
 
-    public void createChannel(List<String> listOfUsers, Callbacks callback) throws StreamException {
+    public static void createChannel(List<String> listOfUsers, Callbacks callback) throws StreamException {
         ChannelClient channelClient = client.channel("messaging", "");
 
         Map<String, Object> extraData = new HashMap<>();

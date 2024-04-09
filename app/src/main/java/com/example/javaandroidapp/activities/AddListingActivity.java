@@ -133,8 +133,7 @@ public class AddListingActivity extends AppCompatActivity {
         back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(AddListingActivity.this, MenuActivity.class);
-                startActivity(Main);
+                finish();
             }
         });
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, com.google.android.material.R.layout.support_simple_spinner_dropdown_item, categories);
