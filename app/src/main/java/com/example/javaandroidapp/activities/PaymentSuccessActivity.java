@@ -40,7 +40,7 @@ public class PaymentSuccessActivity extends AppCompatActivity {
         viewOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO - navigate to order details page with this order ID
+                // navigate to order details page with this order ID
                 Intent viewOrderDetail = new Intent(PaymentSuccessActivity.this, ViewOrderDetailsActivity.class);
                 viewOrderDetail.putExtra("Order", orderDetails);
                 viewOrderDetail.putExtra("Listing", listingDetails);

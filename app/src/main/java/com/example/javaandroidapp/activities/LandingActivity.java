@@ -86,7 +86,7 @@ public class LandingActivity extends AppCompatActivity {
 
         });
         // Get the profile button
-        ImageView profile_button = findViewById(R.id.avatar);
+        LinearLayout profile_button = findViewById(R.id.profile_button);
         profile_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -116,7 +116,7 @@ public class LandingActivity extends AppCompatActivity {
         });
 
         //Link for chat button
-        ImageView chat_button = findViewById(R.id.chatbox);
+        LinearLayout chat_button = findViewById(R.id.chatbox_button);
         chat_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

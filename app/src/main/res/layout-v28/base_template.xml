@@ -30,15 +30,6 @@
             android:fontFamily="@font/interfont"
             android:text="@string/saved">
         </TextView>
-        <ImageView
-            android:id="@+id/search_saved"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"
-            android:layout_centerVertical="true"
-            app:srcCompat="@drawable/white_search_icon">
-        </ImageView>
 
     </RelativeLayout>
     <LinearLayout

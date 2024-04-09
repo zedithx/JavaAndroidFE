@@ -3,6 +3,8 @@ package com.example.javaandroidapp.activities;
 import static java.util.Collections.singletonList;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -45,12 +47,23 @@ import io.getstream.chat.android.ui.viewmodel.channels.ChannelListViewModelFacto
 import io.getstream.chat.java.exceptions.StreamException;
 
 public class ChannelActivity extends AppCompatActivity {
+    ApplicationInfo applicationInfo;
+    String apiKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         ChannelListBinding binding = ChannelListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+//        try {
+//            applicationInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+//        }
+//        catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        if (applicationInfo != null){
+//            apiKey = applicationInfo.metaData.getString("apiKey");
+//        }
         TextView header_name = findViewById(R.id.header_saved);
         header_name.setText("Chats");
         TextView title_name = findViewById(R.id.title_saved);
