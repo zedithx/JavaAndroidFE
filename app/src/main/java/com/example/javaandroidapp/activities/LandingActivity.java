@@ -21,6 +21,7 @@ import com.example.javaandroidapp.utils.AlgoliaHelper;
 import com.example.javaandroidapp.utils.Categories;
 import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.utils.ChatSystem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,6 +42,7 @@ public class LandingActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
+        ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), fbUser.getUid());
         if (fbUser == null) {
             Intent notSignedIn = new Intent(LandingActivity.this, LogInActivity.class);
             startActivity(notSignedIn);
