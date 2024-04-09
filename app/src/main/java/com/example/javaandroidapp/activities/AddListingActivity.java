@@ -34,6 +34,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.UriLoader;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
@@ -244,7 +245,6 @@ public class AddListingActivity extends AppCompatActivity {
         newMatCard.setLayoutParams(cardMatParams);
         ImageView newImage = new ImageView(this);
         newImage.setImageURI(image);
-
         newImage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         newImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         CardView newCard = new CardView(this);

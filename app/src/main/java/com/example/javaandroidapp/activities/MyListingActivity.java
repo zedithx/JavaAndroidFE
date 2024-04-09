@@ -36,9 +36,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -51,89 +55,92 @@ import java.util.Objects;
 
 import io.getstream.chat.android.client.ChatClient;
 import io.getstream.chat.android.models.Channel;
-import io.getstream.chat.android.models.User;
 import io.getstream.chat.android.state.plugin.config.StatePluginConfig;
 import io.getstream.chat.android.state.plugin.factory.StreamStatePluginFactory;
 import io.getstream.chat.java.exceptions.StreamException;
 
 
-public class SellerListingActivity extends AppCompatActivity {
+public class MyListingActivity extends AppCompatActivity {
 
     public static int count = 0;
+    public String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         // get sellerEmail from extra
-        Listing listingExtra = (Listing) getIntent().getSerializableExtra("listing");
-        setContentView(R.layout.view_pdt_owner_listing);
+        setContentView(R.layout.my_listings);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = mAuth.getCurrentUser();
+
 
         TextView ownerTextView = findViewById(R.id.owner);
-        ownerTextView.setText(listingExtra.getCreatedBy());
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), uid);
+        TextView emailTextView = findViewById(R.id.email);
+        TextView noListingToShowText = findViewById(R.id.noListingsToShow);
+        TextView numberOfListingsText = findViewById(R.id.number_of_listings);
+        ImageButton backBtn = findViewById(R.id.backBtn);
+        MaterialCardView editInfoCardMat = findViewById(R.id.edit_info_card_mat);
 
-        db.collection("listings").whereEqualTo("createdBy", sellerEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        DocumentReference userDocRef = db.collection("users").document(fbUser.getUid());
+        userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                int numItems = task.getResult().size();
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    GridLayout listingsGrid = (GridLayout) findViewById(R.id.listingsGrid);
-                    listingsGrid.removeAllViews();
-                    listingsGrid.setColumnCount(2);
-                    listingsGrid.setRowCount(numItems);
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (document.exists()) {
-                            String expiry = document.getString("expiryCountdown");
-                            //                            Log.d("listingDetails", "" + listingId + "\n" + productName + "\n" + price + "\n" + expiry + "\n" + "minOrder: " + minOrder + "\n" + "currentOrder: " + currOrder + "\n" + "img str: " + imageList.get(0));
-                            Listing listing = createListingWithDocumentSnapshot(document);
-                            listingsGrid.addView(createNewMatCard(count, listing.getName(), "S$" + df.format(listing.getPrice()), listing.getMinOrder(), listing.getCurrentOrder(), expiry, listing.getImageList(), listing));
-                            count += 1;
-                        }
+                    DocumentSnapshot userDoc = task.getResult();
+                    if (userDoc.exists()) {
+                        name = userDoc.getString("name");
+                        ownerTextView.setText(name);
+                        emailTextView.setText(fbUser.getEmail());
+                        db.collection("listings").whereEqualTo("createdBy", name).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    QuerySnapshot querySnapshot = task.getResult();
+                                    if (!querySnapshot.isEmpty()) {
+                                        noListingToShowText.setVisibility(View.GONE);
+                                        int querySize = querySnapshot.size();
+                                        numberOfListingsText.setText("" + querySize);
+                                        GridLayout listingsGrid = (GridLayout) findViewById(R.id.listingsGrid);
+                                        listingsGrid.removeAllViews();
+                                        listingsGrid.setColumnCount(2);
+                                        listingsGrid.setRowCount(querySize);
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            if (document.exists()) {
+                                                String expiry = document.getString("expiryCountdown");
+                                                //                            Log.d("listingDetails", "" + listingId + "\n" + productName + "\n" + price + "\n" + expiry + "\n" + "minOrder: " + minOrder + "\n" + "currentOrder: " + currOrder + "\n" + "img str: " + imageList.get(0));
+                                                Listing listing = createListingWithDocumentSnapshot(document);
+                                                listingsGrid.addView(createNewMatCard(count, listing.getName(), "S$" + df.format(listing.getPrice()), listing.getMinOrder(), listing.getCurrentOrder(), expiry, listing.getImageList(), listing));
+                                                count += 1;
+                                            }
+                                        }
 
 
-// change this
-
-
+                                    }
+                                }
+                            }
+                        });
                     }
-
                 }
             }
         });
-
-        ImageButton chatBtn = findViewById(R.id.chatBtn);
-        chatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: Need to change to the seller's uid
-                List<String> list = new ArrayList<>();
-                list.add(uid);
-                list.add("a54RE0PmD5btc55qUadgu3AFGSU2");
-                try {
-                    chatSystem.createChannel(list, new CallbackAdapter(){
-                        @Override
-                        public void getChannel(Channel channel) {
-                            startActivity(ChatActivity.newIntent(SellerListingActivity.this, channel));
-                        }
-                    });
-                } catch (StreamException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
 
         // close activity when back btn clicked
-        ImageButton backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
+editInfoCardMat.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent Main = new Intent(MyListingActivity.this, EditInfoActivity.class);
+        startActivity(Main);
+    }
+});
 
     }
 
@@ -145,28 +152,28 @@ public class SellerListingActivity extends AppCompatActivity {
         cardMaterialParams.height = 750;
         cardMaterialParams.width = 450;
         cardMaterialParams.setMargins(15, 15, 15, 15);
-        CardView card = new CardView(SellerListingActivity.this);
+        CardView card = new CardView(this);
         card.setRadius(20);
         card.setLayoutParams(cardParams);
         card.setCardBackgroundColor(Color.TRANSPARENT);
         card.setCardElevation(0);
 
 
-        LinearLayout layout = new LinearLayout(SellerListingActivity.this);
+        LinearLayout layout = new LinearLayout(this);
         layout.setLayoutParams(newLayoutParams);
         layout.setOrientation(LinearLayout.VERTICAL);
 
 
-        LinearLayout imgLayout = new LinearLayout(SellerListingActivity.this);
+        LinearLayout imgLayout = new LinearLayout(this);
         imgLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         imgLayout.setClipChildren(true);
-        ImageView cardImg = new ImageView(SellerListingActivity.this);
+        ImageView cardImg = new ImageView(this);
         cardParams.setMargins(0, 0, 0, 0);
         cardImg.setLayoutParams(cardParams);
         cardImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 400));
 
         // Name of product displayed on each card
-        TextView cardTitle = new TextView(SellerListingActivity.this);
+        TextView cardTitle = new TextView(this);
         cardTitle.setTextSize(15);
         cardTitle.setEllipsize(TextUtils.TruncateAt.END);
         cardTitle.setMaxLines(2);
@@ -174,29 +181,47 @@ public class SellerListingActivity extends AppCompatActivity {
         textParams.setMargins(25, 10, 25, 0);
         cardTitle.setLayoutParams(textParams);
 
-        // Price of Product displayed on each card
-        TextView cardPrice = new TextView(SellerListingActivity.this);
-        cardPrice.setLayoutParams(textParams);
-        cardPrice.setTextSize(20);
-        cardPrice.setText(price);
-        cardPrice.setTypeface(Typeface.DEFAULT_BOLD);
+        // Horizontal Layout for chat number and chat icon
+        LinearLayout chatNumLayout = new LinearLayout(this);
+        chatNumLayout.setOrientation(LinearLayout.HORIZONTAL);
+        chatNumLayout.setLayoutParams(textParams);
+
+        // number of chats of Product displayed on each card
+        int chats = 3;
+        TextView chatNumText = new TextView(this);
+        chatNumText.setTextColor(Color.RED);
+        chatNumText.setLayoutParams(textParams);
+        chatNumText.setTextSize(15);
+        chatNumText.setText(""+chats);
+        chatNumText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+
+        // Chat icon image beside chat number displayed on card
+        ImageView chatIcon = new ImageView(this);
+        chatIcon.setImageResource(R.drawable.red_chatbox);
+        LinearLayout.LayoutParams chatIconParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        chatIcon.setPadding(5,0,0,0);
+        chatIcon.setLayoutParams(chatIconParams);
+        chatIcon.setScaleX((float) 0.7);
+        chatIcon.setScaleY((float) 0.7);
+        chatNumLayout.addView(chatNumText);
+        chatNumLayout.addView(chatIcon);
 
         // Horizontal Layout for order num text and icon
-        LinearLayout numOrderLayout = new LinearLayout(SellerListingActivity.this);
+        LinearLayout numOrderLayout = new LinearLayout(this);
         numOrderLayout.setOrientation(LinearLayout.HORIZONTAL);
         numOrderLayout.setLayoutParams(textParams);
 
         // Num of orders displayed on each card
         int currOrderNum = currentOrder;
         int minOrderNum = minOrder;
-        TextView cardOrderNum = new TextView(SellerListingActivity.this);
+        TextView cardOrderNum = new TextView(this);
         cardOrderNum.setTextSize(15);
         cardOrderNum.setText(currOrderNum + "/" + minOrderNum);
         cardOrderNum.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         // Num of orders icon
-        ImageView pplIcon = new ImageView(SellerListingActivity.this);
-        pplIcon.setLayoutParams(textParams);
+        ImageView pplIcon = new ImageView(this);
         pplIcon.setImageResource(R.drawable.people);
         pplIcon.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
@@ -204,12 +229,11 @@ public class SellerListingActivity extends AppCompatActivity {
         numOrderLayout.addView(pplIcon);
 
         // Expiry time displayed on each card
-        TextView expiryText = new TextView(SellerListingActivity.this);
+        TextView expiryText = new TextView(this);
         expiryText.setTextSize(15);
-        expiryText.setTextColor(Color.RED);
+//        expiryText.setTextColor(Color.RED);
         expiryText.setText(expiry);
         expiryText.setLayoutParams(textParams);
-
         new ImageLoadTask(imageList.get(0), cardImg).execute();
 
 
@@ -218,22 +242,22 @@ public class SellerListingActivity extends AppCompatActivity {
         imgLayout.addView(cardImg);
         layout.addView(imgLayout);
         layout.addView(cardTitle);
-        layout.addView(cardPrice);
+        layout.addView(chatNumLayout);
         layout.addView(numOrderLayout);
         layout.addView(expiryText);
         card.addView(layout);
 
-        MaterialCardView cardMat = new MaterialCardView(SellerListingActivity.this);
+        MaterialCardView cardMat = new MaterialCardView(this);
         cardMat.setClickable(true);
         cardMat.setClipChildren(true);
         cardMat.setCardBackgroundColor(null);
         cardMat.setCardElevation(0);
         cardMat.setStrokeWidth(0);
-
         cardMat.setOnClickListener(new View.OnClickListener() {
+            //TODO: Change Button to onClick -> view listing orders
             @Override
             public void onClick(View v) {
-                Intent getProduct = new Intent(SellerListingActivity.this, TransitionViewProductActivity.class);
+                Intent getProduct = new Intent(MyListingActivity.this, TransitionViewProductActivity.class);
                 getProduct.putExtra("listing", listing);
                 startActivity(getProduct);
             }
@@ -246,37 +270,3 @@ public class SellerListingActivity extends AppCompatActivity {
     }
 }
 
-class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
-
-    private String url;
-    private ImageView imageView;
-
-    public ImageLoadTask(String url, ImageView imageView) {
-        this.url = url;
-        this.imageView = imageView;
-    }
-
-    @Override
-    protected Bitmap doInBackground(Void... params) {
-        try {
-            URL urlConnection = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) urlConnection
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(Bitmap result) {
-        super.onPostExecute(result);
-        imageView.setImageBitmap(result);
-    }
-
-}

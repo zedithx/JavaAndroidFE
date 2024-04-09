@@ -79,6 +79,23 @@
     <string name="payment_vieworderbutton">View Order Details</string>
     <string name="date_hint">dd/MM/yy</string>
     <string name="time_hint">hh:mm</string>
+    <string name="my_orders">My Orders</string>
+    <string name="order_unprocessed">Order Unprocessed</string>
+    <string name="back_to_my_page">Back To My Page</string>
+    <string name="order_payment">Order\nPayment</string>
+    <string name="finalise_group_order">Finalised\nGroup Order</string>
+    <string name="item_dispatched">Items\nDispatched</string>
+    <string name="collect_items">Collect\nItems</string>
+    <string name="collection_qr_code">View Locker QR Code</string>
+    <string name="collection_details">Collection Details</string>
+    <string name="scan_to_collect">Scan To Collect</string>
+    <string name="items_delivered">Items Delivered</string>
+    <string name="items_delivered_on">"Items have been delivered on "</string>
+    <string name="locker_no">Locker Number</string>
+    <string name="mark_as_collected">Mark As Collected</string>
+    <string name="items_collected">Items\nCollected</string>
+    <string name="my_listings">My Listings</string>
+    <string name="NaN">NaN</string>
 
 
 </resources>
