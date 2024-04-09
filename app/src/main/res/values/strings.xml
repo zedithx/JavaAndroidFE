@@ -96,6 +96,7 @@
     <string name="items_collected">Items\nCollected</string>
     <string name="my_listings">My Listings</string>
     <string name="NaN">NaN</string>
+    <string name="add_new">Add New</string>
 
 
 </resources>
