@@ -20,6 +20,7 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,7 +63,6 @@ import io.getstream.chat.java.exceptions.StreamException;
 
 public class MyListingActivity extends AppCompatActivity {
 
-    public static int count = 0;
     public String name;
 
     @Override
@@ -103,6 +103,7 @@ public class MyListingActivity extends AppCompatActivity {
                                     if (!querySnapshot.isEmpty()) {
                                         noListingToShowText.setVisibility(View.GONE);
                                         int querySize = querySnapshot.size();
+                                        int count = 0;
                                         numberOfListingsText.setText("" + querySize);
                                         GridLayout listingsGrid = (GridLayout) findViewById(R.id.listingsGrid);
                                         listingsGrid.removeAllViews();
@@ -149,6 +150,7 @@ public class MyListingActivity extends AppCompatActivity {
                 startActivity(Main);
             }
         });
+
 
     }
 

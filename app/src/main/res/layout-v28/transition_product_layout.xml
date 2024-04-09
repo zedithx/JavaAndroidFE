@@ -51,14 +51,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.google.android.material.card.MaterialCardView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@color/lightgray"
+                    android:background="@color/lightgray"
                     app:strokeWidth="0dp">
 
 
-                </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
 
             </RelativeLayout>
@@ -75,12 +75,11 @@
             android:background="@color/lightgray"
             android:orientation="horizontal"/>
 
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             style="@style/Header"
             android:layout_width="match_parent"
-
             android:layout_height="30dp"
-            android:backgroundTint="@color/lightgray"
+            android:background="@color/lightgray"
             app:strokeWidth="0dp"
             android:orientation="horizontal"
             />
