@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Bulkify</string>
-    <string name="login_banner">Welcome.</string>
+    <string name="login_banner">Welcome</string>
     <string name="signup_banner">We are glad to have you.</string>
     <string name="text_below_logo_login">Login</string>
     <string name="text_below_logo_signup">Signup</string>
@@ -101,6 +101,8 @@
     <string name="item_price">Item Price</string>
     <string name="save">Save</string>
     <string name="settings">Settings</string>
+    <string name="edit_profile_pic">Edit Profile Photo</string>
+    <string name="change_info">Change Information</string>
 
 
 </resources>
