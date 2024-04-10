@@ -1,6 +1,7 @@
 package com.example.javaandroidapp.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.javaandroidapp.adapters.Callbacks;
 
@@ -50,7 +51,7 @@ public class ChatSystem {
         return chatSystem;
     }
 
-    public static String getToken(String uid) {
+    public String getToken(String uid) {
         return User.createToken("4cr5hf963b2u9vde9uv32un2pjweaqkwupsau6q4cwwqxa88khzp3r5tdskxeb5c", uid, null, null);
     }
 

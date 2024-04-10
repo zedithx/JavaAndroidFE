@@ -1,6 +1,7 @@
 package com.example.javaandroidapp.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -100,6 +103,23 @@ public class Users {
                     }
                 }
             }
+        });
+    }
+
+    public static void getUserFromName(FirebaseFirestore db, String sellerName, Callbacks callback) {
+        db.collection("users").whereEqualTo("name", sellerName).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    DocumentSnapshot document = task.getResult().getDocuments().get(0);
+                    if (document != null) {
+                        User user = document.toObject(User.class);
+                        try {
+                            callback.getUser(user);
+                        } catch (StreamException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
         });
     }
 
