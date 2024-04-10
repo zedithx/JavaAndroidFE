@@ -186,7 +186,7 @@ public class MyListingActivity extends AppCompatActivity {
         TextView cardTitle = new TextView(this);
         cardTitle.setTextSize(15);
         cardTitle.setEllipsize(TextUtils.TruncateAt.END);
-        cardTitle.setMaxLines(2);
+        cardTitle.setMaxLines(1);
         LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         textParams.setMargins(25, 10, 25, 0);
         cardTitle.setLayoutParams(textParams);

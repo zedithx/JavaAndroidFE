@@ -33,7 +33,6 @@ public class LandingActivity extends AppCompatActivity {
     private List<CategoryModel> categories = new ArrayList<>();
     private List<Listing> listings = new ArrayList<>();
 
-    private QuerySnapshot listing_items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class LandingActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
-        ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), fbUser.getUid());
+//        ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), fbUser.getUid());
         if (fbUser == null) {
             Intent notSignedIn = new Intent(LandingActivity.this, LogInActivity.class);
             startActivity(notSignedIn);
