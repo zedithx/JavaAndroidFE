@@ -22,9 +22,6 @@
         <meta-data
             android:name = "publishKey"
             android:value = "${PUBLISH_KEY}"/>
-        <meta-data
-            android:name = "apiKey"
-            android:value = "${API_KEY}"/>
         <activity
             android:name=".activities.LogInActivity"
             android:exported="true">
