@@ -233,12 +233,9 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:clickable="true"
-                android:clipChildren="true"
                 android:id="@+id/profile_button">
                 <ImageButton
                     android:contentDescription="@string/avatar"
-                    android:id="@+id/avatar"
                     android:layout_width="match_parent"
                     android:layout_height="24dp"
                     android:layout_gravity="center"

@@ -60,3 +60,6 @@ android {
     }
     ndkVersion = "16"
 }
+dependencies {
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
+}
