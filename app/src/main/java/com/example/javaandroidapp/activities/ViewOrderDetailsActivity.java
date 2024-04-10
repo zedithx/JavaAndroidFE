@@ -9,8 +9,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +37,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
 
+import org.checkerframework.checker.units.qual.A;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -54,9 +57,9 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         ImageView processProgress = findViewById(R.id.process_progress);
         RelativeLayout productDetailsLayout = findViewById(R.id.product_details_layout);
         LinearLayout variationNameLayout = findViewById(R.id.variation_name_layout);
-        LinearLayout variationAmountLayout = findViewById(R.id.variation_amount_layout);
-        LinearLayout qrCodeLayout = findViewById(R.id.qr_code_layout);
-//        LinearLayout orderUnprocessed = findViewById(R.id.order_unprocessed);
+        LinearLayout variationAmt = findViewById(R.id.variation_amt);
+        LinearLayout variationItemPriceLayout = findViewById(R.id.variation_item_price_layout);
+        LinearLayout variationTotalPriceLayout = findViewById(R.id.variation_total_price_layout);
         ImageView unprocessedIcon = findViewById(R.id.unprocessed_icon);
         TextView unprocessedText = findViewById(R.id.unprocessed_text);
         ImageButton backBtn = findViewById(R.id.backBtn);
@@ -67,17 +70,38 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         TextView orderName = findViewById(R.id.orderName);
         TextView sellerName = findViewById(R.id.seller);
         TextView variantTextView = findViewById(R.id.order_variant);
-//        TextView expiryTextView = findViewById(R.id.date);
         ImageView productImage = findViewById(R.id.product_image);
         String deliveryStatus = orderDetails.getDelivery();
 
+        LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         TextView variationNameText = new TextView(this);
         TextView variationAmountText = new TextView(this);
+        TextView variationItemPriceText = new TextView(this);
+        TextView variationTotalPriceText = new TextView(this);
+        ArrayList<TextView> variationParams = new ArrayList<>();
+        variationParams.add(variationNameText);
+        variationParams.add(variationAmountText);
+        variationParams.add(variationItemPriceText);
+        variationParams.add(variationTotalPriceText);
+
+        for (TextView varText : variationParams){
+            varText.setLayoutParams(textParams);
+            if (varText != variationNameText) {
+                varText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+            }
+            varText.setMaxLines(2);
+            varText.setEllipsize(TextUtils.TruncateAt.END);
+        }
 
         variationNameText.setText(orderDetails.getVariant());
+        variationItemPriceText.setText("S$" + df.format(orderDetails.getItemPrice()));
+        variationTotalPriceText.setText("S$" + df.format(orderDetails.getItemPrice() * orderDetails.getQuantity()));
         variationAmountText.setText("x" + orderDetails.getQuantity());
         variationNameLayout.addView(variationNameText);
-        variationAmountLayout.addView(variationAmountText);
+        variationAmt.addView(variationAmountText);
+        variationItemPriceLayout.addView(variationItemPriceText);
+        variationTotalPriceLayout.addView(variationTotalPriceText);
+
 
 //        //TODO: hardcode testing, remove the hardcoded deliveryStatus when done
 //        deliveryStatus = "Ready";

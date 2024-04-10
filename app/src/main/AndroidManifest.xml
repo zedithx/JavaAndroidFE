@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31">
-<!--        Env variables -->
+        <!--        Env variables -->
         <meta-data
             android:name = "secretKey"
             android:value = "${SECRET_KEY}"/>

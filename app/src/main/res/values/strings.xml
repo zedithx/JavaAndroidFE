@@ -97,6 +97,8 @@
     <string name="my_listings">My Listings</string>
     <string name="NaN">NaN</string>
     <string name="add_new">Add New</string>
+    <string name="total_price">Total Price</string>
+    <string name="item_price">Item Price</string>
 
 
 </resources>
