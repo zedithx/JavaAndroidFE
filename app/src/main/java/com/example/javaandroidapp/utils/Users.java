@@ -1,6 +1,7 @@
 package com.example.javaandroidapp.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -43,8 +44,22 @@ public class Users {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
                         FirebaseUser user = mAuth.getCurrentUser();
-                        callback.onResult(true);
+                        //get device token
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("Bulkify", Context.MODE_PRIVATE);
+                        String userIdToken = sharedPreferences.getString("userIdToken", null);
+                        getUser(db, user, new CallbackAdapter(){
+                            @Override
+                            public void getUser(User new_user) {
+                                Users.updateIdToken(db, new_user, userIdToken, new CallbackAdapter(){
+                                    @Override
+                                    public void onResult(boolean isSuccess){
+                                        callback.onResult(true);
+                                    }
+                                });
+                            }
+                        });
                     } else {
                         Toast.makeText(context, ErrorHandles.signInErrors(task), Toast.LENGTH_LONG).show();
                         callback.onResult(false);
@@ -74,7 +89,11 @@ public class Users {
                     if (task.isSuccessful()) {
                         Toast.makeText(context, "Please verify your email before signing in!", Toast.LENGTH_SHORT).show();
                         FirebaseUser fbUser = mAuth.getCurrentUser();
-                        User user = new User();
+                        //get device token
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("Bulkify", Context.MODE_PRIVATE);
+                        String userIdToken = sharedPreferences.getString("userIdToken", null);
+                        //associate on login
+                        User user = new User(userIdToken);
                         db.collection("users").document(fbUser.getUid()).set(user);
                         fbUser.sendEmailVerification();
                         callback.onResult(true);
@@ -285,6 +304,19 @@ public class Users {
                 }
             }
         });
+    }
+    public static void updateIdToken(FirebaseFirestore db, User user, String userIdToken, Callbacks callback) {
+        db.collection("users").document(user.getUid()).update("userIdToken", userIdToken).
+                addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            callback.onResult(true);
+                        } else {
+                            callback.onResult(false);
+                        }
+                    }
+                });
     }
 }
 
