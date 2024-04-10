@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
@@ -35,13 +36,18 @@ import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.modals.Order;
 import com.example.javaandroidapp.utils.Users;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -122,8 +128,24 @@ public class ViewProductActivity extends AppCompatActivity {
         TextView minOrdersView = findViewById(R.id.numOrders2);
         TextView currOrdersView = findViewById(R.id.numOrders1);
         TextView ownerName = findViewById(R.id.owner);
+        ImageView ownerImg = findViewById(R.id.sellerPic);
         productName.setText(listing.getName());
         ownerName.setText(listing.getCreatedBy());
+        db.collection("users").whereEqualTo("name", listing.getCreatedBy()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    QuerySnapshot doc = task.getResult();
+                    if (!doc.isEmpty()){
+                        DocumentSnapshot docSnapshot = doc.getDocuments().get(0);
+                        String profilePicStringURL = docSnapshot.getString("profileImage");
+                        if (profilePicStringURL.length() > 0) {
+                            new ImageLoadTask(profilePicStringURL, ownerImg).execute();
+                        }
+                    }
+                }
+            }
+        });
         currOrdersView.setText("" + listing.getCurrentOrder());
         minOrdersView.setText("/" + listing.getMinOrder());
         priceDollars = findViewById(R.id.priceDollars);

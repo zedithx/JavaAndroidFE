@@ -44,6 +44,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
+import com.google.firebase.firestore.model.Document;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -81,9 +82,12 @@ public class MyListingActivity extends AppCompatActivity {
         TextView emailTextView = findViewById(R.id.email);
         TextView noListingToShowText = findViewById(R.id.noListingsToShow);
         TextView numberOfListingsText = findViewById(R.id.number_of_listings);
+        ImageView profilePic = findViewById(R.id.profile_pic);
         ImageButton backBtn = findViewById(R.id.backBtn);
         ImageButton addListingBtn = findViewById(R.id.add_listing_btn);
         MaterialCardView editInfoCardMat = findViewById(R.id.edit_info_card_mat);
+        ImageButton settingsBtn = findViewById(R.id.settings);
+
 
         DocumentReference userDocRef = db.collection("users").document(fbUser.getUid());
         userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -134,6 +138,27 @@ public class MyListingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Main = new Intent(MyListingActivity.this, SettingsActivity.class);
+                startActivity(Main);
+            }
+        });
+        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot docSnapshot = task.getResult();
+                    if (docSnapshot.exists()) {
+                        String profilePicStringURL = docSnapshot.getString("profileImage");
+                        if (profilePicStringURL.length() > 0) {
+                            new ImageLoadTask(profilePicStringURL, profilePic).execute();
+                        }
+                    }
+                }
             }
         });
         editInfoCardMat.setOnClickListener(new View.OnClickListener() {

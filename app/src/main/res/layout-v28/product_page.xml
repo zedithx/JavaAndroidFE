@@ -309,12 +309,25 @@
         android:layout_alignParentStart="true"
         android:orientation="horizontal"
         android:padding="10dp">
-
+<com.google.android.material.card.MaterialCardView
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    app:cardCornerRadius="50dp"
+    android:layout_gravity="center"
+    app:cardElevation="0dp">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sellerPic"
+            android:scaleType="centerCrop"
             android:background="@null"
             android:src="@drawable/profile_pic" />
+    </androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
+
 
         <LinearLayout
             android:layout_width="wrap_content"

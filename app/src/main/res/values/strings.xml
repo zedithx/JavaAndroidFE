@@ -99,6 +99,8 @@
     <string name="add_new">Add New</string>
     <string name="total_price">Total Price</string>
     <string name="item_price">Item Price</string>
+    <string name="save">Save</string>
+    <string name="settings">Settings</string>
 
 
 </resources>

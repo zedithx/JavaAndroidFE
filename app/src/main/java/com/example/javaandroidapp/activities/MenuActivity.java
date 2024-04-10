@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,7 +74,7 @@ public class MenuActivity extends AppCompatActivity {
         // set profile image to display
 
         // set edit info button
-        TextView editInfoBtn = findViewById(R.id.editInfoBtn);
+        LinearLayout editInfoBtn = findViewById(R.id.editInfoBtn);
 
         // set name and email details
         // set add/view listing buttons
@@ -89,7 +90,8 @@ public class MenuActivity extends AppCompatActivity {
         editInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent editInfo = new Intent(MenuActivity.this, EditInfoActivity.class);
+                Intent editInfo = new Intent(MenuActivity.this, EditInfoActivity.class);
+                startActivity(editInfo);
             }
         });
 
