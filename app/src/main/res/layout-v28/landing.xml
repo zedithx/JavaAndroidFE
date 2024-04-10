@@ -209,7 +209,7 @@
                     android:id="@+id/chatbox"
                     android:contentDescription="@string/chatboxicon"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/white_chatbox" />
                 <TextView
@@ -234,19 +234,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:id="@+id/profile_button">
-                <ImageButton
+                <ImageView
                     android:contentDescription="@string/avatar"
                     android:layout_width="match_parent"
-                    android:layout_height="24dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="-4dp"
                     android:layout_gravity="center"
-                    android:background="@null"
                     app:srcCompat="@drawable/white_avatar" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:fontFamily="@font/interfont"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="-4dp"
                     android:layout_gravity="center"
                     android:textFontWeight="600"
                     android:text="Profile"/>

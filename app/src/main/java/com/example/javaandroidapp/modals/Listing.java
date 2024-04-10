@@ -172,19 +172,6 @@ public class Listing implements Serializable{
         this.uid = uid;
     }
     public static Listing createListingWithDocumentSnapshot(DocumentSnapshot doc){
-        Listing newListing = new Listing();
-        newListing.setImageList((ArrayList<String>) doc.get("imageList"));
-        newListing.setCreatedBy(doc.getString("createdBy"));
-        newListing.setCategory(doc.getString("category"));
-        newListing.setDescription(doc.getString("description"));
-        newListing.setCurrentOrder((doc.getDouble("currentOrder")).intValue());
-        newListing.setMinOrder((doc.getDouble("minOrder")).intValue());
-        newListing.setName(doc.getString("name"));
-        newListing.setPrice(doc.getDouble("price"));
-        newListing.setOldPrice(doc.getDouble("oldPrice"));
-        newListing.setVariationNames((ArrayList<String>) doc.get("variationNames"));
-        newListing.setVariationAdditionalPrice((ArrayList<Double>) doc.get("variationAdditionalPrice") );
-        newListing.setUid(doc.getId());
-        return newListing;
+        return doc.toObject(Listing.class);
     }
 }
