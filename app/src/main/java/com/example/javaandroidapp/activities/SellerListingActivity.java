@@ -41,6 +41,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -87,10 +88,27 @@ public class SellerListingActivity extends AppCompatActivity {
         sellerName = listingExtra.getCreatedBy();
 
         TextView ownerTextView = findViewById(R.id.owner);
+        ImageView profilePic = findViewById(R.id.profile_pic);
         ownerTextView.setText(listingExtra.getCreatedBy());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), uid);
+
+        db.collection("users").whereEqualTo("name", listingExtra.getCreatedBy()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    QuerySnapshot doc = task.getResult();
+                    if (!doc.isEmpty()){
+                        DocumentSnapshot docSnapshot = doc.getDocuments().get(0);
+                        String profilePicStringURL = docSnapshot.getString("profileImage");
+                        if (profilePicStringURL.length() > 0) {
+                            new ImageLoadTask(profilePicStringURL, profilePic).execute();
+                        }
+                    }
+                }
+            }
+        });
         db.collection("listings").whereEqualTo("createdBy", sellerName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
