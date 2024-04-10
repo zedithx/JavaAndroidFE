@@ -17,6 +17,7 @@ public class Listing implements Serializable{
     private String uid;
     private String category;
     private String createdBy;
+    private String createdById;
     private Integer currentOrder;
     private String description;
     private Date expiry;
@@ -33,7 +34,7 @@ public class Listing implements Serializable{
     public Listing() {}
 
     public Listing(Double price, String name, Integer minOrder, Date expiry, ArrayList<String> imageList,
-                   String createdBy, String description, Double oldPrice, String category, ArrayList<String> variationNames, ArrayList<Double> variationAdditionalPrice) {
+                   String createdBy, String createdById, String description, Double oldPrice, String category, ArrayList<String> variationNames, ArrayList<Double> variationAdditionalPrice) {
         this.price = price;
         this.name = name;
         this.minOrder = minOrder;
@@ -43,6 +44,7 @@ public class Listing implements Serializable{
         this.description = description;
         this.oldPrice = oldPrice;
         this.createdBy = createdBy;
+        this.createdById = createdById;
         this.category = category;
         this.variationNames = variationNames;
         this.variationAdditionalPrice = variationAdditionalPrice;
@@ -131,6 +133,14 @@ public class Listing implements Serializable{
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getCreatedById() {
+        return createdById;
+    }
+
+    public void setCreatedById(String createdById) {
+        this.createdById = createdById;
     }
 
     public void setCurrentOrder(Integer currentOrder) {
