@@ -45,22 +45,23 @@
                     android:text="@string/profile"
                     android:textColor="@color/lightred"
                     android:textSize="30sp" />
+<LinearLayout
+    android:id="@+id/editInfoBtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_centerVertical="true"
+    android:paddingLeft="15dp"
+    android:clickable="true">
+    <TextView
+        style="@style/H4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:text="@string/edit_info"
+        android:textColor="@color/lightred" />
+</LinearLayout>
 
-                <TextView
-                    android:id="@+id/editInfoBtn"
-                    style="@style/H4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="@null"
-                    android:clickable="true"
-                    android:text="@string/edit_info"
-                    android:textColor="@color/lightred" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -86,6 +87,7 @@
                     <ImageView
                         android:id="@+id/profileImageView"
                         android:layout_width="wrap_content"
+                        android:scaleType="centerCrop"
                         android:layout_height="wrap_content" />
                 </androidx.cardview.widget.CardView>
 
