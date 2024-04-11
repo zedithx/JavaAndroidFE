@@ -125,22 +125,40 @@ public class Users {
         });
     }
 
-    public static void getUserFromName(FirebaseFirestore db, String sellerName, Callbacks callback) {
-        db.collection("users").whereEqualTo("name", sellerName).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    public static void getUserFromId(FirebaseFirestore db, String uid, Callbacks callback) {
+        db.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    DocumentSnapshot document = task.getResult().getDocuments().get(0);
-                    if (document != null) {
-                        User user = document.toObject(User.class);
-                        try {
-                            callback.getUser(user);
-                        } catch (StreamException e) {
-                            throw new RuntimeException(e);
-                        }
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    User user = document.toObject(User.class);
+                    assert user != null;
+                    try {
+                        callback.getUser(user);
+                    } catch (StreamException e) {
+                        throw new RuntimeException(e);
                     }
                 }
+            }
         });
     }
+
+//    public static void getUserFromName(FirebaseFirestore db, String sellerName, Callbacks callback) {
+//        db.collection("users").whereEqualTo("name", sellerName).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    DocumentSnapshot document = task.getResult().getDocuments().get(0);
+//                    if (document != null) {
+//                        User user = document.toObject(User.class);
+//                        try {
+//                            callback.getUser(user);
+//                        } catch (StreamException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+//                }
+//        });
+//    }
 
     public static void getSaved(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
         db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
