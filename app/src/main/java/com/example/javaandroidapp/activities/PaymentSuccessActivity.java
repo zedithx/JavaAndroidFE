@@ -15,11 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.modals.Order;
 import com.example.javaandroidapp.modals.User;
+import com.example.javaandroidapp.utils.OauthToken;
 import com.example.javaandroidapp.utils.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,8 +38,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -94,33 +106,73 @@ public class PaymentSuccessActivity extends AppCompatActivity {
                         // If quota is hit, send notification to seller
                         if (currentOrderVal >= minOrderVal){
                             // Obtain the user's device token and specify it as the target recipient
-                            Map<String, String> notificationMessage = new HashMap<>();
-                            notificationMessage.put("title", String.format("Your listing %s has hit the quota!", nameString));
-                            notificationMessage.put("body", String.format("Your listing %s has hit the quota %s/%s. Log onto" +
-                                    "the app to confirm your listing now!", nameString, currentOrderVal, minOrderVal));
                             // get user to get the device Token
                             Users.getUserFromId(db, listing.getCreatedById(), new CallbackAdapter(){
                                 @Override
-                                public void getUser(User new_user){
+                                public void getUser(User new_user) {
                                     // Send the notification to the user's device token
                                     String deviceToken = new_user.getUserIdToken();
-                                    FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(deviceToken)
-                                            .setMessageId(UUID.randomUUID().toString())
-                                            .setData(notificationMessage)
-                                            .build());
+                                    // Get OauthToken
+                                    OauthToken.getAccessToken(getApplicationContext(), new OauthToken.AccessTokenCallback(){
+                                        @Override
+                                        public void onSuccess(String new_accessToken) {
+                                            // Handle the access token
+                                            JSONObject messageObject = new JSONObject();
+                                            JSONObject notificationObject = new JSONObject();
+                                            JSONObject payloadObject = new JSONObject();
 
+                                            try {
+                                                // Note: I lost a year of lifespan doing this token stuff
+                                                messageObject.put("token", deviceToken);
+                                                notificationObject.put("body", String.format("The quota is now %s/%s. Log on to " +
+                                                        "the app to confirm your listing now!", currentOrderVal, minOrderVal));
+                                                notificationObject.put("title", String.format("Your listing: %s has hit the quota", nameString));
+                                                messageObject.put("notification", notificationObject);
+
+                                                payloadObject.put("message", messageObject);
+
+                                                // Create the request
+                                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                                                        "https://fcm.googleapis.com/v1/projects/bulkifydb/messages:send",
+                                                        payloadObject,
+                                                        new Response.Listener<JSONObject>() {
+                                                            @Override
+                                                            public void onResponse(JSONObject response) {
+                                                                // Handle successful response
+                                                            }
+                                                        },
+                                                        new Response.ErrorListener() {
+                                                            @Override
+                                                            public void onErrorResponse(VolleyError error) {
+                                                                Log.e("FCM Error", "Error sending FCM message: " + error.toString());
+                                                            }
+                                                        }) {
+                                                    @Override
+                                                    public Map<String, String> getHeaders() throws AuthFailureError {
+                                                        Map<String, String> headers = new HashMap<>();
+                                                        // Add authorization token to headers
+                                                        headers.put("Authorization", "Bearer " + new_accessToken);
+                                                        // Add other headers if needed
+                                                        headers.put("Content-Type", "application/json");
+                                                        return headers;
+                                                    }
+                                                };
+                                                RequestQueue requestQueue = Volley.newRequestQueue(PaymentSuccessActivity.this);
+                                                requestQueue.add(jsonObjectRequest);
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Exception exception) {
+                                            // Handle the error
+                                            Log.e("AccessToken", "Error: " + exception.getMessage());
+                                        }
+                                    });
                                 }
                             });
-//                            Intent intent = new Intent(getApplicationContext(), MerchantOrderDetails.class);
-//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
-//                            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "Bulkify")
-//                                    .setSmallIcon(R.drawable.bulkify_logo)
-//                                    .setContentTitle("Your order has hit the quota!")
-//                                    .setContentText(String.format("Your order %s has hit the quota. Click now to confirm the order!", nameString))
-//                                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                                    .setContentIntent(pendingIntent)
-//                                    .setAutoCancel(true);
                         }
                         if (nameString.length() < 24) {
                             orderName.setText(nameString);

@@ -5,6 +5,8 @@ import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.modals.Order;
 import com.example.javaandroidapp.modals.User;
 
+import java.io.IOException;
+import java.net.ProtocolException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class CallbackAdapter implements Callbacks{
     }
 
     @Override
-    public void getUser(User user) throws StreamException {
+    public void getUser(User user) throws StreamException{
 
     }
 
