@@ -37,6 +37,7 @@ import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.modals.Order;
 import com.example.javaandroidapp.utils.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,6 +78,7 @@ public class ViewProductActivity extends AppCompatActivity {
     public static FirebaseUser fbUser;
 
     static double totalPrice;
+    public String name;
 
     // get images for product id
 
@@ -134,9 +136,9 @@ public class ViewProductActivity extends AppCompatActivity {
         db.collection("users").whereEqualTo("name", listing.getCreatedBy()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     QuerySnapshot doc = task.getResult();
-                    if (!doc.isEmpty()){
+                    if (!doc.isEmpty()) {
                         DocumentSnapshot docSnapshot = doc.getDocuments().get(0);
                         String profilePicStringURL = docSnapshot.getString("profileImage");
                         if (profilePicStringURL.length() > 0) {
@@ -184,17 +186,33 @@ public class ViewProductActivity extends AppCompatActivity {
         ownerLayout = findViewById(R.id.productOwnerLayout);
 //        ownerLayout.setBackground(descriptionBg);
 
-        ownerLayout.setOnClickListener(new View.OnClickListener() {
+        db.collection("users").document(fbUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onClick(View v) {
-                Intent sellerListing = new Intent(ViewProductActivity.this, SellerListingActivity.class);
-                sellerListing.putExtra("listing", listing);
-                startActivity(sellerListing);
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    name = documentSnapshot.getString("name");
+                }
+                String listingOwner = listing.getCreatedBy();
+                if (listingOwner.equals(name)) {
+                    ownerLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent myProfile = new Intent(ViewProductActivity.this, MyListingActivity.class);
+                            startActivity(myProfile);
+                        }
+                    });
+                } else {
+                    ownerLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent sellerListing = new Intent(ViewProductActivity.this, SellerListingActivity.class);
+                            sellerListing.putExtra("listing", listing);
+                            startActivity(sellerListing);
+                        }
+                    });
+                }
             }
         });
-
-
-        RelativeLayout alphaRelative = findViewById(R.id.alphaRelative);
 
     }
 
@@ -202,9 +220,10 @@ public class ViewProductActivity extends AppCompatActivity {
     private class ImagePagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
         private ArrayList<String> mImages = listing.getImageList(); //instantiate the imagelist
         private TextView imageIndex;
+
         public ImagePagerAdapter(TextView imageIndex) {
             this.imageIndex = imageIndex;
-            imageIndex.setText(String.format("%d/%d",  1, getCount()));
+            imageIndex.setText(String.format("%d/%d", 1, getCount()));
         }
 
 
@@ -235,20 +254,24 @@ public class ViewProductActivity extends AppCompatActivity {
         public void destroyItem(ViewGroup container, int position, Object object) {
             ((ViewPager) container).removeView((ImageView) object);
         }
+
         @Override
         public void onPageSelected(int position) {
             // Update image index text
             imageIndex.setText(String.format("%d/%d", position + 1, getCount()));
         }
+
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             // Not needed
         }
+
         @Override
         public void onPageScrollStateChanged(int state) {
             // Not needed
         }
     }
+
     public static class BuyFragment extends Fragment {
 
         static LinearLayout popUpLayout;
@@ -331,7 +354,7 @@ public class ViewProductActivity extends AppCompatActivity {
             varSpinner.setAdapter(adapter);
             TextView subTotal = view.findViewById(R.id.subTotalText);
             displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-            subTotal.setText("S$ " + df.format(amt*displayedPrice));
+            subTotal.setText("S$ " + df.format(amt * displayedPrice));
             varSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -439,7 +462,9 @@ public class ViewProductActivity extends AppCompatActivity {
         priceCents.setText("." + (cents.length() > 1 ? cents : cents + "0"));
     }
 
-    static void createBtnPanel(Listing listing, ArrayList<String> varBtnName, ArrayList<Double> varBtnPrice, LinearLayout variationBtnParentLayout) {
+    static void createBtnPanel(Listing
+                                       listing, ArrayList<String> varBtnName, ArrayList<Double> varBtnPrice, LinearLayout
+                                       variationBtnParentLayout) {
 
         LinearLayout.LayoutParams varBtnParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         varBtnParams.setMargins(15, 15, 15, 15);
@@ -453,9 +478,9 @@ public class ViewProductActivity extends AppCompatActivity {
             newVarBtn.setId(btnId);
             String varText = varBtnName.get(i) + "\n" + (varBtnPrice.get(i) > 0 ? "+" + df.format(varBtnPrice.get(i)) : "-");
             newVarBtn.setText(varText);
-            newVarBtn.setTextColor((focusedBtnId == newVarBtn.getId() ? Color.WHITE: Color.BLACK));
+            newVarBtn.setTextColor((focusedBtnId == newVarBtn.getId() ? Color.WHITE : Color.BLACK));
             GradientDrawable drawable = RoundedButton.RoundedRect(25);
-            drawable.setColor((focusedBtnId == newVarBtn.getId() ? Color.rgb( 237, 24, 61) : Color.argb(15, 10, 10, 10)));
+            drawable.setColor((focusedBtnId == newVarBtn.getId() ? Color.rgb(237, 24, 61) : Color.argb(15, 10, 10, 10)));
             newVarBtn.setBackground(drawable);
 
 
@@ -466,7 +491,7 @@ public class ViewProductActivity extends AppCompatActivity {
                     focusedBtnId = newVarBtn.getId();
                     for (RoundedButton btn : varBtnList) {
                         GradientDrawable drawable = RoundedButton.RoundedRect(25);
-                        btn.setTextColor((focusedBtnId == btn.getId() ? Color.WHITE: Color.BLACK));
+                        btn.setTextColor((focusedBtnId == btn.getId() ? Color.WHITE : Color.BLACK));
                         drawable.setColor((focusedBtnId == btn.getId() ? Color.rgb(237, 24, 61) : Color.argb(15, 10, 10, 10)));
                         btn.setBackground(drawable);
                         displayedPrice = listing.getPrice() + varBtnPrice.get(btnId - 1);

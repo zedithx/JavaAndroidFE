@@ -183,6 +183,7 @@
                     android:layout_marginHorizontal="10dp"
                     android:background="@android:color/transparent"
                     android:clickable="true"
+                    android:clipChildren="true"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp">
 
@@ -190,6 +191,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
+                        android:focusableInTouchMode="false"
                         android:paddingHorizontal="5dp"
                         android:src="@drawable/save" />
 

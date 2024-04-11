@@ -96,7 +96,7 @@ public class LandingActivity extends AppCompatActivity {
         profile_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(LandingActivity.this, MenuActivity.class);
+                Intent Main = new Intent(LandingActivity.this, MyListingActivity.class);
                 Main.putExtra("User", fbUser);
                 startActivity(Main);
             }
