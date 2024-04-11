@@ -2,36 +2,25 @@ package com.example.javaandroidapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.adapters.OrderAdapter;
-import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.objects.Order;
-import com.example.javaandroidapp.objects.User;
+import com.example.javaandroidapp.modals.Order;
+import com.example.javaandroidapp.modals.User;
 import com.example.javaandroidapp.utils.Users;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class LandingOrdersActivity extends AppCompatActivity {
@@ -43,7 +32,7 @@ public class LandingOrdersActivity extends AppCompatActivity {
         // set page as view
         setContentView(R.layout.landing_order);
         TextView header_name = findViewById(R.id.header_saved);
-        header_name.setText("Search Results");
+        header_name.setText("My Orders");
         TextView title_name = findViewById(R.id.title_saved);
         title_name.setText("My Orders");
         ImageView back_arrow = findViewById(R.id.back_arrow);
@@ -71,7 +60,7 @@ public class LandingOrdersActivity extends AppCompatActivity {
         listingRecyclerOrderView.setAdapter(adapter_order);
         Users.getOrder(db, fbUser, new CallbackAdapter() {
             @Override
-            public void getOrder(List<Order> orders_new) {
+            public void getOrders(List<Order> orders_new) {
                 orders.clear();
                 if (orders_new.size() != 0) {
                     orders.addAll(orders_new);

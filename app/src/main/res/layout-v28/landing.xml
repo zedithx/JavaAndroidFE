@@ -131,9 +131,9 @@
             <LinearLayout
             android:id="@+id/navigation_bar"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/red_navigation">
+            android:background="@color/lightred">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="80dp"
@@ -203,12 +203,13 @@
                 android:orientation="vertical"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:id="@+id/chatbox_button">
                 <ImageView
                     android:id="@+id/chatbox"
                     android:contentDescription="@string/chatboxicon"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/white_chatbox" />
                 <TextView
@@ -232,15 +233,13 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:clickable="true"
-                android:clipChildren="true">
-                <ImageButton
+                android:id="@+id/profile_button">
+                <ImageView
                     android:contentDescription="@string/avatar"
-                    android:id="@+id/avatar"
                     android:layout_width="match_parent"
-                    android:layout_height="24dp"
+                    android:layout_height="28dp"
+                    android:layout_marginTop="-4dp"
                     android:layout_gravity="center"
-                    android:background="@null"
                     app:srcCompat="@drawable/white_avatar" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -250,7 +249,8 @@
                     android:layout_marginTop="4dp"
                     android:layout_gravity="center"
                     android:textFontWeight="600"
-                    android:text="Profile"/>
+                    android:text="Profile">
+                </TextView>
             </LinearLayout>
         </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

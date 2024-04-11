@@ -12,20 +12,14 @@ import com.algolia.search.saas.Client;
 import com.algolia.search.saas.CompletionHandler;
 import com.algolia.search.saas.Index;
 import com.algolia.search.saas.Query;
-import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.adapters.Callbacks;
-import com.example.javaandroidapp.objects.Listing;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class AlgoliaHelper {
     public static void querySuggestion(String item, Callbacks callback) {

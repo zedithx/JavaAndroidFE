@@ -1,4 +1,4 @@
-package com.example.javaandroidapp.objects;
+package com.example.javaandroidapp.modals;
 
 import androidx.annotation.NonNull;
 

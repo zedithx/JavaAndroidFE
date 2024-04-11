@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
-import com.example.javaandroidapp.objects.Listing;
+import com.example.javaandroidapp.modals.Listing;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -61,8 +61,12 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
 
     @Override
     public int getItemCount() {
-        return listings.size();
-    }
+        int size = 0;
+        if (listings != null) {
+            size = listings.size();
+        }
+        return size;
+    };
 
     class ListingViewHolder extends RecyclerView.ViewHolder {
         private View listingView;
@@ -79,13 +83,17 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
             TextView currentorderTextView = itemView.findViewById(R.id.currentorder);
             ImageView productImageView = itemView.findViewById(R.id.product_image);
             TextView expiryTextView = itemView.findViewById(R.id.date);
+            TextView sellerTextView = itemView.findViewById(R.id.seller);
             // Bind data to the views in the item layout
             Double listing_price = listing.getPrice();
             String listing_name = listing.getName();
             Integer listingMinOrder = listing.getMinOrder();
             Integer listingCurrentOrder = listing.getCurrentOrder();
             String listingExpiryCountdown = listing.getExpiryCountdown();
-            Glide.with(listingView).load(listing.getImageList().get(0)).into(productImageView);
+            String sellerName = listing.getCreatedBy();
+            if (listing.getImageList() != null) {
+                Glide.with(listingView).load(listing.getImageList().get(0)).into(productImageView);
+            }
             priceTextView.setText(String.format("$%s", df.format(listing_price)));
             if (listing_name.length() < 24) {
                 nameTextView.setText(listing_name);
@@ -95,6 +103,7 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
             }
             minorderTextView.setText(listingMinOrder.toString());
             currentorderTextView.setText(listingCurrentOrder.toString());
+            sellerTextView.setText(sellerName);
             expiryTextView.setText(listingExpiryCountdown);
         }
     }

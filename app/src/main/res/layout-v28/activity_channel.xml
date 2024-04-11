@@ -11,7 +11,11 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:streamUiMessageListHeaderTitleTextColor="@color/white"
+        app:streamUiMessageListHeaderBackButtonIcon="@drawable/white_back_arrow_small"
+        app:streamUiMessageListHeaderDefaultLabelTextColor="@color/white"
+        app:streamUiMessageListHeaderBackground="@color/lightred"/>
 
     <io.getstream.chat.android.ui.feature.messages.list.MessageListView
         android:id="@+id/messageListView"
@@ -28,6 +32,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:streamUiMessageComposerAttachmentsButtonIconDrawable="@drawable/attach_red"
+        app:streamUiMessageComposerCommandsButtonIconDrawable="@drawable/lightning_red"
+        app:streamUiMessageComposerSendMessageButtonIconDrawable="@drawable/send_red"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

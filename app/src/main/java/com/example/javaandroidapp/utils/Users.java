@@ -1,15 +1,17 @@
 package com.example.javaandroidapp.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.adapters.Callbacks;
-import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.objects.Order;
-import com.example.javaandroidapp.objects.User;
+import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.modals.Order;
+import com.example.javaandroidapp.modals.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,10 +22,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import io.getstream.chat.java.exceptions.StreamException;
 
 public class Users {
     public static void signInUser(FirebaseAuth mAuth, Context context, String email, String password, Callbacks callback) {
@@ -38,8 +44,22 @@ public class Users {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
                         FirebaseUser user = mAuth.getCurrentUser();
-                        callback.onResult(true);
+                        //get device token
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("Bulkify", Context.MODE_PRIVATE);
+                        String userIdToken = sharedPreferences.getString("userIdToken", null);
+                        getUser(db, user, new CallbackAdapter(){
+                            @Override
+                            public void getUser(User new_user) {
+                                Users.updateIdToken(db, new_user, userIdToken, new CallbackAdapter(){
+                                    @Override
+                                    public void onResult(boolean isSuccess){
+                                        callback.onResult(true);
+                                    }
+                                });
+                            }
+                        });
                     } else {
                         Toast.makeText(context, ErrorHandles.signInErrors(task), Toast.LENGTH_LONG).show();
                         callback.onResult(false);
@@ -69,7 +89,11 @@ public class Users {
                     if (task.isSuccessful()) {
                         Toast.makeText(context, "Please verify your email before signing in!", Toast.LENGTH_SHORT).show();
                         FirebaseUser fbUser = mAuth.getCurrentUser();
-                        User user = new User();
+                        //get device token
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("Bulkify", Context.MODE_PRIVATE);
+                        String userIdToken = sharedPreferences.getString("userIdToken", null);
+                        //associate on login
+                        User user = new User(userIdToken);
                         db.collection("users").document(fbUser.getUid()).set(user);
                         fbUser.sendEmailVerification();
                         callback.onResult(true);
@@ -82,37 +106,6 @@ public class Users {
         }
     }
 
-    public static void getName(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
-        db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        callback.getResult(document.getData().get("name").toString());
-                    } else {
-                        callback.getResult("");
-                    }
-                }
-            }
-        });
-    }
-
-    public static void savedListing(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
-        db.collection("users").document(fbUser.getUid().toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    User user = document.toObject(User.class);
-                    assert user != null;
-                    user.setUserRef(fbUser);
-                    callback.getUser(user);
-                }
-            }
-        });
-    }
-
     public static void getUser(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
         db.collection("users").document(fbUser.getUid().toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -122,11 +115,50 @@ public class Users {
                     User user = document.toObject(User.class);
                     assert user != null;
                     user.setUserRef(fbUser);
-                    callback.getUser(user);
+                    try {
+                        callback.getUser(user);
+                    } catch (StreamException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
     }
+
+    public static void getUserFromId(FirebaseFirestore db, String uid, Callbacks callback) {
+        db.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    User user = document.toObject(User.class);
+                    assert user != null;
+                    try {
+                        callback.getUser(user);
+                    } catch (StreamException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+    }
+
+//    public static void getUserFromName(FirebaseFirestore db, String sellerName, Callbacks callback) {
+//        db.collection("users").whereEqualTo("name", sellerName).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    DocumentSnapshot document = task.getResult().getDocuments().get(0);
+//                    if (document != null) {
+//                        User user = document.toObject(User.class);
+//                        try {
+//                            callback.getUser(user);
+//                        } catch (StreamException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+//                }
+//        });
+//    }
 
     public static void getSaved(FirebaseFirestore db, FirebaseUser fbUser, Callbacks callback) {
         db.collection("users").document(fbUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -161,14 +193,14 @@ public class Users {
                     if (items != null) {
                         Orders.getOrdersUser(items, new CallbackAdapter() {
                             @Override
-                            public void getOrder(List<Order> orders) {
+                            public void getOrders(List<Order> orders) {
                                 if (orders.size() != 0) {
-                                    callback.getOrder(orders);
+                                    callback.getOrders(orders);
                                 }
                             }
                         });
                     } else {
-                        callback.getOrder(new ArrayList<Order>());
+                        callback.getOrders(new ArrayList<Order>());
                     }
                 }
             }
@@ -204,7 +236,7 @@ public class Users {
                 DocumentSnapshot userRef = task.getResult();
                 if (userRef.exists()) {
                     List<DocumentReference> saved = (List<DocumentReference>) userRef.get("saved");
-                    DocumentReference listingReference = db.collection("Listings").document(listing.getUid());
+                    DocumentReference listingReference = db.collection("listings").document(listing.getUid());
                     // Check if listingReference is in saved, then remove
                     if (saved == null) {
                         callback.onResult(false);
@@ -233,7 +265,7 @@ public class Users {
                     if (saved == null) {
                         saved = new ArrayList<>();
                     }
-                    DocumentReference listingReference = db.collection("Listings").document(listing.getUid());
+                    DocumentReference listingReference = db.collection("listings").document(listing.getUid());
                     saved.add(listingReference);
                     db.collection("users").document(fbUser.getUid()).update("saved", saved)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -261,7 +293,7 @@ public class Users {
                 DocumentSnapshot userRef = task.getResult();
                 if (userRef.exists()) {
                     List<DocumentReference> saved = (List<DocumentReference>) userRef.get("saved");
-                    DocumentReference listingReference = db.collection("Listings").document(listing.getUid());
+                    DocumentReference listingReference = db.collection("listings").document(listing.getUid());
                     // Check if listingReference is in saved, then remove
                     Iterator<DocumentReference> iterator = saved.iterator();
                     while (iterator.hasNext()) {
@@ -290,6 +322,19 @@ public class Users {
                 }
             }
         });
+    }
+    public static void updateIdToken(FirebaseFirestore db, User user, String userIdToken, Callbacks callback) {
+        db.collection("users").document(user.getUid()).update("userIdToken", userIdToken).
+                addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            callback.onResult(true);
+                        } else {
+                            callback.onResult(false);
+                        }
+                    }
+                });
     }
 }
 

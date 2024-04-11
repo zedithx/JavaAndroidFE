@@ -1,7 +1,11 @@
 package com.example.javaandroidapp.activities;
 
+import android.app.Application;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,8 +24,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.adapters.CallbackAdapter;
+import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.modals.Order;
+import com.example.javaandroidapp.utils.Listings;
+import com.example.javaandroidapp.utils.Orders;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
@@ -30,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OrderConfirmationActivity extends AppCompatActivity {
@@ -39,27 +53,70 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     String ephemeralKey;
     String ClientSecret;
 
-    //TODO - move to environment var
-    String SECRET_KEY = "sk_test_51OxodJK24tdo9W189suQ8qBTT4qmfs5kqo4xBS1SBTrzRYbITc5gPRB3if0T8Gx8PMvlaUz6inMKryBQ0HnETr9T009CpIhchL";
-    String PUBLISH_KEY= "pk_test_51OxodJK24tdo9W18DDtNNwSl0XRv3IsLEO7LDymAdRSfJAaVYfAwSzFO4J2nXACDhe5tkb1tlz49F4OIUZ4ELdjD00h9mrNaXI";
+    String SECRET_KEY;
+    String PUBLISH_KEY;
     ImageView listingImageView;
     TextView listingNameTextView;
-    TextView orderAmountTextView;
+    TextView orderQtyTextView;
+    TextView totalPriceTextView;
+    TextView itemPriceTextView;
+    TextView sellerNameTextView;
+    TextView expiryDateTextView;
     TextView variantNameTextView;
     LinearLayout imageViewLayout;
     ImageButton backBtn;
     CardView confirmBtn;
-
+    ApplicationInfo applicationInfo;
     ProgressBar loadingSpinner;
     MaterialCardView orderButton;
+    FirebaseFirestore db;
+    Order orderDetails;
+    Listing listingDetails;
+    String listingUID;
+    FirebaseUser fbUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        Bundle bundle = getIntent().getExtras();
-        System.out.println(bundle);
-        MakeOrder orderDetails = (MakeOrder) bundle.getSerializable("new_order");
-//        Listing listing = orderDetails.getListing();
+        db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        fbUser = mAuth.getCurrentUser();
+        // Get SECRET KEY
+        try {
+            applicationInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (applicationInfo != null){
+            SECRET_KEY = applicationInfo.metaData.getString("secretKey");
+            PUBLISH_KEY = applicationInfo.metaData.getString("publishKey");
+        }
+        // get order object from previous page
+        orderDetails = (Order) getIntent().getSerializableExtra("Order");
+        listingDetails = (Listing) getIntent().getSerializableExtra("Listing");
+        listingUID = listingDetails.getUid();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_confirmation);
+        //dynamic setting of text on order confirmation page
+        listingNameTextView = findViewById(R.id.productName);
+        imageViewLayout = findViewById(R.id.imageViewLayout);
+        listingImageView = findViewById(R.id.listingImage);
+        sellerNameTextView = findViewById(R.id.sellerName);
+        expiryDateTextView = findViewById(R.id.expiryDate);
+        variantNameTextView = findViewById(R.id.variationName);
+        itemPriceTextView = findViewById(R.id.itemPrice);
+        orderQtyTextView = findViewById(R.id.qtyToOrder);
+        totalPriceTextView = findViewById(R.id.totalPaymentAmt);
+
+        // Need listing intent as well
+        listingNameTextView.setText(listingDetails.getName());
+        Glide.with(imageViewLayout).load(listingDetails.getImageList().get(0)).into(listingImageView);
+        sellerNameTextView.setText(listingDetails.getCreatedBy());
+        expiryDateTextView.setText(listingDetails.getExpiryCountdown());
+        orderQtyTextView.setText(String.valueOf(orderDetails.getQuantity()));
+        variantNameTextView.setText(orderDetails.getVariant());
+        itemPriceTextView.setText("S$" + orderDetails.getItemPrice());
+        totalPriceTextView.setText("S$" + orderDetails.getPaidAmount());
         //transition from loading to order after ClientSecret has been obtained
         loadingSpinner = findViewById(R.id.loadingSpinner);
         orderButton = findViewById(R.id.confirmButton);
@@ -99,19 +156,6 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(OrderConfirmationActivity.this);
         requestQueue.add(stringRequest);
-//
-//
-//
-//        listingNameTextView = findViewById(R.id.productName);
-//        imageViewLayout = findViewById(R.id.imageViewLayout);
-//        listingImageView = findViewById(R.id.listingImage);
-//        variantNameTextView = findViewById(R.id.variant_name);
-//        orderAmountTextView = findViewById(R.id.variant_amt);
-//
-//        listingNameTextView.setText(listing.getName());
-//        Glide.with(imageViewLayout).load(listing.getImageList().get(0)).into(listingImageView);
-//        variantNameTextView.setText(orderDetails.getVariantName());
-//        orderAmountTextView.setText("" + orderDetails.getAmount());
         backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,12 +176,41 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 
     // All stripes functions
 
+    // This is the callback for success on payment
     private void onPaymentResult(PaymentSheetResult paymentSheetResult) {
         if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
-            // Payment was successful
-            Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show();
-            Intent Main = new Intent(OrderConfirmationActivity.this, PaymentSuccessActivity.class);
-            startActivity(Main);
+            //add order object to order collection with userid
+            Orders.createOrder(db, orderDetails, fbUser, listingUID, new CallbackAdapter() {
+                @Override
+                public void getResult(String orderId) {
+                    if (orderId != null) {
+                        //Store client secret
+                        Orders.storeClientSecret(db, orderId, ClientSecret, new CallbackAdapter() {
+                            @Override
+                            public void getResult(String orderId) {
+                                //add reference to order on Listing increment number of orders
+                                Orders.listingReference(db, listingUID, orderId, new CallbackAdapter(){
+                                    @Override
+                                    public void getResult(String orderId){
+                                        //add order to user list
+                                        Orders.userReference(db, fbUser, orderId, new CallbackAdapter(){
+                                            @Override
+                                            public void onResult(boolean isSuccess){
+                                                // Notify user
+                                                Toast.makeText(getApplicationContext(), "Payment successful", Toast.LENGTH_SHORT).show();
+                                                Intent Main = new Intent(OrderConfirmationActivity.this, PaymentSuccessActivity.class);
+                                                Main.putExtra("Order", orderDetails);
+                                                Main.putExtra("Listing", listingDetails);
+                                                startActivity(Main);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            });
         } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
             // Payment failed
             Toast.makeText(this, "Payment failed", Toast.LENGTH_SHORT).show();
@@ -196,10 +269,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                         try {
                             JSONObject object = new JSONObject(response);
                             ClientSecret=object.getString("client_secret");
-                            //TODO - store client secret in array of listing
-
                             // At this point we have all variables needed to proceed with paymentSheetIntent
-                            // Change loading button to actual button
                             loadingSpinner.setVisibility(View.GONE);
                             orderButton.setVisibility(View.VISIBLE);
                         } catch (JSONException e) {
@@ -223,7 +293,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("customer", customerID);
-                params.put("amount", "10" + "00");
+                params.put("amount", String.format("%.0f",orderDetails.getPaidAmount() * 100));
                 params.put("currency", "sgd");
                 params.put("automatic_payment_methods[enabled]", "true");
                 //changes to withold. Need to store all clientsecrets to be used to capture later on

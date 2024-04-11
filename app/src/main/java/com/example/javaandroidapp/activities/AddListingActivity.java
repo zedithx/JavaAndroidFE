@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -33,14 +34,18 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.UriLoader;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.fragments.DatePickerFragment;
 import com.example.javaandroidapp.fragments.TimePickerFragment;
+import com.example.javaandroidapp.modals.CategoryModel;
+import com.example.javaandroidapp.modals.User;
 import com.example.javaandroidapp.utils.Categories;
 import com.example.javaandroidapp.utils.Images;
 import com.example.javaandroidapp.utils.Listings;
+import com.example.javaandroidapp.utils.Users;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -66,8 +71,10 @@ public class AddListingActivity extends AppCompatActivity {
     ImageButton addImageButton;
     LinearLayout addListingLayout;
     Uri image;
-    ArrayList<String> uriArrList = new ArrayList<>();
+    ArrayList<Uri> uriArrList = new ArrayList<>();
+    ArrayList<String> uriImageList = new ArrayList<>();
     LinearLayout displayImageLayout;
+    User user;
     private List<String> categories = new ArrayList<String>();
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -77,7 +84,8 @@ public class AddListingActivity extends AppCompatActivity {
                 if (o.getData() != null) {
                     displayImageLayout = findViewById(R.id.displayImageLayout);
                     image = o.getData().getData();
-                    uriArrList.add(image.toString());
+                    uriArrList.add(image);
+                    Log.d("uriArr", "uriArr" + uriArrList);
 //                    Glide.with(getApplicationContext()).load(image).apply(new RequestOptions().override(100, 100)).into(addImageButton);
                     displayImageLayout.addView(addNewImageButton(image));
                     //Used to create a new button dynamically
@@ -95,6 +103,12 @@ public class AddListingActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
+        Users.getUser(db, fbUser, new CallbackAdapter(){
+            @Override
+            public void getUser(User new_user) {
+                user = new_user;
+            }
+        });
         if (fbUser == null) {
             Intent notSignedIn = new Intent(AddListingActivity.this, LogInActivity.class);
             startActivity(notSignedIn);
@@ -119,8 +133,7 @@ public class AddListingActivity extends AppCompatActivity {
         back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(AddListingActivity.this, MenuActivity.class);
-                startActivity(Main);
+                finish();
             }
         });
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, com.google.android.material.R.layout.support_simple_spinner_dropdown_item, categories);
@@ -177,16 +190,15 @@ public class AddListingActivity extends AppCompatActivity {
                 mTimePicker.show();
             }
         });
-
         addListingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addListingButton.setVisibility(View.GONE);
                 loadSpinner.setVisibility(View.VISIBLE);
 
-                Images.addImages(image, storageRef, new CallbackAdapter() {
+                Images.addImages(uriArrList, storageRef, new CallbackAdapter() {
                     @Override
-                    public void getResult(String uri) {
+                    public void getArrayListOfString(ArrayList<String> imageList) {
                         //TODO - change to list of Image
 //                        ArrayList<String> uri_list = new ArrayList<>();
 //                        uri_list.add(uri);
@@ -203,8 +215,8 @@ public class AddListingActivity extends AppCompatActivity {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy HH:mm");
                         LocalDate parsedDateTime = LocalDate.parse(datetime, formatter);
                         Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-                        Listings.addListing(db, fbUser, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
-                                Integer.parseInt(minOrder.getText().toString()), 0, parsedDate, uriArrList, description.getText().toString(),
+                        Listings.addListing(db, user, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
+                                Integer.parseInt(minOrder.getText().toString()), parsedDate, imageList, description.getText().toString(),
                                 Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), variantNames, variantAdditionalPrice, new CallbackAdapter() {
                             @Override
                             public void onResult(boolean isSuccess) {
@@ -232,7 +244,6 @@ public class AddListingActivity extends AppCompatActivity {
         newMatCard.setLayoutParams(cardMatParams);
         ImageView newImage = new ImageView(this);
         newImage.setImageURI(image);
-
         newImage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         newImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         CardView newCard = new CardView(this);

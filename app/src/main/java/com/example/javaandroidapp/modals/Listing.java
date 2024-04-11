@@ -1,23 +1,23 @@
-package com.example.javaandroidapp.objects;
+package com.example.javaandroidapp.modals;
 
-
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Listing implements Serializable{
     @DocumentId
     private String uid;
     private String category;
     private String createdBy;
+    private String createdById;
     private Integer currentOrder;
     private String description;
     private Date expiry;
@@ -29,20 +29,22 @@ public class Listing implements Serializable{
     private ArrayList<String> variationNames = new ArrayList<>();
     private ArrayList<Double> variationAdditionalPrice = new ArrayList<>();
     private ArrayList<String> imageList = new ArrayList<>();
+    private ArrayList<DocumentReference> orders = new ArrayList<>();
 
     public Listing() {}
 
-    public Listing(Double price, String name, Integer minOrder, Integer currentOrder, Date expiry, ArrayList<String> imageList,
-                   String createdBy, String description, Double oldPrice, String category, ArrayList<String> variationNames, ArrayList<Double> variationAdditionalPrice) {
+    public Listing(Double price, String name, Integer minOrder, Date expiry, ArrayList<String> imageList,
+                   String createdBy, String createdById, String description, Double oldPrice, String category, ArrayList<String> variationNames, ArrayList<Double> variationAdditionalPrice) {
         this.price = price;
         this.name = name;
         this.minOrder = minOrder;
-        this.currentOrder = currentOrder;
+        this.currentOrder = 0;
         this.expiry = expiry;
         this.imageList = imageList;
         this.description = description;
         this.oldPrice = oldPrice;
         this.createdBy = createdBy;
+        this.createdById = createdById;
         this.category = category;
         this.variationNames = variationNames;
         this.variationAdditionalPrice = variationAdditionalPrice;
@@ -51,11 +53,6 @@ public class Listing implements Serializable{
     public String getUid() {
         return uid;
     }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     public Double getOldPrice() {
         return this.oldPrice;
     }
@@ -138,6 +135,14 @@ public class Listing implements Serializable{
         this.createdBy = createdBy;
     }
 
+    public String getCreatedById() {
+        return createdById;
+    }
+
+    public void setCreatedById(String createdById) {
+        this.createdById = createdById;
+    }
+
     public void setCurrentOrder(Integer currentOrder) {
         this.currentOrder = currentOrder;
     }
@@ -172,5 +177,11 @@ public class Listing implements Serializable{
 
     public void setVariationAdditionalPrice(ArrayList<Double> variationAdditionalPrice) {
         this.variationAdditionalPrice = variationAdditionalPrice;
+    }
+    public void setUid(String uid){
+        this.uid = uid;
+    }
+    public static Listing createListingWithDocumentSnapshot(DocumentSnapshot doc){
+        return doc.toObject(Listing.class);
     }
 }

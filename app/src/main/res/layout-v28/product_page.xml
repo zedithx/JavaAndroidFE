@@ -31,64 +31,45 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:orientation="vertical" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="240dp"
-                        android:layout_margin="15dp"
-                        android:orientation="horizontal">
-
-                        <RelativeLayout
-                            android:id="@+id/imageViewLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp"
+                            android:layout_marginBottom="8dp"
+                            app:cardCornerRadius="25dp"
+                            app:cardElevation="8dp">
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
+                                android:layout_height="240dp">
                                 <androidx.cardview.widget.CardView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:padding="0dp"
-                                    app:cardCornerRadius="25dp">
-
-                                    <ImageView
-                                        android:id="@+id/imageViewer"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:contentDescription="@string/product_image_description"
-                                        android:scaleType="centerCrop"
-                                        android:src="@drawable/test_kangol" />
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_marginBottom="10dp"
+                                    app:cardCornerRadius="20dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    app:cardBackgroundColor="@color/darkgray">
+                                    <TextView
+                                        android:id="@+id/imageIndex"
+                                        android:paddingHorizontal="6dp"
+                                        android:paddingVertical="3dp"
+                                        android:fontFamily="@font/interfont"
+                                        android:textFontWeight="600"
+                                        android:textSize="11sp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="0/0"
+                                        android:textColor="@color/white"/>
                                 </androidx.cardview.widget.CardView>
-                            </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                            <ImageButton
-                                android:id="@+id/prevBtn"
-                                android:layout_width="50dp"
-                                android:layout_height="match_parent"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentTop="true"
-                                android:background="@null"
-                                android:contentDescription="@string/previous_button"
-                                app:srcCompat="@drawable/red_back_arrow" />
-
-                            <ImageButton
-                                android:id="@+id/nextBtn"
-                                android:layout_width="50dp"
-                                android:layout_height="match_parent"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentEnd="true"
-                                android:background="@null"
-                                android:contentDescription="@string/next_button"
-                                app:srcCompat="@drawable/red_front_arrow" />
-
-                        </RelativeLayout>
-
-
-                    </LinearLayout>
-
+                                <androidx.viewpager.widget.ViewPager
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:id="@+id/view_pager"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
 
                     <TextView
                         android:id="@+id/productName"
@@ -318,42 +299,74 @@
                         app:cardCornerRadius="20dp"
                         app:strokeWidth="0dp">
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/productOwnerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal"
+        android:padding="10dp">
+<com.google.android.material.card.MaterialCardView
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    app:cardCornerRadius="50dp"
+    android:layout_gravity="center"
+    app:cardElevation="0dp">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sellerPic"
+            android:scaleType="centerCrop"
+            android:background="@null"
+            android:src="@drawable/profile_pic" />
+    </androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
 
-                        <LinearLayout
-                            android:id="@+id/productOwnerLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
 
-                            android:orientation="horizontal"
-                            android:padding="10dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-                            <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="match_parent"
-                                android:background="@null"
-                                android:src="@drawable/profile_pic" />
+            <TextView
+                android:id="@+id/owner"
+                style="@style/H3"
+                android:layout_gravity="start"
+                android:text="pdtOwner" />
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="10dp"
-                                android:gravity="center"
-                                android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/group_buy_leader" />
 
-                                <TextView
-                                    android:id="@+id/owner"
-                                    style="@style/H3"
-                                    android:layout_gravity="start"
-                                    android:text="pdtOwner" />
+        </LinearLayout>
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:text="@string/group_buy_leader" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_margin="15dp"
+        android:layout_alignParentEnd="true"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
 
-                            </LinearLayout>
-                        </LinearLayout>
+            android:text="View\nProfile"/>
+    </LinearLayout>
+</RelativeLayout>
+
 
                     </com.google.android.material.card.MaterialCardView>
 

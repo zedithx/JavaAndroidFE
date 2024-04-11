@@ -13,18 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.adapters.ListingAdapter;
-import com.example.javaandroidapp.adapters.OrderAdapter;
-import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.objects.Order;
-import com.example.javaandroidapp.objects.User;
+import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.utils.Listings;
-import com.example.javaandroidapp.utils.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {

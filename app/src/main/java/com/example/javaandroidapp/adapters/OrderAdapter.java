@@ -1,8 +1,13 @@
 package com.example.javaandroidapp.adapters;
 
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
-import com.example.javaandroidapp.objects.Listing;
-import com.example.javaandroidapp.objects.Order;
+import com.example.javaandroidapp.activities.LandingActivity;
+import com.example.javaandroidapp.activities.LandingOrdersActivity;
+import com.example.javaandroidapp.activities.ViewOrderDetailsActivity;
+import com.example.javaandroidapp.modals.Listing;
+import com.example.javaandroidapp.modals.Order;
 
 import java.util.List;
 
@@ -47,9 +55,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (clickListener != null) {
-                    clickListener.onItemClick(data);
-                }
+                // change
+//                    clickListener.onItemClick(data);
+                    Context context = view.getContext();
+                    Intent Main = new Intent(context, ViewOrderDetailsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Order", data);;
+                    Main.putExtra("Order", data);
+                    context.startActivity(Main);
+
+//                    Main.putExtra("Listing", listing);
+
             }
         });
     }
@@ -72,9 +88,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             ImageView productImageView = itemView.findViewById(R.id.product_image);
             TextView orderNameView = itemView.findViewById(R.id.order_name);
             TextView orderVariantView = itemView.findViewById(R.id.order_variant);
-            TextView orderQuantityView = itemView.findViewById(R.id.order_quantity);
             TextView orderStatusView = itemView.findViewById(R.id.order_status);
             TextView orderPaidAmountView = itemView.findViewById(R.id.order_paid_amount);
+            TextView currentOrderView = itemView.findViewById(R.id.currentorder);
+            TextView minorderView = itemView.findViewById(R.id.minorder);
             // Bind data to the views in the item layout
             String orderDelivery = order.getDelivery();
             order.getListing(new CallbackAdapter(){
@@ -83,14 +100,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                     if (listing != null) {
                         orderNameView.setText(listing.getName());
                         Glide.with(orderView).load(listing.getImageList().get(0)).into(productImageView);
+                        currentOrderView.setText(String.valueOf(listing.getCurrentOrder()));
+                        minorderView.setText(String.valueOf(listing.getMinOrder()));
                     }
                 }
             });
             Integer orderQuantity = order.getQuantity();
             String orderVariant = order.getVariant();
             Double orderPaidAmount = order.getPaidAmount();
-            orderVariantView.setText(orderVariant);
-            orderQuantityView.setText(String.format("Qty: %s", String.valueOf(orderQuantity)));
+            orderVariantView.setText(String.format("%s x%s",orderVariant, orderQuantity));
             orderStatusView.setText(orderDelivery);
             orderPaidAmountView.setText(String.format("$%s", String.valueOf(orderPaidAmount)));
         }

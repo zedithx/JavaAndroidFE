@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,8 @@ import androidx.cardview.widget.CardView;
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.CallbackAdapter;
-import com.example.javaandroidapp.objects.User;
+import com.example.javaandroidapp.modals.User;
+import com.example.javaandroidapp.utils.ChatSystem;
 import com.example.javaandroidapp.utils.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -72,7 +74,7 @@ public class MenuActivity extends AppCompatActivity {
         // set profile image to display
 
         // set edit info button
-        TextView editInfoBtn = findViewById(R.id.editInfoBtn);
+        LinearLayout editInfoBtn = findViewById(R.id.editInfoBtn);
 
         // set name and email details
         // set add/view listing buttons
@@ -88,14 +90,15 @@ public class MenuActivity extends AppCompatActivity {
         editInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent editInfo = new Intent(MenuActivity.this, EditInfoActivity.class);
+                Intent editInfo = new Intent(MenuActivity.this, EditInfoActivity.class);
+                startActivity(editInfo);
             }
         });
 
         viewListing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(MenuActivity.this, MerchantListingActivity.class);
+                Intent Main = new Intent(MenuActivity.this, MyListingActivity.class);
                 startActivity(Main);
             }
         });
@@ -115,6 +118,10 @@ public class MenuActivity extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ChatSystem chatSystem = ChatSystem.getInstance();
+                if (chatSystem != null) {
+                    chatSystem.client.disconnect(true).enqueue();
+                }
                 mAuth.signOut();
                 Intent logout = new Intent(MenuActivity.this, LogInActivity.class);
                 startActivity(logout);
@@ -123,36 +130,5 @@ public class MenuActivity extends AppCompatActivity {
         });
 
 
-    }
-}
-
-class   UserProfile {
-    private String username;
-    private String emailAddress;
-    private ArrayList<String> paymentMethods = new ArrayList<>();
-
-    private int profileImage;
-
-    UserProfile() {
-        username = "Kev Nguyen";
-        emailAddress = "kev_nguyen@gmail.com";
-        profileImage = R.drawable.profile_pic;
-        paymentMethods.add("Stripe");
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public int getProfileImage() {
-        return profileImage;
-    }
-
-    public ArrayList getPaymentMethods() {
-        return paymentMethods;
     }
 }
