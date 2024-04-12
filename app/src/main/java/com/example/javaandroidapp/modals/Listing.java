@@ -20,6 +20,7 @@ public class Listing implements Serializable{
     private Integer currentOrder;
     private String description;
     private Date expiry;
+    private String expiryCountdown;
     private Integer minOrder;
     private String name;
     private double oldPrice;
@@ -171,6 +172,9 @@ public class Listing implements Serializable{
     public void setUid(String uid){
         this.uid = uid;
     }
+    public void setExpiryCountdown(String expiryCountdown){
+        this.expiryCountdown = expiryCountdown;
+    }
     public static Listing createListingWithDocumentSnapshot(DocumentSnapshot doc){
         Listing newListing = new Listing();
         newListing.setImageList((ArrayList<String>) doc.get("imageList"));
@@ -185,6 +189,8 @@ public class Listing implements Serializable{
         newListing.setVariationNames((ArrayList<String>) doc.get("variationNames"));
         newListing.setVariationAdditionalPrice((ArrayList<Double>) doc.get("variationAdditionalPrice") );
         newListing.setUid(doc.getId());
+        newListing.setExpiry(doc.getDate("expiry"));
+        newListing.setExpiryCountdown(doc.getString("expiryCountdown"));
         return newListing;
     }
 }
