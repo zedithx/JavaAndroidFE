@@ -130,7 +130,7 @@
                         android:hint="Click to edit"
                         android:importantForAutofill="no"
                         android:inputType="text"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         style="@style/H3"
@@ -141,10 +141,10 @@
                     <EditText
                         android:id="@+id/addDescription"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:ellipsize="end"
                         android:gravity="start"
-                        android:hint="Provide description for buyers."
+                        android:hint="Provide description for buyers"
                         android:importantForAutofill="no"
                         android:inputType="textMultiLine"
                         android:maxLines="8"
@@ -237,6 +237,70 @@
                         android:layout_height="48dp"
                         android:layout_marginTop="10dp"
                         android:spinnerMode="dropdown" />
+
+                    <TextView
+                        style="@style/H3"
+                        android:layout_marginTop="20dp"
+                        android:text="Variations (If any)"
+                        android:textColor="@color/lightred" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/interfont"
+                        android:layout_marginTop="15dp"
+                        android:text="Variation Name:"
+                        android:textColor="@color/black"
+                        />
+
+                    <EditText
+                        android:id="@+id/variantName"
+                        android:layout_width="200dp"
+                        android:layout_height="48dp"
+                        android:ellipsize="start"
+                        android:gravity="center"
+                        android:hint="e.g Small/Medium"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/interfont"
+                        android:layout_marginTop="15dp"
+                        android:text="Additional Price:"
+                        android:textColor="@color/black"
+                        />
+
+                    <EditText
+                        android:id="@+id/additionalVariantPrice"
+                        android:layout_width="100dp"
+                        android:layout_height="48dp"
+                        android:ellipsize="start"
+                        android:gravity="center"
+                        android:hint="e.g 10.00"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:id="@+id/variantLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/addVariantButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:src="@drawable/add_variation_button"
+                        android:background="@null"/>
 
                     <TextView
                         style="@style/H3"

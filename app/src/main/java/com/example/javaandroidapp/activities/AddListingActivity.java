@@ -7,16 +7,23 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.health.connect.datatypes.HeightRecord;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -73,12 +80,17 @@ import java.util.UUID;
 
 public class AddListingActivity extends AppCompatActivity {
     ImageButton addImageButton;
+    ImageButton addVariantButton;
     LinearLayout addListingLayout;
     Uri image;
     ArrayList<Uri> uriArrList = new ArrayList<>();
-    ArrayList<String> uriImageList = new ArrayList<>();
     LinearLayout displayImageLayout;
     User user;
+    ArrayList<Double> variantAdditionalPriceList = new ArrayList<>();
+    ArrayList<EditText> variantAdditionalPriceInputs = new ArrayList<>();
+    ArrayList<String> variantNameList = new ArrayList<>();
+    ArrayList<EditText> variantNameInputs = new ArrayList<>();
+
     private List<String> categories = new ArrayList<String>();
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -117,15 +129,23 @@ public class AddListingActivity extends AppCompatActivity {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_listing);
+        // get Buttons
         addImageButton = findViewById(R.id.addImageButton);
+        addVariantButton = findViewById(R.id.addVariantButton);
         addListingLayout = (LinearLayout) findViewById(R.id.addListingLayout);
         TextView addDate = findViewById(R.id.addDate);
         TextView addTime = findViewById(R.id.addTime);
+        //Retrieve all the edit text to get data later when add button is pressed
         EditText productName = findViewById(R.id.addProductName);
         EditText description = findViewById(R.id.addDescription);
         EditText oldPrice = findViewById(R.id.addOldPrice);
         EditText newPrice = findViewById(R.id.addNewPrice);
         EditText minOrder = findViewById(R.id.addMinOrder);
+        EditText variantName = findViewById(R.id.variantName);
+        EditText additionalVariantPrice = findViewById(R.id.additionalVariantPrice);
+        // store this to check later to send to db
+        variantAdditionalPriceInputs.add(additionalVariantPrice);
+        variantNameInputs.add(variantName);
         Spinner category = findViewById(R.id.addCategory);
         // For processing animation
         LinearLayout addListingButton = findViewById(R.id.addListingButton);
@@ -147,13 +167,66 @@ public class AddListingActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-
+        // to add image and dynamically generate new image
         addImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 activityResultLauncher.launch(intent);
+            }
+        });
+        // to add new variant edit text
+        addVariantButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("test123", "test123");
+                LinearLayout variantLayout = findViewById(R.id.variantLayout);
+                //generate new variant edit text and add the text to button
+                TextView newVariantName = new TextView(getApplicationContext());
+                LinearLayout.LayoutParams newVariantNameParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                newVariantNameParams.setMargins(0,30, 0, 0);
+                newVariantName.setLayoutParams(newVariantNameParams);
+                newVariantName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                newVariantName.setText("Variation Name:");
+                newVariantName.setTextColor(Color.BLACK);
+//                newVariantName.setTypeface(Typeface.defaultFromStyle(R.font.interfont));
+                EditText newVariantNameInput = new EditText(getApplicationContext());
+                int widthNameInDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
+                int heightNameInDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics());
+                LinearLayout.LayoutParams newNameInputParams = new LinearLayout.LayoutParams(widthNameInDp, heightNameInDp);
+                newVariantNameInput.setLayoutParams(newNameInputParams);
+                newVariantNameInput.setEllipsize(TextUtils.TruncateAt.START);
+                newVariantNameInput.setGravity(Gravity.CENTER);
+                newVariantNameInput.setHint("e.g Small/Medium");
+                newVariantNameInput.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
+                newVariantNameInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                newVariantNameInput.setTextSize(14);
+                TextView newVariantAdditionalPrice = new TextView(getApplicationContext());
+                LinearLayout.LayoutParams newVariantPriceParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                newVariantPriceParams.setMargins(0,15, 0, 0);
+                newVariantAdditionalPrice.setLayoutParams(newVariantPriceParams);
+                newVariantAdditionalPrice.setTextSize(15);
+                newVariantAdditionalPrice.setText("Additional Price:");
+                newVariantAdditionalPrice.setTextColor(Color.BLACK);
+//                newVariantAdditionalPrice.setTypeface(Typeface.defaultFromStyle(R.font.interfont));
+                EditText newVariantAdditionalPriceInput = new EditText(getApplicationContext());
+                int widthPriceInDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+                int heightPriceInDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics());
+                LinearLayout.LayoutParams newVariantInputParams = new LinearLayout.LayoutParams(widthPriceInDp, heightPriceInDp);
+                newVariantAdditionalPriceInput.setLayoutParams(newVariantInputParams);
+                newVariantAdditionalPriceInput.setEllipsize(TextUtils.TruncateAt.START);
+                newVariantAdditionalPriceInput.setGravity(Gravity.CENTER);
+                newVariantAdditionalPriceInput.setHint("e.g 10.00");
+                newVariantAdditionalPriceInput.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
+                newVariantAdditionalPriceInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                newVariantAdditionalPriceInput.setTextSize(14);
+                variantAdditionalPriceInputs.add(newVariantAdditionalPriceInput);
+                variantNameInputs.add(newVariantNameInput);
+                variantLayout.addView(newVariantName);
+                variantLayout.addView(newVariantNameInput);
+                variantLayout.addView(newVariantAdditionalPrice);
+                variantLayout.addView(newVariantAdditionalPriceInput);
             }
         });
         addDate.setOnClickListener(new View.OnClickListener() {
@@ -200,22 +273,24 @@ public class AddListingActivity extends AppCompatActivity {
                 Images.addImages(uriArrList, storageRef, new CallbackAdapter() {
                     @Override
                     public void getArrayListOfString(ArrayList<String> imageList) {
-                        //TODO - change to hashmap population from edittext
-                        ArrayList<String> variantNames = new ArrayList<>();
-                        variantNames.add("Small");
-                        variantNames.add("Medium");
-                        variantNames.add("Large");
-                        ArrayList<Double> variantAdditionalPrice = new ArrayList<>();
-                        variantAdditionalPrice.add(2.0);
-                        variantAdditionalPrice.add(4.0);
-                        variantAdditionalPrice.add(6.0);
+                        // if null it will just return empty variant list
+                        for (EditText input: variantNameInputs) {
+                            if (input.getText() != null) {
+                                variantNameList.add(input.getText().toString());
+                            }
+                        }
+                        for (EditText input: variantAdditionalPriceInputs) {
+                            if (input.getText() != null) {
+                                variantAdditionalPriceList.add(Double.valueOf(input.getText().toString()));
+                            }
+                        }
                         String datetime = addDate.getText().toString() + " " + addTime.getText().toString();
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy HH:mm");
                         LocalDate parsedDateTime = LocalDate.parse(datetime, formatter);
                         Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
                         Listings.addListing(db, user, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
                                 Integer.parseInt(minOrder.getText().toString()), parsedDate, imageList, description.getText().toString(),
-                                Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), variantNames, variantAdditionalPrice, new CallbackAdapter() {
+                                Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), variantNameList, variantAdditionalPriceList, new CallbackAdapter() {
                             @Override
                             public void onResult(boolean isSuccess) {
                                 if (isSuccess) {
