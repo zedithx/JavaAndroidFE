@@ -51,6 +51,7 @@ public class EditInfoActivity extends AppCompatActivity {
         LinearLayout editPic = findViewById(R.id.editPic);
         EditText editName = findViewById(R.id.editName);
         EditText editEmail = findViewById(R.id.editEmail);
+        ImageView profileImageView = findViewById(R.id.profileImageView);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +70,10 @@ public class EditInfoActivity extends AppCompatActivity {
                         name = docSnapshot.getString("name");
                         editName.setText(name);
                         editEmail.setText(fbUser.getEmail());
-
+                        String profileImageString = (String) docSnapshot.get("profileImage");
+                        if (profileImageString.length() > 0) {
+                            new ImageLoadTask(docSnapshot.getString("profileImage"), profileImageView);
+                        }
                     }
                 }
             }

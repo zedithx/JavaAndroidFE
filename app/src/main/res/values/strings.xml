@@ -103,6 +103,9 @@
     <string name="settings">Settings</string>
     <string name="edit_profile_pic">Edit Profile Photo</string>
     <string name="change_info">Change Information</string>
+    <string name="manage_listing">Manage Listing</string>
+    <string name="minimum_order_unmet">Minimum Order amount not yet fulfilled.</string>
+    <string name="expired">Listing has expired.\nNo new orders will be accepted</string>
 
 
 </resources>
