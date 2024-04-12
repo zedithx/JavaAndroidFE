@@ -65,7 +65,7 @@ public class Listings {
                                   ArrayList<String> imageList, String description, Double oldPrice, String category, ArrayList<String> variationNames,
                                   ArrayList<Double> variationAdditionalPrice, Callbacks callback) {
         Listing listing = new Listing(price, name, minOrder, expiryDate,
-                imageList, user.getName(), description, oldPrice, category, variationNames, variationAdditionalPrice);
+                imageList, user.getName(), user.getUid(), description, oldPrice, category, variationNames, variationAdditionalPrice);
         db.collection("listings").add(listing).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
