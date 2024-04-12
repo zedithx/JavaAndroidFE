@@ -139,29 +139,23 @@ public class SellerListingActivity extends AppCompatActivity {
                 List<String> list = new ArrayList<>();
                 //get person uid
                 list.add(uid);
-//                Users.getUserFromName(db, listingExtra.getCreatedBy(), new CallbackAdapter(){
-//                    @Override
-//                    public void getUser(User new_user) {
-//                        sellerUserId = new_user.getUid();
-//                    }
-//                });
-                sellerUserId = "pZDmZf7JtzZvCKtOf3JYonuf71m1";
+                Users.getUserFromId(db, listingExtra.getCreatedById(), new CallbackAdapter(){
+                    @Override
+                    public void getUser(User new_user) {
+                        sellerUserId = new_user.getUid();
+                    }
+                });
                 list.add(sellerUserId);
 
                 try {
-                    // if seller is the person
-                    Log.d("see ids", "1stids" + uid + "2ndid" + sellerUserId);
-                    if (sellerUserId.equals(uid)) {
-                        Toast.makeText(getApplicationContext(), "You cannot chat with yourself", Toast.LENGTH_SHORT);
-                    } else {
-                        chatSystem.createChannel(list, new CallbackAdapter() {
-                            @Override
-                            public void getChannel(Channel channel) {
-                                startActivity(ChatActivity.newIntent(SellerListingActivity.this, channel));
-                            }
-                        });
-                    }
-                } catch (StreamException e) {
+                    chatSystem.createChannel(list, new CallbackAdapter() {
+                        @Override
+                        public void getChannel(Channel channel) {
+                            startActivity(ChatActivity.newIntent(SellerListingActivity.this, channel));
+                        }
+                    });
+                }
+                catch (StreamException e) {
                     throw new RuntimeException(e);
                 }
             }
