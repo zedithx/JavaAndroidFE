@@ -58,7 +58,7 @@ public class CollectionActivity extends AppCompatActivity {
                     if (document.exists()) {
                         orderName.setText(document.getString("name"));
                         orderVariant.setText("Variant: " + orderDetails.getVariant());
-//                        expiryTextView.setText(document.getString("expiryCountdown"));
+                        orderAmount.setText("Amount: " + orderDetails.getQuantity() );
                         new ImageLoadTask(((ArrayList<String>) document.get("imageList")).get(0), productImage).execute();
 
                     }

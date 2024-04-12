@@ -137,7 +137,8 @@ public class MyListingActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent main = new Intent(MyListingActivity.this, TransitionLandingActivity.class);
+                startActivity(main);
             }
         });
         settingsBtn.setOnClickListener(new View.OnClickListener() {
