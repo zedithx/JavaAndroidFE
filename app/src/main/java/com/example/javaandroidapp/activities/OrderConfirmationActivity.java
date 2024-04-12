@@ -115,7 +115,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         expiryDateTextView.setText(listingDetails.getExpiryCountdown());
         orderQtyTextView.setText(String.valueOf(orderDetails.getQuantity()));
         variantNameTextView.setText(orderDetails.getVariant());
-        itemPriceTextView.setText(String.format("S$%.2f" + orderDetails.getItemPrice()));
+        itemPriceTextView.setText(String.format("S$%.2f", orderDetails.getItemPrice()));
         totalPriceTextView.setText(String.format("S$%.2f", orderDetails.getPaidAmount()));
         //transition from loading to order after ClientSecret has been obtained
         loadingSpinner = findViewById(R.id.loadingSpinner);

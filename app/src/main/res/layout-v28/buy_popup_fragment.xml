@@ -64,19 +64,23 @@
 
 
                         <LinearLayout
-                            android:id="@+id/chooseVarBtnLayout"
+                            android:id="@+id/VarLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="15dp"
                             android:gravity="start"
                             android:orientation="horizontal">
 
-                            <Spinner
-                                android:id="@+id/varSpinner"
+                            <TextView
+                                android:id="@+id/chooseVarText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-
-                            </Spinner>
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="18dp"
+                                android:textFontWeight="400"
+                                android:fontFamily="@font/interfont"
+                                android:text="Small"/>
                         </LinearLayout>
 
 
