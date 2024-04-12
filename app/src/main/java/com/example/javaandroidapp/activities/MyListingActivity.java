@@ -115,10 +115,8 @@ public class MyListingActivity extends AppCompatActivity {
                                         listingsGrid.setRowCount(querySize);
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             if (document.exists()) {
-                                                String expiry = document.getString("expiryCountdown");
-                                                //                            Log.d("listingDetails", "" + listingId + "\n" + productName + "\n" + price + "\n" + expiry + "\n" + "minOrder: " + minOrder + "\n" + "currentOrder: " + currOrder + "\n" + "img str: " + imageList.get(0));
                                                 Listing listing = createListingWithDocumentSnapshot(document);
-                                                listingsGrid.addView(createNewMatCard(count, listing.getName(), "S$" + df.format(listing.getPrice()), listing.getMinOrder(), listing.getCurrentOrder(), expiry, listing.getImageList(), listing));
+                                                listingsGrid.addView(createNewMatCard(count, listing));
                                                 count += 1;
                                             }
                                         }
@@ -180,7 +178,7 @@ public class MyListingActivity extends AppCompatActivity {
 
     }
 
-    public MaterialCardView createNewMatCard(int count, String name, String price, int minOrder, int currentOrder, String expiry, List<String> imageList, Listing listing) {
+    public MaterialCardView createNewMatCard(int count, Listing listing) {
 
         GridLayout.LayoutParams cardMaterialParams = new GridLayout.LayoutParams();
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -249,8 +247,8 @@ public class MyListingActivity extends AppCompatActivity {
         numOrderLayout.setLayoutParams(textParams);
 
         // Num of orders displayed on each card
-        int currOrderNum = currentOrder;
-        int minOrderNum = minOrder;
+        int currOrderNum = listing.getCurrentOrder().intValue();
+        int minOrderNum = listing.getMinOrder().intValue();
         TextView cardOrderNum = new TextView(this);
         cardOrderNum.setTextSize(15);
         cardOrderNum.setText(currOrderNum + "/" + minOrderNum);
@@ -267,10 +265,11 @@ public class MyListingActivity extends AppCompatActivity {
         // Expiry time displayed on each card
         TextView expiryText = new TextView(this);
         expiryText.setTextSize(15);
-//        expiryText.setTextColor(Color.RED);
-        expiryText.setText(expiry);
+        expiryText.setTextColor(Color.RED);
+        expiryText.setText(listing.getExpiryCountdown());
         expiryText.setLayoutParams(textParams);
-        new ImageLoadTask(imageList.get(0), cardImg).execute();
+
+        new ImageLoadTask(listing.getImageList().get(0), cardImg).execute();
 
 
         cardImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -293,7 +292,7 @@ public class MyListingActivity extends AppCompatActivity {
             //TODO: Change Button to onClick -> view listing orders
             @Override
             public void onClick(View v) {
-                Intent getProduct = new Intent(MyListingActivity.this, TransitionViewProductActivity.class);
+                Intent getProduct = new Intent(MyListingActivity.this, ManageOrderActivity.class);
                 getProduct.putExtra("listing", listing);
                 startActivity(getProduct);
             }
