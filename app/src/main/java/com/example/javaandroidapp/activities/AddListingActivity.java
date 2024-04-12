@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -30,7 +32,9 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
@@ -88,9 +92,6 @@ public class AddListingActivity extends AppCompatActivity {
                     Log.d("uriArr", "uriArr" + uriArrList);
 //                    Glide.with(getApplicationContext()).load(image).apply(new RequestOptions().override(100, 100)).into(addImageButton);
                     displayImageLayout.addView(addNewImageButton(image));
-                    //Used to create a new button dynamically
-//                    ImageButton button = new ImageButton(getApplicationContext());
-//                    addListingLayout.addView(button);
                 }
             } else {
                 Toast.makeText(AddListingActivity.this, "Please select an image", Toast.LENGTH_LONG).show();
@@ -199,9 +200,6 @@ public class AddListingActivity extends AppCompatActivity {
                 Images.addImages(uriArrList, storageRef, new CallbackAdapter() {
                     @Override
                     public void getArrayListOfString(ArrayList<String> imageList) {
-                        //TODO - change to list of Image
-//                        ArrayList<String> uri_list = new ArrayList<>();
-//                        uri_list.add(uri);
                         //TODO - change to hashmap population from edittext
                         ArrayList<String> variantNames = new ArrayList<>();
                         variantNames.add("Small");
@@ -239,16 +237,40 @@ public class AddListingActivity extends AppCompatActivity {
     MaterialCardView addNewImageButton(Uri image) {
         MaterialCardView newMatCard = new MaterialCardView(this);
         newMatCard.setStrokeWidth(0);
-        LinearLayout.LayoutParams cardMatParams = new LinearLayout.LayoutParams(200, 200);
-        cardMatParams.setMargins(15, 0, 0, 0);
+        LinearLayout.LayoutParams cardMatParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        cardMatParams.setMargins(10, 20, 30, 0);
         newMatCard.setLayoutParams(cardMatParams);
         ImageView newImage = new ImageView(this);
         newImage.setImageURI(image);
-        newImage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        newImage.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         newImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        CardView newCard = new CardView(this);
+        ImageView removeButton = new ImageView(this);
+        removeButton.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.close_image));
+        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(30, 30);
+        buttonParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        buttonParams.addRule(RelativeLayout.ALIGN_PARENT_END);
+        buttonParams.setMargins(0,10, 0, 0);
+        removeButton.setLayoutParams(buttonParams);
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Find the index of the image URI in the list
+                int index = uriArrList.indexOf(image);
+                if (index != -1) {
+                    // Remove the image URI from the list
+                    uriArrList.remove(index);
+                    // Remove both the image view and the button from the layout
+                    displayImageLayout.removeView(newMatCard);
+                    displayImageLayout.removeView(removeButton);
+                }
+            }
+        });
+        RelativeLayout newCard = new RelativeLayout(this);
+        RelativeLayout.LayoutParams newCardParams = new RelativeLayout.LayoutParams(200, 200);
+        newCard.setLayoutParams(newCardParams);
         newCard.addView(newImage);
-        newCard.setCardElevation(0);
+        newCard.addView(removeButton);
         newMatCard.addView(newCard);
         return newMatCard;
     }
