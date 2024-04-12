@@ -200,7 +200,7 @@ public class AddListingActivity extends AppCompatActivity {
                 newVariantNameInput.setGravity(Gravity.CENTER);
                 newVariantNameInput.setHint("e.g Small/Medium");
                 newVariantNameInput.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
-                newVariantNameInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                newVariantNameInput.setInputType(InputType.TYPE_CLASS_TEXT);
                 newVariantNameInput.setTextSize(14);
                 TextView newVariantAdditionalPrice = new TextView(getApplicationContext());
                 LinearLayout.LayoutParams newVariantPriceParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -219,7 +219,7 @@ public class AddListingActivity extends AppCompatActivity {
                 newVariantAdditionalPriceInput.setGravity(Gravity.CENTER);
                 newVariantAdditionalPriceInput.setHint("e.g 10.00");
                 newVariantAdditionalPriceInput.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
-                newVariantAdditionalPriceInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                newVariantAdditionalPriceInput.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 newVariantAdditionalPriceInput.setTextSize(14);
                 variantAdditionalPriceInputs.add(newVariantAdditionalPriceInput);
                 variantNameInputs.add(newVariantNameInput);
@@ -322,7 +322,7 @@ public class AddListingActivity extends AppCompatActivity {
         newImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         ImageView removeButton = new ImageView(this);
         removeButton.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.close_image));
-        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(30, 30);
+        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(60, 60);
         buttonParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         buttonParams.addRule(RelativeLayout.ALIGN_PARENT_END);
         buttonParams.setMargins(0,10, 0, 0);
