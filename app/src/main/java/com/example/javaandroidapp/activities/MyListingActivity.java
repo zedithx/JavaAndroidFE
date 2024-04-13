@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -134,6 +135,13 @@ public class MyListingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent main = new Intent(MyListingActivity.this, TransitionLandingActivity.class);
                 startActivity(main);
+            }
+        });
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent profile = new Intent(MyListingActivity.this, TransitionLandingActivity.class);
+                startActivity(profile);
             }
         });
         settingsBtn.setOnClickListener(new View.OnClickListener() {
