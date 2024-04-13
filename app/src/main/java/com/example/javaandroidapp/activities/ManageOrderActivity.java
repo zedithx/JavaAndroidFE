@@ -8,16 +8,25 @@ import android.media.Image;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.modals.Listing;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
+import com.google.api.Distribution;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +41,9 @@ public class ManageOrderActivity extends AppCompatActivity {
 
         Listing listing = (Listing) getIntent().getSerializableExtra("listing");
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("listings").document(listing.getUid());
+
         ImageButton backBtn = findViewById(R.id.backBtn);
         TextView listingName = findViewById(R.id.listingName);
         TextView orderFulfilledText = findViewById(R.id.orderFulfilledText);
@@ -41,14 +53,16 @@ public class ManageOrderActivity extends AppCompatActivity {
         TextView minOrder = findViewById(R.id.minOrder);
         TextView expiryText = findViewById(R.id.expiryDate);
         ImageView productImg = findViewById(R.id.listingImage);
-        LinearLayout optionsLayout = findViewById(R.id.options_layout);
         MaterialCardView expiryLayout = findViewById(R.id.expiryCard);
         ArrayList<TextView> orderStatuses = new ArrayList<>();
-//        orderStatuses.add(findViewById(R.id.order_status_1));
-//        orderStatuses.add(findViewById(R.id.order_status_2));
-//        orderStatuses.add(findViewById(R.id.order_status_3));
-//        orderStatuses.add(findViewById(R.id.order_status_4));
-        ImageView processProgress = findViewById(R.id.progress_bar);
+        LinearLayout progressParent = findViewById(R.id.progressParentLayout);
+        LinearLayout optionsLayout0 = findViewById(R.id.options_layout_0);
+        LinearLayout optionsLayout = findViewById(R.id.options_layout);
+        LinearLayout optionsLayout2 = findViewById(R.id.options_layout_2);
+        LinearLayout optionsLayout3 = findViewById(R.id.options_layout_3);
+        Switch finalisedGroupOrderSwitch = findViewById(R.id.finalise_group_order_switch);
+        Switch dispatchedSwitch = findViewById(R.id.dispatched_switch);
+        Switch readySwitch = findViewById(R.id.ready_switch);
         String deliveryStatus = listing.getDeliveryStatus();
         boolean minFulfilled = false;
 
@@ -72,6 +86,10 @@ public class ManageOrderActivity extends AppCompatActivity {
 
         if (currOrderNum >= minOrderNum) {
             minFulfilled = true;
+            if (deliveryStatus.equals("Unfulfilled")){
+                deliveryStatus = "FulfilledMinOrder";
+                docRef.update("deliveryStatus", deliveryStatus);
+            }
             fulfilImage.setImageResource(R.drawable.green_tick);
             orderFulfilledCardMat.setStrokeColor(Color.argb(175, 00, 80, 0));
             orderFulfilledText.setText("Current Order amount has fulfilled Minimum Order amount.");
@@ -79,35 +97,81 @@ public class ManageOrderActivity extends AppCompatActivity {
         }
 
         if (expiryDate.before(new Date()) && !minFulfilled) {
-            optionsLayout.setClickable(false);
+            progressParent.setClickable(false);
             expiryLayout.setVisibility(View.VISIBLE);
-            optionsLayout.setVisibility(View.GONE);
+            progressParent.setVisibility(View.GONE);
         } else {
             expiryLayout.setVisibility(View.GONE);
-            optionsLayout.setVisibility(View.VISIBLE);
+            progressParent.setVisibility(View.VISIBLE);
         }
-
-        deliveryStatus = "Finalised";
-        setProgressBar(deliveryStatus, processProgress, orderStatuses);
-    }
-
-    public void setProgressBar(String deliveryStatus, ImageView progBar, ArrayList<TextView> orderStatuses) {
+        //TODO: remove test case
         switch (deliveryStatus) {
             case "Unfulfilled":
-                progBar.setImageResource(R.drawable.order_prog_bar_0);
+                optionsLayout0.setVisibility(View.VISIBLE);
+                optionsLayout.setVisibility(View.GONE);
+                optionsLayout2.setVisibility(View.GONE);
+                optionsLayout3.setVisibility(View.GONE);
+                optionsLayout0.setClickable(false);
+                break;
+            case "FulfilledMinOrder":
+                optionsLayout0.setVisibility(View.GONE);
+                optionsLayout.setVisibility(View.VISIBLE);
+                optionsLayout2.setVisibility(View.GONE);
+                optionsLayout3.setVisibility(View.GONE);
+                finalisedGroupOrderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked){
+                            buttonView.setClickable(false);
+                            docRef.update("deliveryStatus", "Finalised");
+                        }
+                    }
+                });
                 break;
             case "Finalised":
-                progBar.setImageResource(R.drawable.order_prog_bar_1);
+                optionsLayout0.setVisibility(View.GONE);
+                optionsLayout.setVisibility(View.GONE);
+                optionsLayout2.setVisibility(View.VISIBLE);
+                optionsLayout3.setVisibility(View.GONE);
+                dispatchedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked){
+                            buttonView.setClickable(false);
+                            docRef.update("deliveryStatus", "Dispatched");
+                        }
+                    }
+                });
                 break;
             case "Dispatched":
-                progBar.setImageResource(R.drawable.order_prog_bar_2);
+                optionsLayout0.setVisibility(View.GONE);
+                optionsLayout.setVisibility(View.GONE);
+                optionsLayout2.setVisibility(View.GONE);
+                optionsLayout3.setVisibility(View.VISIBLE);
+                readySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked){
+                            buttonView.setClickable(false);
+                            docRef.update("deliveryStatus", "Ready");
+                        }
+                    }
+                });
                 break;
             case "Ready":
-                progBar.setImageResource(R.drawable.order_prog_bar_3);
+                optionsLayout0.setVisibility(View.GONE);
+                optionsLayout.setVisibility(View.GONE);
+                optionsLayout2.setVisibility(View.GONE);
+                optionsLayout3.setVisibility(View.VISIBLE);
+
+                optionsLayout3.setClickable(false);
                 break;
             default:
-                progBar.setImageResource(R.drawable.order_prog_bar_0);
-
+                optionsLayout0.setVisibility(View.VISIBLE);
+                optionsLayout.setVisibility(View.GONE);
+                optionsLayout2.setVisibility(View.GONE);
+                optionsLayout3.setVisibility(View.GONE);
+                optionsLayout0.setClickable(false);
         }
     }
 }
