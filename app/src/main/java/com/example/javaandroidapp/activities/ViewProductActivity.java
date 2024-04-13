@@ -47,6 +47,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Text;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.sql.Date;
@@ -370,49 +372,56 @@ public class ViewProductActivity extends AppCompatActivity {
 
                 }
             });
+            if (listing.getExpiry().before(new java.util.Date())){
+                joinBtn.setCardBackgroundColor(getResources().getColor(R.color.translucent_gray));
+                joinBtn.setClickable(false);
+                TextView btnText = joinBtn.findViewById(R.id.btn_text);
+                btnText.setText("Listing Expired");
 
-            joinBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (popUpLayout.getVisibility() == View.GONE) {
-                        expandCard();
-                        blankFillLayout.setVisibility(View.VISIBLE);
-                        buyClicked = true;
-                    } else if (popUpLayout.getVisibility() == View.VISIBLE) {
+            }else {
+                joinBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (popUpLayout.getVisibility() == View.GONE) {
+                            expandCard();
+                            blankFillLayout.setVisibility(View.VISIBLE);
+                            buyClicked = true;
+                        } else if (popUpLayout.getVisibility() == View.VISIBLE) {
 
-                        Order newOrder = new Order(listing.getUid(), amt, Date.valueOf(String.valueOf(LocalDate.now()))
-                                , varBtnName.get(focusedBtnId), displayedPrice, totalPrice);
-                        Intent joinOrderIntent = new Intent(getContext(), OrderConfirmationActivity.class);
-                        joinOrderIntent.putExtra("Order", newOrder);
-                        joinOrderIntent.putExtra("Listing", listing);
-                        startActivity(joinOrderIntent);
+                            Order newOrder = new Order(listing.getUid(), amt, Date.valueOf(String.valueOf(LocalDate.now()))
+                                    , varBtnName.get(focusedBtnId), displayedPrice, totalPrice);
+                            Intent joinOrderIntent = new Intent(getContext(), OrderConfirmationActivity.class);
+                            joinOrderIntent.putExtra("Order", newOrder);
+                            joinOrderIntent.putExtra("Listing", listing);
+                            startActivity(joinOrderIntent);
+
+                        }
+
+                        // Change order amounts and change price
+                        addOrder.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                amt += 1;
+                                amtToOrder.setText("" + amt);
+                                displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
+                                subTotal.setText("S$ " + df.format(amt * displayedPrice));
+                            }
+                        });
+                        minusOrder.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                amt = amt > 1 ? amt - 1 : 1;
+                                amtToOrder.setText("" + amt);
+                                displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
+                                subTotal.setText("S$ " + df.format(amt * displayedPrice));
+
+                            }
+                        });
 
                     }
 
-                    // Change order amounts and change price
-                    addOrder.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            amt += 1;
-                            amtToOrder.setText("" + amt);
-                            displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-                            subTotal.setText("S$ " + df.format(amt * displayedPrice));
-                        }
-                    });
-                    minusOrder.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            amt = amt > 1 ? amt - 1 : 1;
-                            amtToOrder.setText("" + amt);
-                            displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-                            subTotal.setText("S$ " + df.format(amt * displayedPrice));
-
-                        }
-                    });
-
-                }
-
-            });
+                });
+            }
 
 
         }
