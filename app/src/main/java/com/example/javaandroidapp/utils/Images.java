@@ -19,6 +19,36 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class Images {
+    public static void addImage(Uri image, StorageReference storage, Callbacks callback) {
+        if (image == null){
+            callback.getResult("");
+        }
+        StorageReference storageRef = storage.child("/" + UUID.randomUUID().toString());
+        Task<Uri> urlTask = storageRef.putFile(image).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return storageRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    callback.getResult(downloadUri.toString());
+                }
+                else {
+                    Log.d("image upload", "Failed");
+                    callback.getResult("");
+                }
+            }
+        });
+    }
+
     public static void addImages(ArrayList<Uri> images, StorageReference storage, Callbacks callback) {
         ArrayList<String> imageList = new ArrayList<>();
         for (int imageIndex = 0; imageIndex < images.size(); imageIndex++) {
