@@ -6,12 +6,21 @@ Welcome to Bulkify. Bulkify is a mobile app that aims to allow organisations to 
 bulk purchase initiatives out there in today's world, but many of them rely on manual management through google sheets, as well as delivery to multiple places. This results in
 little benefit to suppliers as well as many communication issues that have arised, such as in the website Massdrop. By targeting organisations or in particular, schools, we help to
 eliminate all these issues as the delivery location at a singular location. These bulk cost savings can then be propagated to the customers.
-<img src="./readMeImages/bulkify_poster.png" width="50%" height="auto" alt="poster image">
+
+</br>
+<div align="center">
+  <img src="./readMeImages/bulkify_poster.png" width="50%" height="auto" alt="poster image">
+</div>
+</br>
 
 As part of an extension of our mobile app, we created a hardware locker which is integrated into our app. This allows the seller to scan a QR code to unlock and place items inside
 an assigned locker. Buyers will then be notified of this and they can similarly scan the same QR code to unlock the locker and retrieve the items purchased. This way, trust and
 convenience is achieved for both buyers as well as sellers of our app.
-<img src="./readMeImages/locker.jpeg" width="50%" height="auto" alt="locker image">
+
+<div align="center">
+  <img src="./readMeImages/locker.jpeg" width="50%" height="auto" alt="locker image">
+</div>
+</br>
 
 This app was done for a school project entering our second year. We only had about 5 weeks to learn app development from scratch and execute this project.
 
