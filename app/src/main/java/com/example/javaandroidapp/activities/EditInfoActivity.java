@@ -97,7 +97,8 @@ public class EditInfoActivity extends AppCompatActivity {
                         editEmail.setText(fbUser.getEmail());
                         String profileImageString = user.getProfileImage();
                         if (profileImageString != null) {
-                            new ImageLoadTask(docSnapshot.getString("profileImage"), profileImageView);
+                            Log.d("test123", "test" + profileImageString);
+                            Glide.with(getApplicationContext()).load(profileImageString).into(profileImageView);
                         }
                     }
                 }
