@@ -63,9 +63,6 @@ import io.getstream.chat.java.exceptions.StreamException;
 
 
 public class MyListingActivity extends AppCompatActivity {
-
-    public String name;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -96,7 +93,7 @@ public class MyListingActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot userDoc = task.getResult();
                     if (userDoc.exists()) {
-                        name = userDoc.getString("name");
+                        String name = userDoc.getString("name");
                         ownerTextView.setText(name);
                         emailTextView.setText(fbUser.getEmail());
                         db.collection("listings").whereEqualTo("createdBy", name).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -273,7 +270,7 @@ public class MyListingActivity extends AppCompatActivity {
 
 
         cardImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        cardTitle.setText(name);
+        cardTitle.setText(listing.getName());
         imgLayout.addView(cardImg);
         layout.addView(imgLayout);
         layout.addView(cardTitle);
