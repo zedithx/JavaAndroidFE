@@ -116,6 +116,7 @@ public class AddListingActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         Users.getUser(db, fbUser, new CallbackAdapter(){
             @Override
             public void getUser(User new_user) {
@@ -126,7 +127,6 @@ public class AddListingActivity extends AppCompatActivity {
             Intent notSignedIn = new Intent(AddListingActivity.this, LogInActivity.class);
             startActivity(notSignedIn);
         }
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_listing);
         // get Buttons
@@ -180,7 +180,6 @@ public class AddListingActivity extends AppCompatActivity {
         addVariantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("test123", "test123");
                 LinearLayout variantLayout = findViewById(R.id.variantLayout);
                 //generate new variant edit text and add the text to button
                 TextView newVariantName = new TextView(getApplicationContext());
