@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.modals.Listing;
@@ -27,6 +28,8 @@ import com.google.api.Distribution;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.model.Document;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +46,9 @@ public class ManageOrderActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("listings").document(listing.getUid());
+
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeColors(Color.RED);
 
         ImageButton backBtn = findViewById(R.id.backBtn);
         TextView listingName = findViewById(R.id.listingName);
@@ -81,7 +87,11 @@ public class ManageOrderActivity extends AppCompatActivity {
         currentOrder.setText("" + currOrderNum);
         String expiryCountdown = listing.getExpiryCountdown();
         Date expiryDate = listing.getExpiry();
-        expiryText.setText(expiryCountdown);
+        if (expiryDate.after(new Date())) {
+            expiryText.setText(expiryCountdown);
+        }else{
+            expiryText.setText("Expired");
+        }
         new ImageLoadTask(listing.getImageList().get(0), productImg).execute();
 
         if (currOrderNum >= minOrderNum) {
@@ -89,6 +99,19 @@ public class ManageOrderActivity extends AppCompatActivity {
             if (deliveryStatus.equals("Unfulfilled")){
                 deliveryStatus = "FulfilledMinOrder";
                 docRef.update("deliveryStatus", deliveryStatus);
+                db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (!querySnapshot.isEmpty()){
+                                for (DocumentSnapshot doc : querySnapshot){
+                                    db.collection("orders").document(doc.getId()).update("delivery", "FulfilledMinOrder");
+                                }
+                            }
+                        }
+                    }
+                });
             }
             fulfilImage.setImageResource(R.drawable.green_tick);
             orderFulfilledCardMat.setStrokeColor(Color.argb(175, 00, 80, 0));
@@ -124,6 +147,21 @@ public class ManageOrderActivity extends AppCompatActivity {
                         if (isChecked){
                             buttonView.setClickable(false);
                             docRef.update("deliveryStatus", "Finalised");
+                            listing.setDeliveryStatus("Finalised");
+                            db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()){
+                                        QuerySnapshot querySnapshot = task.getResult();
+                                        if (!querySnapshot.isEmpty()){
+                                            for (DocumentSnapshot doc : querySnapshot){
+                                                db.collection("orders").document(doc.getId()).update("delivery", "Finalised");
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+
                         }
                     }
                 });
@@ -139,6 +177,20 @@ public class ManageOrderActivity extends AppCompatActivity {
                         if (isChecked){
                             buttonView.setClickable(false);
                             docRef.update("deliveryStatus", "Dispatched");
+                            listing.setDeliveryStatus("Dispatched");
+                            db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()){
+                                        QuerySnapshot querySnapshot = task.getResult();
+                                        if (!querySnapshot.isEmpty()){
+                                            for (DocumentSnapshot doc : querySnapshot){
+                                                db.collection("orders").document(doc.getId()).update("delivery", "Dispatched");
+                                            }
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
                 });
@@ -154,6 +206,20 @@ public class ManageOrderActivity extends AppCompatActivity {
                         if (isChecked){
                             buttonView.setClickable(false);
                             docRef.update("deliveryStatus", "Ready");
+                            listing.setDeliveryStatus("Ready");
+                            db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()){
+                                        QuerySnapshot querySnapshot = task.getResult();
+                                        if (!querySnapshot.isEmpty()){
+                                            for (DocumentSnapshot doc : querySnapshot){
+                                                db.collection("orders").document(doc.getId()).update("delivery", "Ready");
+                                            }
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
                 });
@@ -163,8 +229,23 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout.setVisibility(View.GONE);
                 optionsLayout2.setVisibility(View.GONE);
                 optionsLayout3.setVisibility(View.VISIBLE);
-
                 optionsLayout3.setClickable(false);
+                readySwitch.setChecked(true);
+                readySwitch.setClickable(false);
+                db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (!querySnapshot.isEmpty()){
+                                for (DocumentSnapshot doc : querySnapshot){
+                                    db.collection("orders").document(doc.getId()).update("delivery", "Ready");
+                                }
+                            }
+                        }
+                    }
+                });
+
                 break;
             default:
                 optionsLayout0.setVisibility(View.VISIBLE);
@@ -173,5 +254,13 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout3.setVisibility(View.GONE);
                 optionsLayout0.setClickable(false);
         }
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent refresh = new Intent(ManageOrderActivity.this, ManageOrderActivity.class);
+                refresh.putExtra("listing", listing);
+                startActivity(refresh);
+            }
+        });
     }
 }

@@ -108,10 +108,6 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         variationItemPriceLayout.addView(variationItemPriceText);
         variationTotalPriceLayout.addView(variationTotalPriceText);
 
-
-//        //TODO: hardcode testing, remove the hardcoded deliveryStatus when done
-//        deliveryStatus = "Ready";
-
         switch (deliveryStatus) {
             case "Unfulfilled":
                 processProgress.setVisibility(View.VISIBLE);
