@@ -263,7 +263,11 @@ public class MyListingActivity extends AppCompatActivity {
         TextView expiryText = new TextView(this);
         expiryText.setTextSize(15);
         expiryText.setTextColor(Color.RED);
-        expiryText.setText(listing.getExpiryCountdown());
+        if (listing.getExpiry().after(new Date())) {
+            expiryText.setText(listing.getExpiryCountdown());
+        }else{
+            expiryText.setText("Expired");
+        }
         expiryText.setLayoutParams(textParams);
 
         new ImageLoadTask(listing.getImageList().get(0), cardImg).execute();

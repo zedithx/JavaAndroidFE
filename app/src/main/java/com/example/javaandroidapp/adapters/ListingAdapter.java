@@ -14,6 +14,7 @@ import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.modals.Listing;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHolder> {
@@ -66,7 +67,9 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
             size = listings.size();
         }
         return size;
-    };
+    }
+
+    ;
 
     class ListingViewHolder extends RecyclerView.ViewHolder {
         private View listingView;
@@ -104,7 +107,11 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
             minorderTextView.setText(listingMinOrder.toString());
             currentorderTextView.setText(listingCurrentOrder.toString());
             sellerTextView.setText(sellerName);
-            expiryTextView.setText(listingExpiryCountdown);
+            if (listing.getExpiry().before(new Date())) {
+                expiryTextView.setText("Expired");
+            } else {
+                expiryTextView.setText(listingExpiryCountdown);
+            }
         }
     }
 }

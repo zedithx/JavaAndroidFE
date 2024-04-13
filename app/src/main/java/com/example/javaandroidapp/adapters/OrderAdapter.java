@@ -3,6 +3,8 @@ package com.example.javaandroidapp.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,6 +112,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             Double orderPaidAmount = order.getPaidAmount();
             orderVariantView.setText(String.format("%s x%s",orderVariant, orderQuantity));
             orderStatusView.setText(orderDelivery);
+            switch(orderDelivery){
+                case "Unfulfilled":
+                    orderStatusView.setTextColor(Color.RED);
+                    break;
+                case "Ready":
+                    orderStatusView.setTextColor(Color.rgb(0, 150, 0));
+                    orderStatusView.setTypeface(orderStatusView.getTypeface(), Typeface.BOLD);
+            }
             orderPaidAmountView.setText(String.format("$%s", String.valueOf(orderPaidAmount)));
         }
     }
