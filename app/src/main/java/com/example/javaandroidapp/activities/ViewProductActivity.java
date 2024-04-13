@@ -47,8 +47,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
 import java.io.Serializable;
 import java.net.URI;
 import java.sql.Date;
@@ -353,23 +351,6 @@ public class ViewProductActivity extends AppCompatActivity {
             ArrayList<Double> varBtnPrice = listing.getVariationAdditionalPrice();
 
             TextView subTotal = view.findViewById(R.id.subTotalText);
-            displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-            subTotal.setText("S$ " + df.format(amt * displayedPrice));
-            varSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    focusedBtnId = position;
-                    displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-                    subTotal.setText("S$ " + df.format(amt * displayedPrice));
-                    totalPrice = amt * displayedPrice;
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    totalPrice = amt * displayedPrice;
-
-                }
-            });
             if (listing.getExpiry().before(new java.util.Date())){
                 joinBtn.setCardBackgroundColor(getResources().getColor(R.color.unfocused));
                 joinBtn.setClickable(false);
@@ -382,6 +363,10 @@ public class ViewProductActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (popUpLayout.getVisibility() == View.GONE) {
                             expandCard();
+                            varText.setText(varBtnList.get(focusedBtnId).getName());
+                            displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
+                            totalPrice = amt * displayedPrice;
+                            subTotal.setText("S$ " + df.format(totalPrice));
                             blankFillLayout.setVisibility(View.VISIBLE);
                             buyClicked = true;
                         } else if (popUpLayout.getVisibility() == View.VISIBLE) {
@@ -402,7 +387,8 @@ public class ViewProductActivity extends AppCompatActivity {
                                 amt += 1;
                                 amtToOrder.setText("" + amt);
                                 displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-                                subTotal.setText("S$ " + df.format(amt * displayedPrice));
+                                totalPrice = amt * displayedPrice;
+                                subTotal.setText("S$ " + df.format(totalPrice));
                             }
                         });
                         minusOrder.setOnClickListener(new View.OnClickListener() {
@@ -411,7 +397,8 @@ public class ViewProductActivity extends AppCompatActivity {
                                 amt = amt > 1 ? amt - 1 : 1;
                                 amtToOrder.setText("" + amt);
                                 displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-                                subTotal.setText("S$ " + df.format(amt * displayedPrice));
+                                totalPrice = amt * displayedPrice;
+                                subTotal.setText("S$ " + df.format(totalPrice));
 
                             }
                         });
@@ -420,8 +407,6 @@ public class ViewProductActivity extends AppCompatActivity {
 
                 });
             }
-
-
         }
 
         private void expandCard() {
