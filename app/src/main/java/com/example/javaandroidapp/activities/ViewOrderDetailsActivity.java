@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -62,6 +63,11 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         LinearLayout variationTotalPriceLayout = findViewById(R.id.variation_total_price_layout);
         ImageView unprocessedIcon = findViewById(R.id.unprocessed_icon);
         TextView unprocessedText = findViewById(R.id.unprocessed_text);
+        ArrayList<TextView> orderStatuses = new ArrayList<>();
+        orderStatuses.add(findViewById(R.id.order_status_1));
+        orderStatuses.add(findViewById(R.id.order_status_2));
+        orderStatuses.add(findViewById(R.id.order_status_3));
+        orderStatuses.add(findViewById(R.id.order_status_4));
         ImageButton backBtn = findViewById(R.id.backBtn);
         MaterialCardView collectionPageBtn = findViewById(R.id.collection_btn);
         MaterialCardView backToMyPageBtn = findViewById(R.id.back_to_my_page_btn);
@@ -116,6 +122,7 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
                 backToMyPageCard.setCardBackgroundColor(Color.RED);
                 backToMyPageText.setTextColor(Color.WHITE);
                 unprocessedText.setText("Waiting For Group Order To Finalise");
+                setOrderStatusTypeface(orderStatuses, 0);
                 break;
             case "Finalised":
                 processProgress.setVisibility(View.VISIBLE);
@@ -126,6 +133,7 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
                 backToMyPageCard.setCardBackgroundColor(Color.RED);
                 backToMyPageText.setTextColor(Color.WHITE);
                 unprocessedText.setText("Order Finalised");
+                setOrderStatusTypeface(orderStatuses, 1);
                 break;
             case "Dispatched":
                 processProgress.setVisibility(View.VISIBLE);
@@ -136,12 +144,14 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
                 backToMyPageCard.setCardBackgroundColor(Color.RED);
                 backToMyPageText.setTextColor(Color.WHITE);
                 unprocessedText.setText("Order Dispatched");
+                setOrderStatusTypeface(orderStatuses, 2);
                 break;
             case "Ready":
                 processProgress.setImageResource(R.drawable.progress_process_4);
                 unprocessedIcon.setImageResource(R.drawable.tick);
                 unprocessedText.setText("Ready For Collection");
                 collectionPageBtn.setVisibility(View.VISIBLE);
+                setOrderStatusTypeface(orderStatuses, 3);
                 collectionPageBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -166,7 +176,7 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
                 backToMyPageBtn.setStrokeWidth(0);
                 backToMyPageCard.setCardBackgroundColor(Color.RED);
                 backToMyPageText.setTextColor(Color.WHITE);
-                unprocessedText.setText("Error Loading Order");
+                unprocessedText.setText("Order Expired. Payment will be refunded.");
         }
         productDetailsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,6 +218,15 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
             }
         });
 
-
+    }
+    public static void setOrderStatusTypeface(ArrayList<TextView> orderStatuses, int pos){
+        for (int i = 0; i < orderStatuses.size(); i ++){
+            TextView orderStatus = orderStatuses.get(i);
+            if (i == pos){
+                orderStatus.setTypeface(orderStatus.getTypeface(), Typeface.BOLD);
+            }else{
+                orderStatus.setTypeface(orderStatus.getTypeface(), Typeface.NORMAL);
+            }
+        }
     }
 }

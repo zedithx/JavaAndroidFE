@@ -7,6 +7,18 @@
 
     <style name="Theme.JavaAndroidApp" parent="Base.Theme.JavaAndroidApp" />
 
-    <!--SplashScreen-->
+    <!--Switch Toggle Button-->
+    <style name="red_switch_theme" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/lightred</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/lightgray
+        </item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">@color/darkgray
+        </item>
+    </style>
 
 </resources>
