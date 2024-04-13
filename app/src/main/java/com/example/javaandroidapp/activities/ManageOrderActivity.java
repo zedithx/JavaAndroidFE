@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -14,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -49,6 +53,14 @@ public class ManageOrderActivity extends AppCompatActivity {
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeColors(Color.RED);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent profile = new Intent(ManageOrderActivity.this, MyListingActivity.class);
+                startActivity(profile);
+            }
+        });
 
         ImageButton backBtn = findViewById(R.id.backBtn);
         TextView listingName = findViewById(R.id.listingName);
