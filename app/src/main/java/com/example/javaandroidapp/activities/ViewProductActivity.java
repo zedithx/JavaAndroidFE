@@ -61,13 +61,12 @@ public class ViewProductActivity extends AppCompatActivity {
     static DecimalFormat df = new DecimalFormat("#.00");
     static ImageButton backBtn, addOrder, minusOrder;
     Button buyBtn;
-    ArrayList<RoundedButton> varBtnList;
+    static ArrayList<RoundedButton> varBtnList;
     static TextView priceDollars, priceCents, productDescription, amtToOrder, strikePrice;
     LinearLayout descriptionLayout, ownerLayout, buyPanelLayout, extendedBuyLayout;
     TextView imageIndex;
-    int count = 0;
     static int amt;
-    static int focusedBtnId = 1;
+    static int focusedBtnId;
     static boolean savedListing = false;
     static boolean buyClicked = false;
     static BuyFragment buyFrag;
@@ -95,7 +94,7 @@ public class ViewProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_page);
         amt = 1;
-        focusedBtnId = 1;
+        focusedBtnId = 0;
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
                 .replace(R.id.buyFrameLayout, new BuyFragment()).commit();
@@ -329,9 +328,11 @@ public class ViewProductActivity extends AppCompatActivity {
             });
             MaterialCardView joinBtn = view.findViewById(R.id.buyOrderBtn);
 
-            LinearLayout chooseVarBtnLayout = view.findViewById(R.id.chooseVarBtnLayout);
+            // my variant indicator for Popup
+            TextView varText = view.findViewById(R.id.chooseVarText);
             Button blankFillLayout = view.findViewById(R.id.blankFillBtn);
             popUpLayout = view.findViewById(R.id.popupLayout);
+
 
             blankFillLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -351,9 +352,6 @@ public class ViewProductActivity extends AppCompatActivity {
             ArrayList<String> varBtnName = listing.getVariationNames();
             ArrayList<Double> varBtnPrice = listing.getVariationAdditionalPrice();
 
-            Spinner varSpinner = view.findViewById(R.id.varSpinner);
-            ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, varBtnName);
-            varSpinner.setAdapter(adapter);
             TextView subTotal = view.findViewById(R.id.subTotalText);
             displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
             subTotal.setText("S$ " + df.format(amt * displayedPrice));
@@ -477,16 +475,18 @@ public class ViewProductActivity extends AppCompatActivity {
 
         LinearLayout.LayoutParams varBtnParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         varBtnParams.setMargins(15, 15, 15, 15);
-        ArrayList<RoundedButton> varBtnList = new ArrayList<>();
+        varBtnList = new ArrayList<>();
 
 
         for (int i = 0; i < varBtnName.size(); i++) {
-            int btnId = i + 1;
+            int btnId = i;
             RoundedButton newVarBtn = new RoundedButton(variationBtnParentLayout.getContext());
+            newVarBtn.setPadding(10, 0, 10 , 0);
             newVarBtn.setLayoutParams(varBtnParams);
             newVarBtn.setId(btnId);
             String varText = varBtnName.get(i) + "\n" + (varBtnPrice.get(i) > 0 ? "+" + df.format(varBtnPrice.get(i)) : "-");
             newVarBtn.setText(varText);
+            newVarBtn.setName(varBtnName.get(i));
             newVarBtn.setTextColor((focusedBtnId == newVarBtn.getId() ? Color.WHITE : Color.BLACK));
             GradientDrawable drawable = RoundedButton.RoundedRect(25);
             drawable.setColor((focusedBtnId == newVarBtn.getId() ? Color.rgb(237, 24, 61) : Color.argb(15, 10, 10, 10)));
@@ -503,7 +503,7 @@ public class ViewProductActivity extends AppCompatActivity {
                         btn.setTextColor((focusedBtnId == btn.getId() ? Color.WHITE : Color.BLACK));
                         drawable.setColor((focusedBtnId == btn.getId() ? Color.rgb(237, 24, 61) : Color.argb(15, 10, 10, 10)));
                         btn.setBackground(drawable);
-                        displayedPrice = listing.getPrice() + varBtnPrice.get(btnId - 1);
+                        displayedPrice = listing.getPrice() + varBtnPrice.get(btnId);
                         setPrice(displayedPrice, priceDollars, priceCents);
                     }
                 }
@@ -513,9 +513,18 @@ public class ViewProductActivity extends AppCompatActivity {
     }
 
     static class RoundedButton extends androidx.appcompat.widget.AppCompatButton {
+        public String name;
         public RoundedButton(Context context) {
             super(context);
             init();
+        }
+
+        public void setName(String name){
+            this.name = name;
+        }
+
+        public String getName(){
+            return name;
         }
 
         private void init() {

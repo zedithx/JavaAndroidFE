@@ -158,7 +158,7 @@ public class MyListingActivity extends AppCompatActivity {
                     DocumentSnapshot docSnapshot = task.getResult();
                     if (docSnapshot.exists()) {
                         String profilePicStringURL = docSnapshot.getString("profileImage");
-                        if (profilePicStringURL.length() > 0) {
+                        if (profilePicStringURL != null) {
                             new ImageLoadTask(profilePicStringURL, profilePic).execute();
                         }
                     }
