@@ -20,8 +20,10 @@ import com.example.javaandroidapp.modals.Listing;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ManageOrderActivity extends AppCompatActivity {
+    public boolean minFulfilled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class ManageOrderActivity extends AppCompatActivity {
         minOrder.setText("" + minOrderNum);
         currentOrder.setText("" + currOrderNum);
         String expiryCountdown = listing.getExpiryCountdown();
+        Date expiryDate = listing.getExpiry();
         expiryText.setText(expiryCountdown);
         new ImageLoadTask(listing.getImageList().get(0), productImg).execute();
 
@@ -75,37 +78,35 @@ public class ManageOrderActivity extends AppCompatActivity {
             orderFulfilledText.setTextColor(Color.argb(175, 00, 80, 0));
         }
 
-        if (expiryCountdown.equals("0d left") && !minFulfilled) {
+        if (expiryDate.before(new Date()) && !minFulfilled) {
             optionsLayout.setClickable(false);
             expiryLayout.setVisibility(View.VISIBLE);
+            optionsLayout.setVisibility(View.GONE);
         } else {
             expiryLayout.setVisibility(View.GONE);
+            optionsLayout.setVisibility(View.VISIBLE);
         }
 
         deliveryStatus = "Finalised";
         setProgressBar(deliveryStatus, processProgress, orderStatuses);
     }
-    public void setProgressBar(String deliveryStatus, ImageView progBar, ArrayList<TextView> orderStatuses){
+
+    public void setProgressBar(String deliveryStatus, ImageView progBar, ArrayList<TextView> orderStatuses) {
         switch (deliveryStatus) {
             case "Unfulfilled":
-                progBar.setImageResource(R.drawable.order_prog_bar_1);
-                setOrderStatusTypeface(orderStatuses, 0);
+                progBar.setImageResource(R.drawable.order_prog_bar_0);
                 break;
             case "Finalised":
-                progBar.setImageResource(R.drawable.progress_process_2);
-                setOrderStatusTypeface(orderStatuses, 1);
+                progBar.setImageResource(R.drawable.order_prog_bar_1);
                 break;
             case "Dispatched":
-                progBar.setImageResource(R.drawable.progress_process_3);
-                setOrderStatusTypeface(orderStatuses, 2);
+                progBar.setImageResource(R.drawable.order_prog_bar_2);
                 break;
             case "Ready":
-                progBar.setImageResource(R.drawable.progress_process_4);
-                setOrderStatusTypeface(orderStatuses, 3);
+                progBar.setImageResource(R.drawable.order_prog_bar_3);
                 break;
             default:
                 progBar.setImageResource(R.drawable.order_prog_bar_0);
-                setOrderStatusTypeface(orderStatuses, 0);
 
         }
     }
