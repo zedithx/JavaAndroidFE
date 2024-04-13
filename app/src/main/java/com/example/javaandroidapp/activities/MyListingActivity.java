@@ -150,7 +150,7 @@ public class MyListingActivity extends AppCompatActivity {
                     DocumentSnapshot docSnapshot = task.getResult();
                     if (docSnapshot.exists()) {
                         String profilePicStringURL = docSnapshot.getString("profileImage");
-                        if (profilePicStringURL.length() > 0) {
+                        if (profilePicStringURL != null) {
                             new ImageLoadTask(profilePicStringURL, profilePic).execute();
                         }
                     }
@@ -263,7 +263,11 @@ public class MyListingActivity extends AppCompatActivity {
         TextView expiryText = new TextView(this);
         expiryText.setTextSize(15);
         expiryText.setTextColor(Color.RED);
-        expiryText.setText(listing.getExpiryCountdown());
+        if (listing.getExpiry().after(new Date())) {
+            expiryText.setText(listing.getExpiryCountdown());
+        }else{
+            expiryText.setText("Expired");
+        }
         expiryText.setLayoutParams(textParams);
 
         new ImageLoadTask(listing.getImageList().get(0), cardImg).execute();

@@ -19,6 +19,7 @@ public class Listing implements Serializable{
     private String createdBy;
     private String createdById;
     private Integer currentOrder;
+    private String deliveryStatus;
     private String description;
     private Date expiry;
     private String expiryCountdown;
@@ -49,6 +50,7 @@ public class Listing implements Serializable{
         this.category = category;
         this.variationNames = variationNames;
         this.variationAdditionalPrice = variationAdditionalPrice;
+        this.deliveryStatus = "Unfulfilled";
     }
 
     public String getUid() {
@@ -90,6 +92,13 @@ public class Listing implements Serializable{
         return  this.expiry;
     }
 
+    public void setDeliveryStatus(String deliveryStatus){
+        this.deliveryStatus = deliveryStatus;
+    }
+
+    public String getDeliveryStatus(){
+        return this.deliveryStatus;
+    }
     public String getExpiryCountdown() {
         // Convert the Date object to LocalDate
         LocalDate localDate = expiry.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();

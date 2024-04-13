@@ -3,6 +3,7 @@ package com.example.javaandroidapp.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.javaandroidapp.adapters.CallbackAdapter;
@@ -34,6 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.*;
 
 public class LandingActivity extends AppCompatActivity {
@@ -90,6 +93,16 @@ public class LandingActivity extends AppCompatActivity {
                         .commit();
             }
 
+        });
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeColors(Color.RED);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent main = new Intent(LandingActivity.this, TransitionLandingActivity.class);
+                Toast.makeText(LandingActivity.this, "Refreshing Listings", Toast.LENGTH_SHORT).show();
+                startActivity(main);
+            }
         });
         // Get the profile button
         LinearLayout profile_button = findViewById(R.id.profile_button);
