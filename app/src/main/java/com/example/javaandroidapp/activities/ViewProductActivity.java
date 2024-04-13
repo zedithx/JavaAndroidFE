@@ -373,7 +373,7 @@ public class ViewProductActivity extends AppCompatActivity {
                 }
             });
             if (listing.getExpiry().before(new java.util.Date())){
-                joinBtn.setCardBackgroundColor(getResources().getColor(R.color.translucent_gray));
+                joinBtn.setCardBackgroundColor(getResources().getColor(R.color.unfocused));
                 joinBtn.setClickable(false);
                 TextView btnText = joinBtn.findViewById(R.id.btn_text);
                 btnText.setText("Listing Expired");
