@@ -15,16 +15,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class Listings {
     public static void getAllListings(FirebaseFirestore db, String category, Callbacks callbacks) {
+        ArrayList<String> deliveryStatusAllowed = new ArrayList<>();
+        deliveryStatusAllowed.add("Unfulfilled");
+        deliveryStatusAllowed.add("Fulfilled");
         Query item;
         Date date = new Date();
         if (category.equals("All")) {
@@ -32,14 +40,23 @@ public class Listings {
         } else if (category.equals("Popular")) {
             item = db.collection("listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("currentOrder", Query.Direction.DESCENDING);
         } else {
-            item = db.collection("listings").whereEqualTo("category", category).whereGreaterThan("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
+            item = db.collection("listings").whereGreaterThan("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
         }
         item.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    List<Listing> listings = task.getResult().toObjects(Listing.class);
-                    callbacks.getList(listings);
+                    QuerySnapshot querySnapshot = task.getResult();
+                    ArrayList<Listing> listingList = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        String deliveryStatus = doc.getString("deliveryStatus");
+                        if (deliveryStatus.equals("Unfulfilled") || deliveryStatus.equals("Fulfilled")){
+                            Listing newListing = Listing.createListingWithDocumentSnapshot(doc);
+                            listingList.add(newListing);
+                        }
+                    }
+//                    List<Listing> listings = task.getResult().toObjects(Listing.class);
+                    callbacks.getList(listingList);
                 }
             }
         });
@@ -47,7 +64,7 @@ public class Listings {
 
     public static void getSavedListings(List<DocumentReference> items, Callbacks callback) {
         List<Listing> listings = new ArrayList<>();
-        for (DocumentReference item: items) {
+        for (DocumentReference item : items) {
             item.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -61,6 +78,7 @@ public class Listings {
             });
         }
     }
+
     public static void addListing(FirebaseFirestore db, User user, Double price, String name, Integer minOrder, Date expiryDate,
                                   ArrayList<String> imageList, String description, Double oldPrice, String category, ArrayList<String> variationNames,
                                   ArrayList<Double> variationAdditionalPrice, Callbacks callback) {
@@ -81,7 +99,7 @@ public class Listings {
 
     public static void getMerchantListings(List<DocumentReference> items, Callbacks callback) {
         List<Listing> listings = new ArrayList<>();
-        for (DocumentReference item: items) {
+        for (DocumentReference item : items) {
             item.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
