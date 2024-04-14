@@ -48,10 +48,12 @@ android {
         implementation("com.google.auth:google-auth-library-oauth2-http:1.19.0")
         implementation("com.algolia:algoliasearch-android:3.+")
         implementation("com.stripe:stripe-java:24.0.0")
+        implementation("com.google.zxing:core:3.5.3")
         implementation("com.stripe:stripe-android:20.40.2")
         implementation ("com.android.volley:volley:1.2.1")
         implementation("io.getstream:stream-chat-java:1.21.0")
         implementation("io.getstream:stream-chat-android-ui-components:6.2.3")
+        implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 //        implementation("com.algolia:algoliasearch-apache:3.16.5")
         implementation("com.github.bumptech.glide:glide:4.16.0")
         implementation("com.google.firebase:firebase-storage:20.3.0")
@@ -66,4 +68,7 @@ android {
         androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     }
     ndkVersion = "16"
+}
+dependencies {
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

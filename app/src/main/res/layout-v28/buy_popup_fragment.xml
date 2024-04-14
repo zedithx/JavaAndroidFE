@@ -193,20 +193,19 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.9"
-                            android:background="@color/lightred"
-                            android:backgroundTint="@color/lightred"
+                            app:cardBackgroundColor="@color/lightred"
                             app:cardCornerRadius="30dp"
                             android:layout_gravity="center"
                             app:strokeWidth="0dp">
 
                             <TextView
+                                android:id="@+id/btn_text"
                                 android:textColor="@color/white"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:gravity="center"
                                 android:layout_margin="5dp"
-                                android:backgroundTint="@color/lightred"
                                 android:text="@string/buy"
                                 android:textSize="23sp" />
                         </com.google.android.material.card.MaterialCardView>

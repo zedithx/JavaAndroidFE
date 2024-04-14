@@ -22,11 +22,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 
 import com.example.javaandroidapp.adapters.CallbackAdapter;
@@ -136,6 +140,13 @@ public class MyListingActivity extends AppCompatActivity {
                 startActivity(main);
             }
         });
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent main = new Intent(MyListingActivity.this, TransitionLandingActivity.class);
+                startActivity(main);
+            }
+        });
         settingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,8 +161,9 @@ public class MyListingActivity extends AppCompatActivity {
                     DocumentSnapshot docSnapshot = task.getResult();
                     if (docSnapshot.exists()) {
                         String profilePicStringURL = docSnapshot.getString("profileImage");
-                        if (profilePicStringURL.length() > 0) {
-                            new ImageLoadTask(profilePicStringURL, profilePic).execute();
+                        if (profilePicStringURL != null) {
+//                            new ImageLoadTask(profilePicStringURL, profilePic).execute();
+                            Glide.with(MyListingActivity.this).load(profilePicStringURL).into(profilePic);
                         }
                     }
                 }
@@ -263,10 +275,15 @@ public class MyListingActivity extends AppCompatActivity {
         TextView expiryText = new TextView(this);
         expiryText.setTextSize(15);
         expiryText.setTextColor(Color.RED);
-        expiryText.setText(listing.getExpiryCountdown());
+        if (listing.getExpiry().after(new Date())) {
+            expiryText.setText(listing.getExpiryCountdown());
+        }else{
+            expiryText.setText("Expired");
+        }
         expiryText.setLayoutParams(textParams);
 
-        new ImageLoadTask(listing.getImageList().get(0), cardImg).execute();
+//        new ImageLoadTask(listing.getImageList().get(0), cardImg).execute();
+        Glide.with(MyListingActivity.this).load(listing.getImageList().get(0)).into(cardImg);
 
 
         cardImg.setScaleType(ImageView.ScaleType.CENTER_CROP);

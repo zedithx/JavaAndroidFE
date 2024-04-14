@@ -351,57 +351,62 @@ public class ViewProductActivity extends AppCompatActivity {
             ArrayList<Double> varBtnPrice = listing.getVariationAdditionalPrice();
 
             TextView subTotal = view.findViewById(R.id.subTotalText);
+            if (listing.getExpiry().before(new java.util.Date())){
+                joinBtn.setCardBackgroundColor(getResources().getColor(R.color.unfocused));
+                joinBtn.setClickable(false);
+                TextView btnText = joinBtn.findViewById(R.id.btn_text);
+                btnText.setText("Listing Expired");
 
-            joinBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (popUpLayout.getVisibility() == View.GONE) {
-                        expandCard();
-                        varText.setText(varBtnList.get(focusedBtnId).getName());
-                        displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-                        totalPrice = amt * displayedPrice;
-                        subTotal.setText("S$ " + df.format(totalPrice));
-                        blankFillLayout.setVisibility(View.VISIBLE);
-                        buyClicked = true;
-                    } else if (popUpLayout.getVisibility() == View.VISIBLE) {
+            }else {
+                joinBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (popUpLayout.getVisibility() == View.GONE) {
+                            expandCard();
+                            varText.setText(varBtnList.get(focusedBtnId).getName());
+                            displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
+                            totalPrice = amt * displayedPrice;
+                            subTotal.setText("S$ " + df.format(totalPrice));
+                            blankFillLayout.setVisibility(View.VISIBLE);
+                            buyClicked = true;
+                        } else if (popUpLayout.getVisibility() == View.VISIBLE) {
 
-                        Order newOrder = new Order(listing.getUid(), amt, Date.valueOf(String.valueOf(LocalDate.now()))
-                                , varBtnName.get(focusedBtnId), displayedPrice, totalPrice);
-                        Intent joinOrderIntent = new Intent(getContext(), OrderConfirmationActivity.class);
-                        joinOrderIntent.putExtra("Order", newOrder);
-                        joinOrderIntent.putExtra("Listing", listing);
-                        startActivity(joinOrderIntent);
+                            Order newOrder = new Order(listing.getUid(), amt, Date.valueOf(String.valueOf(LocalDate.now()))
+                                    , varBtnName.get(focusedBtnId), displayedPrice, totalPrice);
+                            Intent joinOrderIntent = new Intent(getContext(), OrderConfirmationActivity.class);
+                            joinOrderIntent.putExtra("Order", newOrder);
+                            joinOrderIntent.putExtra("Listing", listing);
+                            startActivity(joinOrderIntent);
+
+                        }
+
+                        // Change order amounts and change price
+                        addOrder.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                amt += 1;
+                                amtToOrder.setText("" + amt);
+                                displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
+                                totalPrice = amt * displayedPrice;
+                                subTotal.setText("S$ " + df.format(totalPrice));
+                            }
+                        });
+                        minusOrder.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                amt = amt > 1 ? amt - 1 : 1;
+                                amtToOrder.setText("" + amt);
+                                displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
+                                totalPrice = amt * displayedPrice;
+                                subTotal.setText("S$ " + df.format(totalPrice));
+
+                            }
+                        });
 
                     }
 
-                    // Change order amounts and change price
-                    addOrder.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            amt += 1;
-                            amtToOrder.setText("" + amt);
-                            displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-                            totalPrice = amt * displayedPrice;
-                            subTotal.setText("S$ " + df.format(totalPrice));
-                        }
-                    });
-                    minusOrder.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            amt = amt > 1 ? amt - 1 : 1;
-                            amtToOrder.setText("" + amt);
-                            displayedPrice = listing.getPrice() + varBtnPrice.get(focusedBtnId);
-                            totalPrice = amt * displayedPrice;
-                            subTotal.setText("S$ " + df.format(totalPrice));
-
-                        }
-                    });
-
-                }
-
-            });
-
-
+                });
+            }
         }
 
         private void expandCard() {
