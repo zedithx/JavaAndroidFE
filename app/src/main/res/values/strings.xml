@@ -107,7 +107,7 @@
     <string name="minimum_order_unmet">Minimum Order amount not yet fulfilled.</string>
     <string name="expired">Listing has expired.\nNo new orders will be accepted</string>
     <string name="finalise_group_order">Finalise Group Order</string>
-
+    <string name="manage_orders">Manage Orders</string>
 
 
 </resources>

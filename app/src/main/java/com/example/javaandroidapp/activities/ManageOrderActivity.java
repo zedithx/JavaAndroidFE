@@ -21,8 +21,10 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.modals.Listing;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -81,6 +83,7 @@ public class ManageOrderActivity extends AppCompatActivity {
         Switch finalisedGroupOrderSwitch = findViewById(R.id.finalise_group_order_switch);
         Switch dispatchedSwitch = findViewById(R.id.dispatched_switch);
         Switch readySwitch = findViewById(R.id.ready_switch);
+        MaterialCardView viewIndividualOrders = findViewById(R.id.view_indiv_orders);
         String deliveryStatus = listing.getDeliveryStatus();
         boolean minFulfilled = false;
 
@@ -91,7 +94,20 @@ public class ManageOrderActivity extends AppCompatActivity {
                 startActivity(toProfile);
             }
         });
-
+        if (listing.getDeliveryStatus().equals("Unfulfilled") && listing.getExpiry().before(new Date())) {
+            viewIndividualOrders.setClickable(false);
+            CardView card = findViewById(R.id.card);
+            card.setCardBackgroundColor(Color.GRAY);
+        }else{
+            viewIndividualOrders.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent indivOrders = new Intent(ManageOrderActivity.this, IndivOrdersActivity.class);
+                    indivOrders.putExtra("listing", listing);
+                    startActivity(indivOrders);
+                }
+            });
+        }
         listingName.setText(listing.getName());
         int minOrderNum = listing.getMinOrder().intValue();
         int currOrderNum = listing.getCurrentOrder().intValue();
@@ -101,23 +117,24 @@ public class ManageOrderActivity extends AppCompatActivity {
         Date expiryDate = listing.getExpiry();
         if (expiryDate.after(new Date())) {
             expiryText.setText(expiryCountdown);
-        }else{
+        } else {
             expiryText.setText("Expired");
         }
-        new ImageLoadTask(listing.getImageList().get(0), productImg).execute();
+//        new ImageLoadTask(listing.getImageList().get(0), productImg).execute();
+        Glide.with(ManageOrderActivity.this).load(listing.getImageList().get(0)).into(productImg);
 
         if (currOrderNum >= minOrderNum) {
             minFulfilled = true;
-            if (deliveryStatus.equals("Unfulfilled")){
+            if (deliveryStatus.equals("Unfulfilled")) {
                 deliveryStatus = "FulfilledMinOrder";
                 docRef.update("deliveryStatus", deliveryStatus);
                 db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             QuerySnapshot querySnapshot = task.getResult();
-                            if (!querySnapshot.isEmpty()){
-                                for (DocumentSnapshot doc : querySnapshot){
+                            if (!querySnapshot.isEmpty()) {
+                                for (DocumentSnapshot doc : querySnapshot) {
                                     db.collection("orders").document(doc.getId()).update("delivery", "FulfilledMinOrder");
                                 }
                             }
@@ -156,17 +173,17 @@ public class ManageOrderActivity extends AppCompatActivity {
                 finalisedGroupOrderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked){
+                        if (isChecked) {
                             buttonView.setClickable(false);
                             docRef.update("deliveryStatus", "Finalised");
                             listing.setDeliveryStatus("Finalised");
                             db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()){
+                                    if (task.isSuccessful()) {
                                         QuerySnapshot querySnapshot = task.getResult();
-                                        if (!querySnapshot.isEmpty()){
-                                            for (DocumentSnapshot doc : querySnapshot){
+                                        if (!querySnapshot.isEmpty()) {
+                                            for (DocumentSnapshot doc : querySnapshot) {
                                                 db.collection("orders").document(doc.getId()).update("delivery", "Finalised");
                                             }
                                         }
@@ -186,17 +203,17 @@ public class ManageOrderActivity extends AppCompatActivity {
                 dispatchedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked){
+                        if (isChecked) {
                             buttonView.setClickable(false);
                             docRef.update("deliveryStatus", "Dispatched");
                             listing.setDeliveryStatus("Dispatched");
                             db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()){
+                                    if (task.isSuccessful()) {
                                         QuerySnapshot querySnapshot = task.getResult();
-                                        if (!querySnapshot.isEmpty()){
-                                            for (DocumentSnapshot doc : querySnapshot){
+                                        if (!querySnapshot.isEmpty()) {
+                                            for (DocumentSnapshot doc : querySnapshot) {
                                                 db.collection("orders").document(doc.getId()).update("delivery", "Dispatched");
                                             }
                                         }
@@ -215,17 +232,17 @@ public class ManageOrderActivity extends AppCompatActivity {
                 readySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked){
+                        if (isChecked) {
                             buttonView.setClickable(false);
                             docRef.update("deliveryStatus", "Ready");
                             listing.setDeliveryStatus("Ready");
                             db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()){
+                                    if (task.isSuccessful()) {
                                         QuerySnapshot querySnapshot = task.getResult();
-                                        if (!querySnapshot.isEmpty()){
-                                            for (DocumentSnapshot doc : querySnapshot){
+                                        if (!querySnapshot.isEmpty()) {
+                                            for (DocumentSnapshot doc : querySnapshot) {
                                                 db.collection("orders").document(doc.getId()).update("delivery", "Ready");
                                             }
                                         }
@@ -247,10 +264,10 @@ public class ManageOrderActivity extends AppCompatActivity {
                 db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             QuerySnapshot querySnapshot = task.getResult();
-                            if (!querySnapshot.isEmpty()){
-                                for (DocumentSnapshot doc : querySnapshot){
+                            if (!querySnapshot.isEmpty()) {
+                                for (DocumentSnapshot doc : querySnapshot) {
                                     db.collection("orders").document(doc.getId()).update("delivery", "Ready");
                                 }
                             }

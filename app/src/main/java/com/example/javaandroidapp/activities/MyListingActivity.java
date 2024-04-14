@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 
 import com.example.javaandroidapp.adapters.CallbackAdapter;
@@ -139,16 +140,6 @@ public class MyListingActivity extends AppCompatActivity {
                 startActivity(main);
             }
         });
-        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeColors(Color.RED);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Intent profile = new Intent(MyListingActivity.this, MyListingActivity.class);
-                Toast.makeText(MyListingActivity.this, "Refreshing Profile", Toast.LENGTH_SHORT).show();
-                startActivity(profile);
-            }
-        });
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -171,7 +162,8 @@ public class MyListingActivity extends AppCompatActivity {
                     if (docSnapshot.exists()) {
                         String profilePicStringURL = docSnapshot.getString("profileImage");
                         if (profilePicStringURL != null) {
-                            new ImageLoadTask(profilePicStringURL, profilePic).execute();
+//                            new ImageLoadTask(profilePicStringURL, profilePic).execute();
+                            Glide.with(MyListingActivity.this).load(profilePicStringURL).into(profilePic);
                         }
                     }
                 }
@@ -290,7 +282,8 @@ public class MyListingActivity extends AppCompatActivity {
         }
         expiryText.setLayoutParams(textParams);
 
-        new ImageLoadTask(listing.getImageList().get(0), cardImg).execute();
+//        new ImageLoadTask(listing.getImageList().get(0), cardImg).execute();
+        Glide.with(MyListingActivity.this).load(listing.getImageList().get(0)).into(cardImg);
 
 
         cardImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
