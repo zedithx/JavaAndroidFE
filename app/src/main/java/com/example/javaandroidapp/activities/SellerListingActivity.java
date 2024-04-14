@@ -122,9 +122,8 @@ public class SellerListingActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if (document.exists()) {
                             String expiry = document.getString("expiryCountdown");
-                            //                            Log.d("listingDetails", "" + listingId + "\n" + productName + "\n" + price + "\n" + expiry + "\n" + "minOrder: " + minOrder + "\n" + "currentOrder: " + currOrder + "\n" + "img str: " + imageList.get(0));
                             Listing listing = createListingWithDocumentSnapshot(document);
-                            listingsGrid.addView(createNewMatCard(count, listing.getName(), "S$" + df.format(listing.getPrice()), listing.getMinOrder(), listing.getCurrentOrder(), expiry, listing.getImageList(), listing));
+                            listingsGrid.addView(createNewMatCard(count, listing));
                             count += 1;
                         }
                     }
@@ -139,29 +138,22 @@ public class SellerListingActivity extends AppCompatActivity {
                 List<String> list = new ArrayList<>();
                 //get person uid
                 list.add(uid);
-//                Users.getUserFromName(db, listingExtra.getCreatedBy(), new CallbackAdapter(){
-//                    @Override
-//                    public void getUser(User new_user) {
-//                        sellerUserId = new_user.getUid();
-//                    }
-//                });
-                sellerUserId = "pZDmZf7JtzZvCKtOf3JYonuf71m1";
-                list.add(sellerUserId);
-
-                try {
-                    // if seller is the person
-                    Log.d("see ids", "1stids" + uid + "2ndid" + sellerUserId);
-                    if (sellerUserId.equals(uid)) {
-                        Toast.makeText(getApplicationContext(), "You cannot chat with yourself", Toast.LENGTH_SHORT);
-                    } else {
-                        chatSystem.createChannel(list, new CallbackAdapter() {
-                            @Override
-                            public void getChannel(Channel channel) {
-                                startActivity(ChatActivity.newIntent(SellerListingActivity.this, channel));
-                            }
-                        });
+                Users.getUserFromId(db, listingExtra.getCreatedById(), new CallbackAdapter(){
+                    @Override
+                    public void getUser(User new_user) {
+                        sellerUserId = new_user.getUid();
                     }
-                } catch (StreamException e) {
+                });
+                list.add(sellerUserId);
+                try {
+                    chatSystem.createChannel(list, new CallbackAdapter() {
+                        @Override
+                        public void getChannel(Channel channel) {
+                            startActivity(ChatActivity.newIntent(SellerListingActivity.this, channel));
+                        }
+                    });
+                }
+                catch (StreamException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -180,7 +172,7 @@ public class SellerListingActivity extends AppCompatActivity {
 
     }
 
-    public MaterialCardView createNewMatCard(int count, String name, String price, int minOrder, int currentOrder, String expiry, List<String> imageList, Listing listing) {
+    public MaterialCardView createNewMatCard(int count, Listing listing) {
 
         GridLayout.LayoutParams cardMaterialParams = new GridLayout.LayoutParams();
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -221,7 +213,7 @@ public class SellerListingActivity extends AppCompatActivity {
         TextView cardPrice = new TextView(SellerListingActivity.this);
         cardPrice.setLayoutParams(textParams);
         cardPrice.setTextSize(15);
-        cardPrice.setText(price);
+        cardPrice.setText("S$" + df.format(listing.getPrice()));
         cardPrice.setTypeface(Typeface.DEFAULT_BOLD);
 
         // Horizontal Layout for order num text and icon
@@ -230,8 +222,8 @@ public class SellerListingActivity extends AppCompatActivity {
         numOrderLayout.setLayoutParams(textParams);
 
         // Num of orders displayed on each card
-        int currOrderNum = currentOrder;
-        int minOrderNum = minOrder;
+        int currOrderNum = listing.getCurrentOrder().intValue();
+        int minOrderNum = listing.getMinOrder().intValue();
         TextView cardOrderNum = new TextView(SellerListingActivity.this);
         cardOrderNum.setTextSize(12);
         cardOrderNum.setText(currOrderNum + "/" + minOrderNum);
@@ -250,14 +242,18 @@ public class SellerListingActivity extends AppCompatActivity {
         TextView expiryText = new TextView(SellerListingActivity.this);
         expiryText.setTextSize(12);
         expiryText.setTextColor(Color.RED);
-        expiryText.setText(expiry);
+        if (listing.getExpiry().after(new Date())) {
+            expiryText.setText(listing.getExpiryCountdown());
+        }else{
+            expiryText.setText("Expired");
+        }
         expiryText.setLayoutParams(textParams);
 
-        new ImageLoadTask(imageList.get(0), cardImg).execute();
+        new ImageLoadTask(listing.getImageList().get(0), cardImg).execute();
 
 
         cardImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        cardTitle.setText(name);
+        cardTitle.setText(listing.getName());
         imgLayout.addView(cardImg);
         layout.addView(imgLayout);
         layout.addView(cardTitle);

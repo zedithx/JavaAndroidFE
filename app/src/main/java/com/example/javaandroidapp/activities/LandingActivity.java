@@ -3,20 +3,25 @@ package com.example.javaandroidapp.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.javaandroidapp.adapters.CallbackAdapter;
@@ -34,12 +39,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.*;
 
 public class LandingActivity extends AppCompatActivity {
     private List<CategoryModel> categories = new ArrayList<>();
     private List<Listing> listings = new ArrayList<>();
-
+    boolean pressBackOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,29 +97,58 @@ public class LandingActivity extends AppCompatActivity {
             }
 
         });
+        // pull page down to refresh listings
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeColors(Color.RED);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent main = new Intent(LandingActivity.this, TransitionLandingActivity.class);
+                Toast.makeText(LandingActivity.this, "Refreshing Listings", Toast.LENGTH_SHORT).show();
+                startActivity(main);
+            }
+        });
+        // double click back button to exit app
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (pressBackOnce){
+                    finishAffinity();
+                }
+
+                pressBackOnce = true;
+                Toast.makeText(LandingActivity.this, "Press back button twice to exit app", Toast.LENGTH_LONG).show();
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable(){
+                    @Override
+                    public void run(){
+                        pressBackOnce = false;
+                    }
+                }, 2000);
+            }
+        });
         // Get the profile button
         LinearLayout profile_button = findViewById(R.id.profile_button);
-        profile_button.setOnClickListener(new View.OnClickListener(){
+        profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(LandingActivity.this, MenuActivity.class);
+                Intent Main = new Intent(LandingActivity.this, MyListingActivity.class);
                 Main.putExtra("User", fbUser);
                 startActivity(Main);
             }
         });
         // Link for saved button
         LinearLayout saved_button = findViewById(R.id.saved_button);
-        saved_button.setOnClickListener(new View.OnClickListener(){
-             @Override
-             public void onClick(View v) {
-                 Intent Main = new Intent(LandingActivity.this, LandingSavedActivity.class);
-                 Main.putExtra("User", fbUser);
-                 startActivity(Main);
-             }
+        saved_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Main = new Intent(LandingActivity.this, LandingSavedActivity.class);
+                Main.putExtra("User", fbUser);
+                startActivity(Main);
+            }
         });
         //Link for order button
         LinearLayout order_button = findViewById(R.id.order_button);
-        order_button.setOnClickListener(new View.OnClickListener(){
+        order_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent Main = new Intent(LandingActivity.this, LandingOrdersActivity.class);
@@ -123,7 +158,7 @@ public class LandingActivity extends AppCompatActivity {
 
         //Link for chat button
         LinearLayout chat_button = findViewById(R.id.chatbox_button);
-        chat_button.setOnClickListener(new View.OnClickListener(){
+        chat_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent Main = new Intent(LandingActivity.this, ChannelActivity.class);
@@ -153,6 +188,8 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
     }
+
+
     // Declare the launcher at the top of your Activity/Fragment:
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {

@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -7,6 +9,9 @@ plugins {
 android {
     namespace = "com.example.javaandroidapp"
     compileSdk = 34
+    packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+    }
     buildFeatures {
         dataBinding = true
         viewBinding = true
@@ -40,6 +45,7 @@ android {
         implementation("com.google.firebase:firebase-firestore:24.10.3")
         implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
         implementation("com.google.firebase:firebase-auth")
+        implementation("com.google.auth:google-auth-library-oauth2-http:1.19.0")
         implementation("com.algolia:algoliasearch-android:3.+")
         implementation("com.stripe:stripe-java:24.0.0")
         implementation("com.stripe:stripe-android:20.40.2")
@@ -54,6 +60,7 @@ android {
         implementation("com.google.android.material:material:1.11.0")
         implementation("androidx.constraintlayout:constraintlayout:2.1.4")
         implementation("androidx.fragment:fragment:$fragment_version")
+        implementation("com.google.firebase:firebase-messaging:23.4.1")
         testImplementation("junit:junit:4.13.2")
         androidTestImplementation("androidx.test.ext:junit:1.1.5")
         androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -61,5 +68,5 @@ android {
     ndkVersion = "16"
 }
 dependencies {
-    implementation("com.google.firebase:firebase-messaging:23.4.1")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

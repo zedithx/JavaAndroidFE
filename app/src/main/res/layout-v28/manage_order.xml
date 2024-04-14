@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/topBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="0dp">
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="-15dp"
+            android:background="@null"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:src="@drawable/red_back_arrow" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/Header"
+                android:layout_width="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="bottom"
+                android:text="@string/manage_listing"
+                android:textColor="@color/lightred"
+                android:textSize="30sp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/imageViewLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="10dp"
+                app:strokeWidth="0dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/listingImage"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@color/lightgray"
+                        android:scaleType="centerCrop" />
+                </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/listingName"
+                style="@style/H3"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="Product NaN"
+                android:textAlignment="textStart"
+                android:textColor="@color/listing" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+
+                <TextView
+                    android:id="@+id/expiryDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="0d left"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/lightred" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/order_quota"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true">
+        <LinearLayout
+            android:id="@+id/ordernumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/currentOrder"
+                android:text="NaN"
+                android:textColor="@color/lightred"
+                android:fontFamily="@font/interfont"
+                android:textFontWeight="800"
+                android:layout_marginHorizontal="2dp"
+                android:textSize="22sp"
+                >
+            </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:textColor="@color/black"
+                android:fontFamily="@font/interfont"
+                android:textSize="22sp"
+                android:layout_marginLeft="2dp"
+                >
+            </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/minOrder"
+                android:text="NaN"
+                android:textColor="@color/black"
+                android:fontFamily="@font/interfont"
+                android:textFontWeight="800"
+                android:textSize="22sp"
+                android:layout_marginHorizontal="2dp"
+                >
+            </TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Orders"
+                    android:fontFamily="@font/interfont"
+                    android:textFontWeight="400"
+                    android:textSize="14sp"
+                    android:textColor="@color/black">
+                </TextView>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:srcCompat="@drawable/people_alt"
+                    android:layout_marginLeft="2dp"
+                    >
+                </ImageView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/orderFulfilledCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginVertical="15dp"
+                app:cardCornerRadius="30dp"
+                app:strokeColor="@color/lightred"
+                app:strokeWidth="1dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="13dp"
+                        android:paddingVertical="5dp">
+
+                        <ImageView
+                            android:id="@+id/fulfilImage"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="5dp"
+                            android:src="@drawable/error" />
+
+                        <TextView
+                            android:id="@+id/orderFulfilledText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/minimum_order_unmet"
+                            android:textColor="@color/lightred" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!--expiry card-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/expiryCard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="20dp"
+                        app:strokeWidth="0dp"
+                        app:cardElevation="0dp"
+                        android:visibility="gone">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            >
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/translucent_gray"
+                                android:clickable="false"
+                                android:orientation="vertical"
+                                android:padding="45dp">
+
+                                <ImageView
+                                    android:layout_width="80dp"
+                                    android:layout_height="80dp"
+                                    android:layout_gravity="center"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/error"
+                                    android:tintMode="src_in"
+                                    app:tint="@color/white" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/expired"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white" />
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+                <!-- state layouts-->
+                <LinearLayout
+                    android:id="@+id/progressParentLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!--fulfilled min order state-->
+                    <LinearLayout
+                        android:id="@+id/options_layout_0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/progress_bar_0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="35dp"
+                            android:src="@drawable/order_prog_bar_0"/>
+                        <LinearLayout
+                            android:id="@+id/toggleLayoutParent0"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+
+                            android:orientation="vertical">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                >
+                                <TextView
+                                    style="@style/H4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/darkgray"
+                                    android:layout_alignParentStart="true"
+                                    android:text="@string/finalise_group_order"/>
+                                <Switch
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="false"
+                                    android:clickable="false"
+                                    android:layout_alignParentEnd="true"
+                                    android:theme="@style/red_switch_theme" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                >
+                                <TextView
+                                    style="@style/H4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/darkgray"
+                                    android:layout_alignParentStart="true"
+                                    android:text="Dispatched Items"/>
+                                <Switch
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="false"
+                                    android:clickable="false"
+                                    android:layout_alignParentEnd="true"
+                                    android:theme="@style/red_switch_theme" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                >
+                                <TextView
+                                    style="@style/H4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/darkgray"
+                                    android:layout_alignParentStart="true"
+                                    android:text="Ready For Collection"/>
+                                <Switch
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="false"
+                                    android:clickable="false"
+                                    android:layout_alignParentEnd="true"
+                                    android:theme="@style/red_switch_theme" />
+                            </RelativeLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                    <!--finalised order state-->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:id="@+id/options_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+                            <ImageView
+                                android:id="@+id/progress_bar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="35dp"
+                                android:src="@drawable/order_prog_bar_1"/>
+                            <LinearLayout
+                                android:id="@+id/toggleLayoutParent"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+
+                                android:orientation="vertical">
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    >
+                                    <TextView
+                                        style="@style/H4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/lightred"
+                                        android:layout_alignParentStart="true"
+                                        android:text="@string/finalise_group_order"/>
+                                    <Switch
+                                        android:id="@+id/finalise_group_order_switch"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="false"
+                                        android:clickable="true"
+                                        android:layout_alignParentEnd="true"
+                                        android:theme="@style/red_switch_theme" />
+                                </RelativeLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="75dp"
+                                        android:text="Toggle On to finalise Group Order. \nOnce finalised, the Group Order will stop receiving new orders. This cannot be reversed."/>
+                                </LinearLayout>
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    >
+                                    <TextView
+                                        style="@style/H4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/lightred"
+                                        android:layout_alignParentStart="true"
+                                        android:text="Dispatched Items"/>
+                                    <Switch
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="false"
+                                        android:clickable="false"
+                                        android:layout_alignParentEnd="true"
+                                        android:theme="@style/red_switch_theme" />
+                                </RelativeLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="15dp"/>
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    >
+                                    <TextView
+                                        style="@style/H4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/lightred"
+                                        android:layout_alignParentStart="true"
+                                        android:text="Ready For Collection"/>
+                                    <Switch
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="false"
+                                        android:clickable="false"
+                                        android:layout_alignParentEnd="true"
+                                        android:theme="@style/red_switch_theme" />
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                    <!--Dispatched state-->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:id="@+id/options_layout_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+                            <ImageView
+                                android:id="@+id/progress_bar_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="35dp"
+                                android:src="@drawable/order_prog_bar_2"/>
+                            <LinearLayout
+                                android:id="@+id/toggleLayoutParent_2"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+
+                                android:orientation="vertical">
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    >
+                                    <TextView
+                                        style="@style/H4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/lightred"
+                                        android:layout_alignParentStart="true"
+                                        android:text="@string/finalise_group_order"/>
+                                    <Switch
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="true"
+                                        android:clickable="false"
+                                        android:layout_alignParentEnd="true"
+                                        android:theme="@style/red_switch_theme" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="15dp"
+                                    >
+                                    <TextView
+                                        style="@style/H4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/lightred"
+                                        android:layout_alignParentStart="true"
+                                        android:text="Dispatched Items"/>
+                                    <Switch
+                                        android:id="@+id/dispatched_switch"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="false"
+                                        android:clickable="true"
+                                        android:layout_alignParentEnd="true"
+                                        android:theme="@style/red_switch_theme" />
+                                </RelativeLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="75dp"
+                                        android:text="Toggle On when items are on its way to the Collection Locker."/>
+                                </LinearLayout>
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    >
+                                    <TextView
+                                        style="@style/H4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/lightred"
+                                        android:layout_alignParentStart="true"
+                                        android:text="Ready For Collection"/>
+                                    <Switch
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="false"
+                                        android:clickable="false"
+                                        android:layout_alignParentEnd="true"
+                                        android:theme="@style/red_switch_theme" />
+                                </RelativeLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+                    <!--Ready state-->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:id="@+id/options_layout_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+                            <ImageView
+                                android:id="@+id/progress_bar_3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="35dp"
+                                android:src="@drawable/order_prog_bar_3"/>
+                            <LinearLayout
+                                android:id="@+id/toggleLayoutParent_3"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:orientation="vertical">
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    >
+                                    <TextView
+                                        style="@style/H4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/lightred"
+                                        android:layout_alignParentStart="true"
+                                        android:text="@string/finalise_group_order"/>
+                                    <Switch
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="true"
+                                        android:clickable="false"
+                                        android:layout_alignParentEnd="true"
+                                        android:theme="@style/red_switch_theme" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="15dp"
+                                    >
+                                    <TextView
+                                        style="@style/H4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/lightred"
+                                        android:layout_alignParentStart="true"
+                                        android:text="Dispatched Items"/>
+                                    <Switch
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="true"
+                                        android:clickable="false"
+                                        android:layout_alignParentEnd="true"
+                                        android:theme="@style/red_switch_theme" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="20dp"
+                                    >
+                                    <TextView
+                                        style="@style/H4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/lightred"
+                                        android:layout_alignParentStart="true"
+                                        android:text="Ready For Collection"/>
+                                    <Switch
+                                        android:id="@+id/ready_switch"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="false"
+                                        android:clickable="true"
+                                        android:layout_alignParentEnd="true"
+                                        android:theme="@style/red_switch_theme" />
+                                </RelativeLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="75dp"
+                                        android:text="Toggle On when the items are ready to be collected at the locker."/>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

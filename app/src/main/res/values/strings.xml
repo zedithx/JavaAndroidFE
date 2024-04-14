@@ -83,7 +83,7 @@
     <string name="order_unprocessed">Order Unprocessed</string>
     <string name="back_to_my_page">Back To My Page</string>
     <string name="order_payment">Order\nPayment</string>
-    <string name="finalise_group_order">Finalised\nGroup Order</string>
+    <string name="finalised_group_order">Finalised\nGroup Order</string>
     <string name="item_dispatched">Items\nDispatched</string>
     <string name="collect_items">Collect\nItems</string>
     <string name="collection_qr_code">View Locker QR Code</string>
@@ -103,6 +103,11 @@
     <string name="settings">Settings</string>
     <string name="edit_profile_pic">Edit Profile Photo</string>
     <string name="change_info">Change Information</string>
+    <string name="manage_listing">Manage Listing</string>
+    <string name="minimum_order_unmet">Minimum Order amount not yet fulfilled.</string>
+    <string name="expired">Listing has expired.\nNo new orders will be accepted</string>
+    <string name="finalise_group_order">Finalise Group Order</string>
+
 
 
 </resources>

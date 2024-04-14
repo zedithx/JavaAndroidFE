@@ -205,6 +205,7 @@
                                 <TextView
                                     android:id="@+id/priceCents"
                                     style="@style/H4"
+                                    android:textColor="@color/black"
                                     android:layout_gravity="right"
                                     android:text="@string/product_price_cents" />
                             </LinearLayout>
@@ -214,7 +215,7 @@
                                 style="@style/H4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="start"
+                                android:layout_gravity="end"
                                 android:text="S$xxxx.xx"
                                 android:textColor="@color/lightred" />
 
