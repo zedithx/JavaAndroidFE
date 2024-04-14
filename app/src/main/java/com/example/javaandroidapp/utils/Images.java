@@ -22,6 +22,7 @@ public class Images {
     public static void addImage(Uri image, StorageReference storage, Callbacks callback) {
         if (image == null){
             callback.getResult("");
+            return;
         }
         StorageReference storageRef = storage.child("/" + UUID.randomUUID().toString());
         Task<Uri> urlTask = storageRef.putFile(image).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
