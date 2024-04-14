@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
@@ -93,15 +94,20 @@ public class ManageOrderActivity extends AppCompatActivity {
                 startActivity(toProfile);
             }
         });
-
-        viewIndividualOrders.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent indivOrders = new Intent(ManageOrderActivity.this, IndivOrdersActivity.class);
-                indivOrders.putExtra("listing", listing);
-                startActivity(indivOrders);
-            }
-        });
+        if (listing.getDeliveryStatus().equals("Unfulfilled") && listing.getExpiry().before(new Date())) {
+            viewIndividualOrders.setClickable(false);
+            CardView card = findViewById(R.id.card);
+            card.setCardBackgroundColor(Color.GRAY);
+        }else{
+            viewIndividualOrders.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent indivOrders = new Intent(ManageOrderActivity.this, IndivOrdersActivity.class);
+                    indivOrders.putExtra("listing", listing);
+                    startActivity(indivOrders);
+                }
+            });
+        }
         listingName.setText(listing.getName());
         int minOrderNum = listing.getMinOrder().intValue();
         int currOrderNum = listing.getCurrentOrder().intValue();
