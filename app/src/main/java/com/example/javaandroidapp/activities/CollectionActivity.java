@@ -1,6 +1,7 @@
 package com.example.javaandroidapp.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import androidx.cardview.widget.CardView;
 
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.modals.Order;
+import com.example.javaandroidapp.utils.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
@@ -23,6 +25,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firestore.v1.WriteResult;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.w3c.dom.Text;
 
@@ -48,6 +55,7 @@ public class CollectionActivity extends AppCompatActivity {
         TextView orderVariant = findViewById(R.id.order_variant);
         TextView orderAmount = findViewById(R.id.order_amount);
         ImageView productImage = findViewById(R.id.product_image);
+        ImageView qrcode = findViewById(R.id.qr_code);
         collectionStatus = orderDetails.getCollectionStatus();
         DocumentReference docRef = db.collection("listings").document(orderDetails.getListingId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -74,6 +82,7 @@ public class CollectionActivity extends AppCompatActivity {
                     DocumentSnapshot doc = task.getResult();
                     if(doc.exists()){
                         collectionStatus = doc.getBoolean("collectionStatus");
+                        qrcode.setImageBitmap(QRCode.createQR(orderDetails.getUid()));
                     }
                 }
             }
@@ -99,6 +108,7 @@ public class CollectionActivity extends AppCompatActivity {
                     collectionCard.setBackgroundColor(Color.GRAY);
                     orderDetails.setCollectionStatus();
                     orderDocRef.update("collectionStatus", true);
+
                 }
             });
         }
