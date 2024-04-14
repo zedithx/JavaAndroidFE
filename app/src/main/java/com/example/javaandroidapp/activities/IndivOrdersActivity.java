@@ -77,7 +77,9 @@ public class IndivOrdersActivity extends AppCompatActivity {
         } else {
             expiryText.setText("Expired");
         }
-        new ImageLoadTask(listing.getImageList().get(0), productImg).execute();
+//        new ImageLoadTask(listing.getImageList().get(0), productImg).execute();
+        Glide.with(IndivOrdersActivity.this).load(listing.getImageList().get(0)).into(productImg);
+
         ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), uid);
 
         db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

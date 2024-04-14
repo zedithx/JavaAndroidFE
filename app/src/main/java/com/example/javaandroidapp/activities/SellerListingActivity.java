@@ -29,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 
 import com.example.javaandroidapp.adapters.CallbackAdapter;
@@ -103,7 +104,9 @@ public class SellerListingActivity extends AppCompatActivity {
                         DocumentSnapshot docSnapshot = doc.getDocuments().get(0);
                         String profilePicStringURL = docSnapshot.getString("profileImage");
                         if (profilePicStringURL.length() > 0) {
-                            new ImageLoadTask(profilePicStringURL, profilePic).execute();
+//                            new ImageLoadTask(profilePicStringURL, profilePic).execute();
+                            Glide.with(SellerListingActivity.this).load(profilePicStringURL).into(profilePic);
+
                         }
                     }
                 }
@@ -249,7 +252,8 @@ public class SellerListingActivity extends AppCompatActivity {
         }
         expiryText.setLayoutParams(textParams);
 
-        new ImageLoadTask(listing.getImageList().get(0), cardImg).execute();
+//        new ImageLoadTask(listing.getImageList().get(0), cardImg).execute();
+        Glide.with(SellerListingActivity.this).load(listing.getImageList().get(0)).into(cardImg);
 
 
         cardImg.setScaleType(ImageView.ScaleType.CENTER_CROP);

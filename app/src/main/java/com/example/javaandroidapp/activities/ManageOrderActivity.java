@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.modals.Listing;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -113,7 +114,8 @@ public class ManageOrderActivity extends AppCompatActivity {
         } else {
             expiryText.setText("Expired");
         }
-        new ImageLoadTask(listing.getImageList().get(0), productImg).execute();
+//        new ImageLoadTask(listing.getImageList().get(0), productImg).execute();
+        Glide.with(ManageOrderActivity.this).load(listing.getImageList().get(0)).into(productImg);
 
         if (currOrderNum >= minOrderNum) {
             minFulfilled = true;
