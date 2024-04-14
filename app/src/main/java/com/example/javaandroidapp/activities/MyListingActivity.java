@@ -139,16 +139,6 @@ public class MyListingActivity extends AppCompatActivity {
                 startActivity(main);
             }
         });
-        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeColors(Color.RED);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Intent profile = new Intent(MyListingActivity.this, MyListingActivity.class);
-                Toast.makeText(MyListingActivity.this, "Refreshing Profile", Toast.LENGTH_SHORT).show();
-                startActivity(profile);
-            }
-        });
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

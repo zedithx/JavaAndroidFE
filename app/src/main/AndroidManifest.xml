@@ -108,6 +108,8 @@
             android:exported="true"></activity>
         <activity android:name=".activities.ManageOrderActivity"
             android:exported="true"></activity>
+        <activity android:name=".activities.IndivOrdersActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>
