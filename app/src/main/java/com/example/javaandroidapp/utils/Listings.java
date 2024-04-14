@@ -40,7 +40,7 @@ public class Listings {
         } else if (category.equals("Popular")) {
             item = db.collection("listings").whereGreaterThanOrEqualTo("expiry", date).orderBy("currentOrder", Query.Direction.DESCENDING);
         } else {
-            item = db.collection("listings").whereGreaterThan("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
+            item = db.collection("listings").whereEqualTo("category", category).whereGreaterThan("expiry", date).orderBy("expiry", Query.Direction.ASCENDING);
         }
         item.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
