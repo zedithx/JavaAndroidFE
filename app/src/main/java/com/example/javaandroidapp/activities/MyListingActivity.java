@@ -22,11 +22,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.javaandroidapp.R;
 
@@ -137,11 +139,21 @@ public class MyListingActivity extends AppCompatActivity {
                 startActivity(main);
             }
         });
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeColors(Color.RED);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent profile = new Intent(MyListingActivity.this, MyListingActivity.class);
+                Toast.makeText(MyListingActivity.this, "Refreshing Profile", Toast.LENGTH_SHORT).show();
+                startActivity(profile);
+            }
+        });
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Intent profile = new Intent(MyListingActivity.this, TransitionLandingActivity.class);
-                startActivity(profile);
+                Intent main = new Intent(MyListingActivity.this, TransitionLandingActivity.class);
+                startActivity(main);
             }
         });
         settingsBtn.setOnClickListener(new View.OnClickListener() {
