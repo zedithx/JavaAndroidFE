@@ -30,9 +30,6 @@ import java.util.List;
 
 public class Listings {
     public static void getAllListings(FirebaseFirestore db, String category, Callbacks callbacks) {
-        ArrayList<String> deliveryStatusAllowed = new ArrayList<>();
-        deliveryStatusAllowed.add("Unfulfilled");
-        deliveryStatusAllowed.add("Fulfilled");
         Query item;
         Date date = new Date();
         if (category.equals("All")) {
