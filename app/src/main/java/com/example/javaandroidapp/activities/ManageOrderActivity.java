@@ -97,7 +97,7 @@ public class ManageOrderActivity extends AppCompatActivity {
         if (listing.getDeliveryStatus().equals("Unfulfilled") && listing.getExpiry().before(new Date())) {
             viewIndividualOrders.setClickable(false);
             CardView card = findViewById(R.id.card);
-            card.setCardBackgroundColor(Color.GRAY);
+            card.setCardBackgroundColor(Color.LTGRAY);
         }else{
             viewIndividualOrders.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -258,6 +258,8 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout.setVisibility(View.GONE);
                 optionsLayout2.setVisibility(View.GONE);
                 optionsLayout3.setVisibility(View.VISIBLE);
+                LinearLayout qrLayout = findViewById(R.id.qr_layout);
+                qrLayout.setVisibility(View.GONE);
                 optionsLayout3.setClickable(false);
                 readySwitch.setChecked(true);
                 readySwitch.setClickable(false);
