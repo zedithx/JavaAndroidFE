@@ -71,9 +71,9 @@ public class ManageOrderActivity extends AppCompatActivity {
         LinearLayout optionsLayout = findViewById(R.id.options_layout);
         LinearLayout optionsLayout2 = findViewById(R.id.options_layout_2);
         LinearLayout optionsLayout3 = findViewById(R.id.options_layout_3);
+        LinearLayout optionsLayout4 = findViewById(R.id.options_layout_4);
         Switch finalisedGroupOrderSwitch = findViewById(R.id.finalise_group_order_switch);
         Switch dispatchedSwitch = findViewById(R.id.dispatched_switch);
-        Switch readySwitch = findViewById(R.id.ready_switch);
         MaterialCardView viewIndividualOrders = findViewById(R.id.view_indiv_orders);
         MaterialCardView getQrCode = findViewById(R.id.get_qr_code);
         String deliveryStatus = listing.getDeliveryStatus();
@@ -163,13 +163,17 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout.setVisibility(View.GONE);
                 optionsLayout2.setVisibility(View.GONE);
                 optionsLayout3.setVisibility(View.GONE);
+                optionsLayout4.setVisibility(View.GONE);
                 optionsLayout0.setClickable(false);
+                getQrCode.setVisibility(View.GONE);
                 break;
             case "FulfilledMinOrder":
                 optionsLayout0.setVisibility(View.GONE);
                 optionsLayout.setVisibility(View.VISIBLE);
                 optionsLayout2.setVisibility(View.GONE);
                 optionsLayout3.setVisibility(View.GONE);
+                optionsLayout4.setVisibility(View.GONE);
+                getQrCode.setVisibility(View.GONE);
                 finalisedGroupOrderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -200,6 +204,8 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout.setVisibility(View.GONE);
                 optionsLayout2.setVisibility(View.VISIBLE);
                 optionsLayout3.setVisibility(View.GONE);
+                optionsLayout4.setVisibility(View.GONE);
+                getQrCode.setVisibility(View.GONE);
                 dispatchedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -229,40 +235,17 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout.setVisibility(View.GONE);
                 optionsLayout2.setVisibility(View.GONE);
                 optionsLayout3.setVisibility(View.VISIBLE);
-                readySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            buttonView.setClickable(false);
-                            docRef.update("deliveryStatus", "Ready");
-                            listing.setDeliveryStatus("Ready");
-                            db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        QuerySnapshot querySnapshot = task.getResult();
-                                        if (!querySnapshot.isEmpty()) {
-                                            for (DocumentSnapshot doc : querySnapshot) {
-                                                db.collection("orders").document(doc.getId()).update("delivery", "Ready");
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
+                optionsLayout4.setVisibility(View.GONE);
+                getQrCode.setVisibility(View.VISIBLE);
                 break;
             case "Ready":
                 optionsLayout0.setVisibility(View.GONE);
                 optionsLayout.setVisibility(View.GONE);
                 optionsLayout2.setVisibility(View.GONE);
-                optionsLayout3.setVisibility(View.VISIBLE);
-                LinearLayout qrLayout = findViewById(R.id.qr_layout);
-                qrLayout.setVisibility(View.GONE);
-                optionsLayout3.setClickable(false);
-                readySwitch.setChecked(true);
-                readySwitch.setClickable(false);
+                optionsLayout3.setVisibility(View.GONE);
+                optionsLayout4.setVisibility(View.VISIBLE);
+                optionsLayout4.setClickable(false);
+                getQrCode.setVisibility(View.GONE);
                 db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -283,6 +266,7 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout.setVisibility(View.GONE);
                 optionsLayout2.setVisibility(View.GONE);
                 optionsLayout3.setVisibility(View.GONE);
+                optionsLayout4.setVisibility(View.GONE);
                 optionsLayout0.setClickable(false);
         }
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
