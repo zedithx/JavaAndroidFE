@@ -332,13 +332,10 @@ public class ManageOrderActivity extends AppCompatActivity {
                                         }
                                         }
                                     }
-                                }
-
-                            });
+                                });
                             Intent refresh = new Intent(ManageOrderActivity.this, ManageOrderActivity.class);
                             refresh.putExtra("listing", listing);
                             startActivity(refresh);
-                        );
                         }
                     }
                 });
