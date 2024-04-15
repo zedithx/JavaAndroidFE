@@ -65,8 +65,8 @@ public class Orders {
         });
     }
 
-    public static void storeClientSecret(FirebaseFirestore db, String orderId, String ClientSecret, Callbacks callback) {
-        db.collection("orders").document(orderId).update("clientSecret", ClientSecret)
+    public static void storePaymentId(FirebaseFirestore db, String orderId, String paymentId, Callbacks callback) {
+        db.collection("orders").document(orderId).update("paymentId", paymentId)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

@@ -234,9 +234,10 @@ public class ManageOrderActivity extends AppCompatActivity {
                                                                 DocumentSnapshot orderSnapshot = task.getResult();
                                                                 if (orderSnapshot != null) {
                                                                     //use order.clientSecret to capture amount
-                                                                    captureIntent(orderSnapshot.getString("clientSecret"));
+                                                                    captureIntent(orderSnapshot.getString("paymentId"));
                                                                     //get user object for device token for fcm
                                                                     DocumentReference userRef = (DocumentReference) orderSnapshot.getData().get("user");
+                                                                    Log.d("userRef", "userRef" + userRef.getId());
                                                                     userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -408,9 +409,9 @@ public class ManageOrderActivity extends AppCompatActivity {
             }
         });
     }
-    private void captureIntent(String clientSecret) {
+    private void captureIntent(String paymentId) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                String.format("https://api.stripe.com/v1/payment_intents/%s/capture", clientSecret),
+                String.format("https://api.stripe.com/v1/payment_intents/%s/capture", paymentId),
                 new Response.Listener<String>() {
 
                     @Override
