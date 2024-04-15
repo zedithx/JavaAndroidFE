@@ -52,7 +52,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     String customerID;
     String ephemeralKey;
     String ClientSecret;
-
+    String paymentId;
     String SECRET_KEY;
     String PUBLISH_KEY;
     ImageView listingImageView;
@@ -185,7 +185,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                 public void getResult(String orderId) {
                     if (orderId != null) {
                         //Store client secret
-                        Orders.storeClientSecret(db, orderId, ClientSecret, new CallbackAdapter() {
+                        Orders.storePaymentId(db, orderId, paymentId, new CallbackAdapter() {
                             @Override
                             public void getResult(String orderId) {
                                 //add reference to order on Listing increment number of orders
@@ -268,6 +268,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONObject object = new JSONObject(response);
+                            paymentId = object.getString("id");
                             ClientSecret=object.getString("client_secret");
                             // At this point we have all variables needed to proceed with paymentSheetIntent
                             loadingSpinner.setVisibility(View.GONE);
