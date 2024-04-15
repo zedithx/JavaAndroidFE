@@ -22,8 +22,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Orders {
+    static int totalOrders = 0;
+
     public static void getOrdersUser(List<DocumentReference> items, Callbacks callback) {
         List<Order> orders = new ArrayList<>();
         for (DocumentReference item : items) {
@@ -90,26 +93,39 @@ public class Orders {
                     if (orders == null) {
                         orders = new ArrayList<>();
                     }
+                    int quantity = 0;
                     DocumentReference orderReference = db.collection("orders").document(orderId);
                     orders.add(orderReference);
-                    Map<String, Object> data = new HashMap<>();
+                    Map<String, Object> data = new ConcurrentHashMap<>();
                     data.put("orders", orders);
-                    data.put("currentOrder", orders.size());
-                    db.collection("listings").document(listingUid).update(data)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    // Callback for success
-                                    callback.getResult(orderId);
+                    orderReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()){
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                if (documentSnapshot.exists()){
+                                    Listing listing = Listing.createListingWithDocumentSnapshot(listingRef);
+                                    data.put("currentOrder", listing.getCurrentOrder() + documentSnapshot.getDouble("quantity").intValue());
+                                    db.collection("listings").document(listingUid).update(data)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    // Callback for success
+                                                    callback.getResult(orderId);
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    // Callback for failure
+                                                    callback.getResult(null);
+                                                }
+                                            });
+
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Callback for failure
-                                    callback.getResult(null);
-                                }
-                            });
+                            }
+                        }
+                    });
                 }
             }
         });

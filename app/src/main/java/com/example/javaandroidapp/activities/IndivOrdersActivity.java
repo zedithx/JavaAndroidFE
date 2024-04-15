@@ -5,9 +5,11 @@ import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -33,8 +35,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 
 import io.getstream.chat.android.models.Channel;
@@ -42,6 +49,7 @@ import io.getstream.chat.java.exceptions.StreamException;
 
 public class IndivOrdersActivity extends AppCompatActivity {
     String sellerUserId;
+    Dictionary<String, Integer> variationDict = new Hashtable<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,7 @@ public class IndivOrdersActivity extends AppCompatActivity {
         TextView expiryText = findViewById(R.id.expiryDate);
         ImageView productImg = findViewById(R.id.listingImage);
         LinearLayout mainLayout = findViewById(R.id.inflaterLayout);
+        LinearLayout variationAmtLayout = findViewById(R.id.variation_amount_layout);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,9 +76,9 @@ public class IndivOrdersActivity extends AppCompatActivity {
 
         listingName.setText(listing.getName());
         int minOrderNum = listing.getMinOrder().intValue();
-        int currOrderNum = listing.getCurrentOrder().intValue();
+//        int currOrderNum = listing.getCurrentOrder().intValue();
         minOrder.setText("" + minOrderNum);
-        currentOrder.setText("" + currOrderNum);
+//        currentOrder.setText("" + currOrderNum);
         String expiryCountdown = listing.getExpiryCountdown();
         Date expiryDate = listing.getExpiry();
         if (expiryDate.after(new Date())) {
@@ -80,8 +89,12 @@ public class IndivOrdersActivity extends AppCompatActivity {
 //        new ImageLoadTask(listing.getImageList().get(0), productImg).execute();
         Glide.with(IndivOrdersActivity.this).load(listing.getImageList().get(0)).into(productImg);
 
-        ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), uid);
+        ArrayList<String> variationNames = listing.getVariationNames();
+        for (String variantName : variationNames) {
+            variationDict.put(variantName, 0);
+        }
 
+        ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), uid);
         db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -96,9 +109,14 @@ public class IndivOrdersActivity extends AppCompatActivity {
                             TextView amt = buyerLayout.findViewById(R.id.amt);
                             ImageView buyerPic = buyerLayout.findViewById(R.id.buyer_pic);
                             ImageButton chatBtn = buyerLayout.findViewById(R.id.chat_btn);
+                            String orderVariant = queryDocumentSnapshot.getString("variant");
+                            variation.setText(orderVariant);
+                            int amount = queryDocumentSnapshot.getDouble("quantity").intValue();
+                            amt.setText("" + amount);
 
-                            variation.setText(queryDocumentSnapshot.getString("variant"));
-                            amt.setText("" + queryDocumentSnapshot.getDouble("quantity").intValue());
+                            int prev = variationDict.put(orderVariant, variationDict.get(orderVariant) + amount);
+                            Log.d("print dict", "" + orderVariant + ": "+ variationDict.get(orderVariant) + ", prev: " + prev);
+
                             DocumentReference docRef = (DocumentReference) queryDocumentSnapshot.get("user");
                             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
@@ -133,7 +151,7 @@ public class IndivOrdersActivity extends AppCompatActivity {
                                                     }
                                                 }
                                             });
-                                        }else{
+                                        } else {
                                             chatBtn.setClickable(false);
                                             chatBtn.setImageResource(R.drawable.gray_chatbox);
                                         }
@@ -142,10 +160,23 @@ public class IndivOrdersActivity extends AppCompatActivity {
                             });
                             mainLayout.addView(buyerLayout);
                         }
+                        Enumeration<String> keys = variationDict.keys();
+                        int totalOrders = 0;
+                        while (keys.hasMoreElements()) {
+                            LayoutInflater inflater = getLayoutInflater();
+                            View relativeLayout = inflater.inflate(R.layout.relative_layout_var_amt, variationAmtLayout, false);
+                            TextView newVarText = relativeLayout.findViewById(R.id.var);
+                            TextView newVarAmt = relativeLayout.findViewById(R.id.var_amt);
+                            String variantName = keys.nextElement();
+                            newVarText.setText(variantName);
+                            newVarAmt.setText("" + variationDict.get(variantName));
+                            totalOrders += variationDict.get(variantName);
+                            variationAmtLayout.addView(relativeLayout);
+                        }
+                        currentOrder.setText("" + totalOrders);
                     }
                 }
             }
         });
-
     }
 }
