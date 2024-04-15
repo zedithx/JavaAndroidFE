@@ -348,6 +348,7 @@
 
                                         <TextView
                                             style="@style/H4"
+                                            android:id="@+id/finalise_group_order_text"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_alignParentStart="true"
@@ -412,7 +413,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
-                                    android:visibility="gone">
+                                    android:visibility="visible">
 
                                     <ImageView
                                         android:id="@+id/progress_bar"
@@ -472,7 +473,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_alignParentStart="true"
                                                 android:text="Dispatched Items"
-                                                android:textColor="@color/lightred" />
+                                                android:textColor="@color/darkgray" />
 
                                             <Switch
                                                 android:layout_width="wrap_content"
@@ -497,7 +498,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_alignParentStart="true"
                                                 android:text="Ready For Collection"
-                                                android:textColor="@color/lightred" />
+                                                android:textColor="@color/darkgray" />
 
                                         </RelativeLayout>
 
@@ -542,6 +543,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_alignParentStart="true"
+
                                                 android:text="@string/finalise_group_order"
                                                 android:textColor="@color/lightred" />
 
@@ -598,7 +600,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_alignParentStart="true"
                                                 android:text="Ready For Collection"
-                                                android:textColor="@color/lightred" />
+                                                android:textColor="@color/darkgray" />
                                         </RelativeLayout>
                                     </LinearLayout>
                                 </LinearLayout>
@@ -808,16 +810,15 @@
                         android:id="@+id/qr_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         app:cardBackgroundColor="@color/lightred">
 
                         <TextView
-                            style="@style/H3"
+                            style="@style/H4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:layout_marginHorizontal="0dp"
-                            android:layout_marginVertical="9dp"
+                            android:layout_marginVertical="14dp"
                             android:text="View Locker QR Code" />
                     </androidx.cardview.widget.CardView>
                 </com.google.android.material.card.MaterialCardView>
@@ -837,10 +838,11 @@
                         app:cardBackgroundColor="@color/lightred">
 
                         <TextView
-                            style="@style/H3"
+                            style="@style/H4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="9dp"
+                            android:layout_marginVertical="14dp"
+                            android:layout_marginHorizontal="0dp"
                             android:text="View Individual Orders"
                             android:textColor="@color/white" />
                     </androidx.cardview.widget.CardView>

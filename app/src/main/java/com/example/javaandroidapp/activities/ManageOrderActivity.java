@@ -216,6 +216,8 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout3.setVisibility(View.GONE);
                 optionsLayout4.setVisibility(View.GONE);
                 getQrCode.setVisibility(View.GONE);
+                orderFulfilledText.setText("Buyers have been notified that the group order is finalised");
+
                 dispatchedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -250,6 +252,8 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout3.setVisibility(View.VISIBLE);
                 optionsLayout4.setVisibility(View.GONE);
                 getQrCode.setVisibility(View.VISIBLE);
+                orderFulfilledText.setText("Buyers have been notified that items are dispatched.");
+
                 break;
             case "Ready":
                 optionsLayout0.setVisibility(View.GONE);
@@ -259,6 +263,8 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout4.setVisibility(View.VISIBLE);
                 optionsLayout4.setClickable(false);
                 getQrCode.setVisibility(View.GONE);
+                orderFulfilledText.setText("Buyers have been notified that items are ready for collection.");
+
                 db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

@@ -392,7 +392,7 @@
                         app:cardBackgroundColor="@color/lightred">
 
                         <TextView
-                            style="@style/H3"
+                            style="@style/H4"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="bottom"
@@ -427,7 +427,7 @@
 
                         <TextView
                             android:id="@+id/back_to_my_page_text"
-                            style="@style/H3"
+                            style="@style/H4"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="0dp"
