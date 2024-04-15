@@ -15,7 +15,9 @@
         app:streamUiMessageListHeaderTitleTextColor="@color/white"
         app:streamUiMessageListHeaderBackButtonIcon="@drawable/white_back_arrow_small"
         app:streamUiMessageListHeaderDefaultLabelTextColor="@color/white"
-        app:streamUiMessageListHeaderBackground="@color/lightred"/>
+        app:streamUiMessageListHeaderBackground="@color/lightred"
+        app:streamUiMessageListHeaderTitleTextFont="@font/interfont"
+        app:streamUiMessageListHeaderDefaultLabelTextFont="@font/interfont" />
 
     <io.getstream.chat.android.ui.feature.messages.list.MessageListView
         android:id="@+id/messageListView"
@@ -24,7 +26,15 @@
         app:layout_constraintBottom_toTopOf="@+id/messageComposerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/messageListHeaderView" />
+        app:layout_constraintTop_toBottomOf="@+id/messageListHeaderView"
+        app:streamUiMessageTextFontMine="@font/interfont"
+        app:streamUiMessageTextFontTheirs="@font/interfont"
+        app:streamUiMessageOptionsTextFont="@font/interfont"
+        app:streamUiEmptyStateTextFont="@font/interfont"
+        app:streamUiMessageReplyTextFontTheirs="@font/interfont"
+        app:streamUiMessageTextFontMessageDeletedTheirs="@font/interfont"
+        app:streamUiMessageTextFontMessageDeletedMine="@font/interfont"
+        app:streamUiMessageTextFontReadCounter="@font/interfont" />
 
     <io.getstream.chat.android.ui.feature.messages.composer.MessageComposerView
         android:id="@+id/messageComposerView"

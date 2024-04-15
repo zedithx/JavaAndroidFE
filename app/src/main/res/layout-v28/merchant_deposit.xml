@@ -32,89 +32,164 @@
                         style="@style/Header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:text="@string/scan_to_collect" />
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="0dp"
+                        android:text="@string/scan_to_deposit" />
                 </LinearLayout>
 
                 <RelativeLayout
-                    android:id="@+id/product_details_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="15dp"
-                    android:clickable="true">
+                    android:layout_marginVertical="20dp">
 
                     <LinearLayout
-                        android:id="@+id/listing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_alignParentStart="true"
                         android:orientation="horizontal">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="5dp"
-                            android:clipChildren="false"
-                            app:cardCornerRadius="12dp"
-                            app:cardElevation="8dp">
+                        <LinearLayout
+                            android:id="@+id/imageViewLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
 
-                            <ImageView
-                                android:id="@+id/product_image"
+                            <com.google.android.material.card.MaterialCardView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@color/lightgray"
-                                android:elevation="8dp"
-                                android:scaleType="centerCrop" />
-                        </androidx.cardview.widget.CardView>
+                                app:cardBackgroundColor="@android:color/transparent"
+                                app:cardCornerRadius="10dp"
+                                app:strokeWidth="0dp">
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageView
+                                        android:id="@+id/listingImage"
+                                        android:layout_width="80dp"
+                                        android:layout_height="80dp"
+                                        android:background="@color/lightgray"
+                                        android:scaleType="centerCrop" />
+                                </androidx.cardview.widget.CardView>
+                            </com.google.android.material.card.MaterialCardView>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="170dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="15dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/listingName"
+                                style="@style/H3"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:text="Product NaN"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/listing" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+
+                                <TextView
+                                    android:id="@+id/expiryDate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.2"
+                                    android:ellipsize="end"
+                                    android:lines="1"
+                                    android:text="0d left"
+                                    android:textAlignment="textStart"
+                                    android:textColor="@color/lightred" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/order_quota"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/ordernumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/currentOrder"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="2dp"
+                                android:fontFamily="@font/interfont"
+                                android:text="NaN"
+                                android:textColor="@color/lightred"
+                                android:textFontWeight="800"
+                                android:textSize="22sp"></TextView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="2dp"
+                                android:fontFamily="@font/interfont"
+                                android:text="/"
+                                android:textColor="@color/black"
+                                android:textSize="22sp"></TextView>
+
+                            <TextView
+                                android:id="@+id/minOrder"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="2dp"
+                                android:fontFamily="@font/interfont"
+                                android:text="NaN"
+                                android:textColor="@color/black"
+                                android:textFontWeight="800"
+                                android:textSize="22sp"></TextView>
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginHorizontal="14dp"
-                            android:orientation="vertical">
+                            android:layout_gravity="end">
 
-                            <TextView
-                                android:id="@+id/order_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:lines="1"
-                                android:text="NaN"
-                                android:textSize="18sp"
-                                android:textStyle="bold"></TextView>
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
 
-                            <TextView
-                                android:id="@+id/order_variant"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/interfont"
-                                android:text="Variant: NaN"
-                                android:textSize="12sp"></TextView>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/interfont"
+                                    android:text="Orders"
+                                    android:textColor="@color/black"
+                                    android:textFontWeight="400"
+                                    android:textSize="14sp"></TextView>
 
-                            <TextView
-                                android:id="@+id/order_amount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Amount: NaN"
-                                android:textSize="12sp"></TextView>
-
-
-                            <!--                    <TextView-->
-                            <!--                        android:id="@+id/date"-->
-                            <!--                        android:layout_width="wrap_content"-->
-                            <!--                        android:layout_height="wrap_content"-->
-                            <!--                        android:fontFamily="@font/interfont"-->
-                            <!--                        android:text="NaN Days left"-->
-                            <!--                        android:textSize="12sp"></TextView>-->
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginLeft="2dp"
+                                    app:srcCompat="@drawable/people_alt"></ImageView>
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/order_unprocessed"
+                    android:id="@+id/item_undeposited"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -132,40 +207,21 @@
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:id="@+id/unprocessed_icon"
+                                android:id="@+id/undeposited_icon"
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
                                 android:layout_gravity="center"
                                 android:layout_margin="2dp"
                                 android:backgroundTint="@android:color/holo_green_dark"
                                 android:scaleType="fitCenter"
-                                android:src="@drawable/green_tick" />
+                                android:src="@drawable/error" />
 
                             <TextView
-                                android:id="@+id/unprocessed_text"
+                                android:id="@+id/undeposited_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/items_delivered"
-                                android:textColor="@android:color/holo_green_dark" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:text="@string/items_delivered_on"
-                                android:textSize="12dp" />
-
-                            <TextView
-                                android:id="@+id/delivery_date"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Date:NaN" />
+                                android:text="Scan to deposit your items"
+                                android:textColor="@android:color/holo_red_dark" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -320,13 +376,13 @@
                                     style="@style/H4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/locker_collection"
+                                    android:text="Locker Deposit"
                                     android:textColor="@color/lightred" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/self_collection"
+                                    android:text="Deposit items in locker at selected location"
                                     android:textSize="12dp" />
 
                                 <LinearLayout
@@ -422,7 +478,7 @@
                 android:paddingVertical="15dp">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/collection_btn"
+                    android:id="@+id/deposit_btn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginHorizontal="15dp"
@@ -433,7 +489,7 @@
                     app:strokeWidth="0dp">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/collection_card"
+                        android:id="@+id/deposit_card"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="0dp"
@@ -447,7 +503,7 @@
                             android:layout_margin="0dp"
                             android:gravity="center"
                             android:padding="0dp"
-                            android:text="@string/mark_as_collected"
+                            android:text="@string/mark_as_deposited"
                             android:textColor="@color/white" />
 
                     </androidx.cardview.widget.CardView>
