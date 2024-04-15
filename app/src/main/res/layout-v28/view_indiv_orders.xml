@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -43,11 +43,13 @@
         </RelativeLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -198,22 +200,66 @@
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/H3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Orders By Variant" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="@string/variation"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="@string/total_amount"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/variation_amount_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </LinearLayout>
+
     <TextView
         style="@style/H3"
-        android:layout_marginHorizontal="15dp"
-        android:layout_marginVertical="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Buyers"/>
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="10dp"
+        android:text="Buyers" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_margin="15dp">
+
         <LinearLayout
+            android:id="@+id/inflaterLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/inflaterLayout"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
     </ScrollView>
 
 </LinearLayout>
