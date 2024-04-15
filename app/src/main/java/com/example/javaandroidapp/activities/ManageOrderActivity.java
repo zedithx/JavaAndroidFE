@@ -46,6 +46,14 @@ public class ManageOrderActivity extends AppCompatActivity {
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeColors(Color.RED);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent refresh = new Intent(ManageOrderActivity.this, ManageOrderActivity.class);
+                refresh.putExtra("listing", listing);
+                startActivity(refresh);
+            }
+        });
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -98,7 +106,7 @@ public class ManageOrderActivity extends AppCompatActivity {
             viewIndividualOrders.setClickable(false);
             CardView card = findViewById(R.id.card);
             card.setCardBackgroundColor(Color.LTGRAY);
-        }else{
+        } else {
             viewIndividualOrders.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -194,7 +202,9 @@ public class ManageOrderActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-
+                            Intent refresh = new Intent(ManageOrderActivity.this, ManageOrderActivity.class);
+                            refresh.putExtra("listing", listing);
+                            startActivity(refresh);
                         }
                     }
                 });
@@ -226,6 +236,9 @@ public class ManageOrderActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                            Intent refresh = new Intent(ManageOrderActivity.this, ManageOrderActivity.class);
+                            refresh.putExtra("listing", listing);
+                            startActivity(refresh);
                         }
                     }
                 });
@@ -269,13 +282,5 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout4.setVisibility(View.GONE);
                 optionsLayout0.setClickable(false);
         }
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Intent refresh = new Intent(ManageOrderActivity.this, ManageOrderActivity.class);
-                refresh.putExtra("listing", listing);
-                startActivity(refresh);
-            }
-        });
     }
 }
