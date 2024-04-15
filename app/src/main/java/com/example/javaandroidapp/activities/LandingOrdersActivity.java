@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +53,13 @@ public class LandingOrdersActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent Main = new Intent(LandingOrdersActivity.this, TransitionLandingActivity.class);
                 startActivity(Main);
+            }
+        });
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent main = new Intent(LandingOrdersActivity.this, TransitionLandingActivity.class);
+                startActivity(main);
             }
         });
         // initialise adapters to bind the listings to
