@@ -180,14 +180,23 @@
                     android:orientation="vertical">
 
                     <RelativeLayout
-                        android:layout_width="400dp"
-                        android:layout_height="400dp">
-
+                        android:layout_width="220dp"
+                        android:layout_height="220dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ProgressBar
+                            android:id="@+id/loadingSpinner"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerInParent="true"
+                            android:visibility="visible"/>
                         <ImageView
                             android:id="@+id/qr_code"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/qr_placeholder" />
+                            android:scaleType="fitCenter"
+                            android:visibility="gone"/>
 
                         <LinearLayout
                             android:id="@+id/overlay"
@@ -232,64 +241,7 @@
                         android:textSize="15sp" />
 
                 </LinearLayout>
-                <!--               <LinearLayout-->
-                <!--                   android:layout_width="match_parent"-->
-                <!--                   android:layout_height="wrap_content"-->
-                <!--                   android:orientation="vertical">-->
 
-                <!--                   <RelativeLayout-->
-                <!--                       android:layout_width="match_parent"-->
-                <!--                       android:layout_height="wrap_content"-->
-                <!--                       android:layout_marginBottom="35dp"-->
-                <!--                       >-->
-
-                <!--                       <LinearLayout-->
-                <!--                           android:layout_width="wrap_content"-->
-                <!--                           android:layout_height="wrap_content"-->
-                <!--                           android:layout_alignParentStart="true"-->
-                <!--                           android:orientation="vertical">-->
-
-                <!--                           <TextView-->
-                <!--                               android:layout_width="wrap_content"-->
-                <!--                               android:layout_height="wrap_content"-->
-                <!--                               android:text="Variations"-->
-                <!--                               android:textAlignment="viewStart"-->
-
-                <!--                               android:textStyle="bold" />-->
-
-                <!--                           <LinearLayout-->
-                <!--                               android:id="@+id/variation_name_layout"-->
-                <!--                               android:layout_width="wrap_content"-->
-                <!--                               android:layout_height="wrap_content"-->
-                <!--                               android:orientation="vertical">-->
-
-                <!--                           </LinearLayout>-->
-                <!--                       </LinearLayout>-->
-
-                <!--                       <LinearLayout-->
-                <!--                           android:layout_width="wrap_content"-->
-                <!--                           android:layout_height="wrap_content"-->
-                <!--                           android:layout_alignParentEnd="true"-->
-                <!--                           android:orientation="vertical">-->
-
-                <!--                           <TextView-->
-                <!--                               android:layout_width="wrap_content"-->
-                <!--                               android:layout_height="wrap_content"-->
-                <!--                               android:text="Amount"-->
-                <!--                               android:textAlignment="viewEnd"-->
-                <!--                               android:textStyle="bold" />-->
-
-                <!--                           <LinearLayout-->
-                <!--                               android:id="@+id/variation_amount_layout"-->
-                <!--                               android:layout_width="wrap_content"-->
-                <!--                               android:layout_height="wrap_content"-->
-                <!--                               android:orientation="vertical">-->
-
-                <!--                           </LinearLayout>-->
-                <!--                       </LinearLayout>-->
-                <!--                   </RelativeLayout>-->
-
-                <!--               </LinearLayout>-->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -426,10 +378,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginHorizontal="15dp"
-                    android:layout_marginVertical="10dp"
+                    android:layout_marginVertical="9dp"
                     android:clickable="true"
                     android:padding="0dp"
-                    app:cardCornerRadius="15dp"
+                    app:cardCornerRadius="20dp"
                     app:strokeWidth="0dp">
 
                     <androidx.cardview.widget.CardView
@@ -440,7 +392,7 @@
                         app:cardBackgroundColor="@color/lightred">
 
                         <TextView
-                            style="@style/H4"
+                            style="@style/H3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="bottom"
@@ -458,10 +410,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginHorizontal="15dp"
-                    android:layout_marginVertical="10dp"
+                    android:layout_marginVertical="9dp"
                     android:clickable="true"
                     android:padding="0dp"
-                    app:cardCornerRadius="15dp"
+                    app:cardCornerRadius="20dp"
                     app:strokeColor="@color/lightred"
                     app:strokeWidth="2dp">
 
@@ -475,7 +427,7 @@
 
                         <TextView
                             android:id="@+id/back_to_my_page_text"
-                            style="@style/H4"
+                            style="@style/H3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="0dp"

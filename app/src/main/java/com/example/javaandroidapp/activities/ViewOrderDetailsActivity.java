@@ -183,7 +183,8 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent back = new Intent(ViewOrderDetailsActivity.this, LandingOrdersActivity.class);
+                startActivity(back);
             }
         });
 
