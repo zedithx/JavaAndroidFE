@@ -1,14 +1,8 @@
 package com.example.javaandroidapp.activities;
 
-import static com.example.javaandroidapp.activities.ViewOrderDetailsActivity.setOrderStatusTypeface;
-
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -16,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -30,12 +23,10 @@ import com.example.javaandroidapp.modals.Listing;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
-import com.google.api.Distribution;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.model.Document;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,6 +75,7 @@ public class ManageOrderActivity extends AppCompatActivity {
         Switch dispatchedSwitch = findViewById(R.id.dispatched_switch);
         Switch readySwitch = findViewById(R.id.ready_switch);
         MaterialCardView viewIndividualOrders = findViewById(R.id.view_indiv_orders);
+        MaterialCardView getQrCode = findViewById(R.id.get_qr_code);
         String deliveryStatus = listing.getDeliveryStatus();
         boolean minFulfilled = false;
 
@@ -92,6 +84,14 @@ public class ManageOrderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toProfile = new Intent(ManageOrderActivity.this, MyListingActivity.class);
                 startActivity(toProfile);
+            }
+        });
+        getQrCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent merchantQR = new Intent(ManageOrderActivity.this, MerchantDepositActivity.class);
+                merchantQR.putExtra("Listing", listing);
+                startActivity(merchantQR);
             }
         });
         if (listing.getDeliveryStatus().equals("Unfulfilled") && listing.getExpiry().before(new Date())) {
