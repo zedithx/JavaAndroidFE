@@ -1,6 +1,8 @@
 package com.example.javaandroidapp.activities;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -24,6 +27,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
@@ -48,11 +52,22 @@ import java.util.Map;
 
 public class ManageOrderActivity extends AppCompatActivity {
     public boolean minFulfilled;
+    String SECRET_KEY;
+    ApplicationInfo applicationInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_order);
+        try {
+            applicationInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (applicationInfo != null){
+            SECRET_KEY = applicationInfo.metaData.getString("secretKey");
+        }
 
         Listing listing = (Listing) getIntent().getSerializableExtra("listing");
 
@@ -218,8 +233,11 @@ public class ManageOrderActivity extends AppCompatActivity {
                                                             if (task.isSuccessful()) {
                                                                 DocumentSnapshot orderSnapshot = task.getResult();
                                                                 if (orderSnapshot != null) {
-                                                                    DocumentReference docRef = (DocumentReference) orderSnapshot.getData().get("user");
-                                                                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                    //use order.clientSecret to capture amount
+                                                                    captureIntent(orderSnapshot.getString("clientSecret"));
+                                                                    //get user object for device token for fcm
+                                                                    DocumentReference userRef = (DocumentReference) orderSnapshot.getData().get("user");
+                                                                    userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                                             if (task.isSuccessful()) {
@@ -258,7 +276,7 @@ public class ManageOrderActivity extends AppCompatActivity {
                                                                                                         new Response.Listener<JSONObject>() {
                                                                                                             @Override
                                                                                                             public void onResponse(JSONObject response) {
-                                                                                                                // Handle successful response
+                                                                                                                //Add toast to log total amount captured
                                                                                                             }
                                                                                                         },
                                                                                                         new Response.ErrorListener() {
@@ -389,5 +407,36 @@ public class ManageOrderActivity extends AppCompatActivity {
                 startActivity(refresh);
             }
         });
+    }
+    private void captureIntent(String clientSecret) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                String.format("https://api.stripe.com/v1/payment_intents/%s/capture", clientSecret),
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Success", "Success capture");
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + SECRET_KEY);
+                return header;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(ManageOrderActivity.this);
+        requestQueue.add(stringRequest);
     }
 }
