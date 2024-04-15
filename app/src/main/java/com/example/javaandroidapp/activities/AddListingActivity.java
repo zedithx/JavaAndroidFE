@@ -5,7 +5,9 @@ import static android.app.ProgressDialog.show;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.health.connect.datatypes.HeightRecord;
@@ -244,6 +246,7 @@ public class AddListingActivity extends AppCompatActivity {
                     }
                 }, year, month, day
                 );
+                newDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 newDatePickerDialog.show();
             }
         });
@@ -268,6 +271,7 @@ public class AddListingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 addListingButton.setVisibility(View.GONE);
                 loadSpinner.setVisibility(View.VISIBLE);
+     
 
                 Images.addImages(uriArrList, storageRef, new CallbackAdapter() {
                     @Override
