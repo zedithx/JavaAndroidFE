@@ -75,8 +75,8 @@ public class ViewProductActivity extends AppCompatActivity {
     public static FirebaseFirestore db;
 
     public static FirebaseUser fbUser;
-
     static double totalPrice;
+
     public String name;
 
     // get images for product id
@@ -490,6 +490,7 @@ public class ViewProductActivity extends AppCompatActivity {
                         btn.setBackground(drawable);
                         displayedPrice = listing.getPrice() + varBtnPrice.get(btnId);
                         setPrice(displayedPrice, priceDollars, priceCents);
+                        strikePrice.setText("S$" + df.format(listing.getOldPrice() + varBtnPrice.get(btnId)));
                     }
                 }
             });
