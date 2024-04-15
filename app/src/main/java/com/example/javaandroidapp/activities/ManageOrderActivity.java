@@ -76,6 +76,14 @@ public class ManageOrderActivity extends AppCompatActivity {
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeColors(Color.RED);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent refresh = new Intent(ManageOrderActivity.this, ManageOrderActivity.class);
+                refresh.putExtra("listing", listing);
+                startActivity(refresh);
+            }
+        });
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -128,7 +136,7 @@ public class ManageOrderActivity extends AppCompatActivity {
             viewIndividualOrders.setClickable(false);
             CardView card = findViewById(R.id.card);
             card.setCardBackgroundColor(Color.LTGRAY);
-        }else{
+        } else {
             viewIndividualOrders.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -325,6 +333,11 @@ public class ManageOrderActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
+
+                            });
+                            Intent refresh = new Intent(ManageOrderActivity.this, ManageOrderActivity.class);
+                            refresh.putExtra("listing", listing);
+                            startActivity(refresh);
                         );
                         }
                     }
@@ -337,6 +350,8 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout3.setVisibility(View.GONE);
                 optionsLayout4.setVisibility(View.GONE);
                 getQrCode.setVisibility(View.GONE);
+                orderFulfilledText.setText("Buyers have been notified that the group order is finalised");
+
                 dispatchedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -357,6 +372,9 @@ public class ManageOrderActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                            Intent refresh = new Intent(ManageOrderActivity.this, ManageOrderActivity.class);
+                            refresh.putExtra("listing", listing);
+                            startActivity(refresh);
                         }
                     }
                 });
@@ -368,6 +386,8 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout3.setVisibility(View.VISIBLE);
                 optionsLayout4.setVisibility(View.GONE);
                 getQrCode.setVisibility(View.VISIBLE);
+                orderFulfilledText.setText("Buyers have been notified that items are dispatched.");
+
                 break;
             case "Ready":
                 optionsLayout0.setVisibility(View.GONE);
@@ -377,6 +397,8 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout4.setVisibility(View.VISIBLE);
                 optionsLayout4.setClickable(false);
                 getQrCode.setVisibility(View.GONE);
+                orderFulfilledText.setText("Buyers have been notified that items are ready for collection.");
+
                 db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -400,14 +422,6 @@ public class ManageOrderActivity extends AppCompatActivity {
                 optionsLayout4.setVisibility(View.GONE);
                 optionsLayout0.setClickable(false);
         }
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Intent refresh = new Intent(ManageOrderActivity.this, ManageOrderActivity.class);
-                refresh.putExtra("listing", listing);
-                startActivity(refresh);
-            }
-        });
     }
     private void captureIntent(String paymentId) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST,

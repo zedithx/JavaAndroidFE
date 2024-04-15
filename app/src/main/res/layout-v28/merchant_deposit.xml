@@ -213,7 +213,7 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="220dp"
                         android:layout_height="220dp"
                         android:gravity="center"
@@ -223,14 +223,13 @@
                             style="?android:attr/progressBarStyle"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:layout_gravity="center"
+                            android:layout_centerInParent="true"
                             android:visibility="visible"/>
                         <ImageView
                             android:id="@+id/qr_code"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="fitCenter"
-                            android:layout_weight="0.8"
                             android:visibility="gone"/>
 
                         <LinearLayout
@@ -258,7 +257,7 @@
                                 android:textColor="@color/white" />
 
                         </LinearLayout>
-                    </LinearLayout>
+                    </RelativeLayout>
 
 
                     <TextView
@@ -276,64 +275,7 @@
                         android:textSize="15sp" />
 
                 </LinearLayout>
-                <!--               <LinearLayout-->
-                <!--                   android:layout_width="match_parent"-->
-                <!--                   android:layout_height="wrap_content"-->
-                <!--                   android:orientation="vertical">-->
 
-                <!--                   <RelativeLayout-->
-                <!--                       android:layout_width="match_parent"-->
-                <!--                       android:layout_height="wrap_content"-->
-                <!--                       android:layout_marginBottom="35dp"-->
-                <!--                       >-->
-
-                <!--                       <LinearLayout-->
-                <!--                           android:layout_width="wrap_content"-->
-                <!--                           android:layout_height="wrap_content"-->
-                <!--                           android:layout_alignParentStart="true"-->
-                <!--                           android:orientation="vertical">-->
-
-                <!--                           <TextView-->
-                <!--                               android:layout_width="wrap_content"-->
-                <!--                               android:layout_height="wrap_content"-->
-                <!--                               android:text="Variations"-->
-                <!--                               android:textAlignment="viewStart"-->
-
-                <!--                               android:textStyle="bold" />-->
-
-                <!--                           <LinearLayout-->
-                <!--                               android:id="@+id/variation_name_layout"-->
-                <!--                               android:layout_width="wrap_content"-->
-                <!--                               android:layout_height="wrap_content"-->
-                <!--                               android:orientation="vertical">-->
-
-                <!--                           </LinearLayout>-->
-                <!--                       </LinearLayout>-->
-
-                <!--                       <LinearLayout-->
-                <!--                           android:layout_width="wrap_content"-->
-                <!--                           android:layout_height="wrap_content"-->
-                <!--                           android:layout_alignParentEnd="true"-->
-                <!--                           android:orientation="vertical">-->
-
-                <!--                           <TextView-->
-                <!--                               android:layout_width="wrap_content"-->
-                <!--                               android:layout_height="wrap_content"-->
-                <!--                               android:text="Amount"-->
-                <!--                               android:textAlignment="viewEnd"-->
-                <!--                               android:textStyle="bold" />-->
-
-                <!--                           <LinearLayout-->
-                <!--                               android:id="@+id/variation_amount_layout"-->
-                <!--                               android:layout_width="wrap_content"-->
-                <!--                               android:layout_height="wrap_content"-->
-                <!--                               android:orientation="vertical">-->
-
-                <!--                           </LinearLayout>-->
-                <!--                       </LinearLayout>-->
-                <!--                   </RelativeLayout>-->
-
-                <!--               </LinearLayout>-->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -484,7 +426,7 @@
                         app:cardBackgroundColor="@color/lightred">
 
                         <TextView
-                            style="@style/H3"
+                            style="@style/H4"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="bottom"
@@ -504,7 +446,6 @@
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginVertical="10dp"
                     android:clickable="true"
-                    android:padding="0dp"
                     app:cardCornerRadius="20dp"
                     app:strokeColor="@color/lightred"
                     app:strokeWidth="2dp">
@@ -513,18 +454,17 @@
                         android:id="@+id/back_to_my_page_card"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="0dp"
                         app:cardBackgroundColor="@android:color/transparent"
                         app:cardElevation="0dp">
 
                         <TextView
                             android:id="@+id/back_to_my_page_text"
-                            style="@style/H3"
+                            style="@style/H4"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="0dp"
-                            android:gravity="center"
                             android:padding="0dp"
+                            android:gravity="center"
                             android:text="@string/back_to_my_page"
                             android:textColor="@color/lightred" />
 

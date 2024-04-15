@@ -426,7 +426,7 @@
                 android:visibility="gone"
                 android:clickable="true">
                 <TextView
-                    style="@style/H3"
+                    style="@style/H4"
                     android:textColor="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

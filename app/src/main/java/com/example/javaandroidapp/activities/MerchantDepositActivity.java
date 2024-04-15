@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -109,7 +110,14 @@ public class MerchantDepositActivity extends AppCompatActivity {
                 }
             });
         }
-
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent main = new Intent(MerchantDepositActivity.this, ManageOrderActivity.class);
+                main.putExtra("listing", listingDetails);
+                startActivity(main);
+            }
+        });
         backToMyPageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

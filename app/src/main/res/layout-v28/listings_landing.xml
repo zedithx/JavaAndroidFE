@@ -1,152 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp">
+
     <LinearLayout
         android:id="@+id/listing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
-        >
-        <androidx.cardview.widget.CardView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            app:cardCornerRadius="12dp"
-            android:layout_margin="5dp"
-            android:elevation="8dp">
-            <ImageView
-                android:id="@+id/product_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                android:elevation="16dp"
-                app:srcCompat="@drawable/test_kangol"/>
-        </androidx.cardview.widget.CardView>
+        android:orientation="horizontal">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            app:strokeWidth="0dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_margin="5dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/lightgray"
+                app:cardCornerRadius="12dp">
+
+                <ImageView
+                    android:id="@+id/product_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop" />
+            </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="14dp">
+            android:layout_marginHorizontal="14dp"
+            android:orientation="vertical">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/name"
-                android:text="Kangol Tote Bag"
-                android:fontFamily="@font/interfont"
-                android:textColor="@color/listing"
-                android:textFontWeight="600"
-                android:textSize="14sp"
-                >
-            </TextView>
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/interfont"
+                android:text="Loading Product.."
+                android:textColor="@color/listing"
+                android:textFontWeight="600"
+                android:textSize="14sp"></TextView>
+
+            <TextView
                 android:id="@+id/seller"
-                android:text="KR Best Buys"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/interfont"
+                android:text="loading Seller's name.."
                 android:textColor="@color/listing"
                 android:textFontWeight="600"
-                android:textSize="12sp">
-            </TextView>
+                android:textSize="12sp"></TextView>
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/price"
-                android:text="$20.00"
-                android:fontFamily="@font/interfont"
-                android:textColor="@color/listing"
-                android:textSize="12sp">
-            </TextView>
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/date"
-                android:text="13 Days left"
                 android:fontFamily="@font/interfont"
+                android:text="S$..."
+                android:textColor="@color/listing"
+                android:textSize="12sp"></TextView>
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/interfont"
+                android:text=""
                 android:textColor="@color/lightred"
-                android:textSize="12sp">
-            </TextView>
+                android:textSize="12sp"></TextView>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/order_quota"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:orientation="vertical"
         android:layout_gravity="end"
-        android:layout_alignParentEnd="true">
+        android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/ordernumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:orientation="horizontal">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/currentorder"
-                android:text="27"
-                android:textColor="@color/lightred"
-                android:fontFamily="@font/interfont"
-                android:textFontWeight="800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
-                android:textSize="22sp"
-                >
-            </TextView>
+                android:fontFamily="@font/interfont"
+                android:text="0"
+                android:textColor="@color/lightred"
+                android:textFontWeight="800"
+                android:textSize="22sp"></TextView>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:fontFamily="@font/interfont"
                 android:text="/"
                 android:textColor="@color/black"
-                android:fontFamily="@font/interfont"
-                android:textSize="22sp"
-                android:layout_marginLeft="2dp"
-                >
-            </TextView>
+                android:textSize="22sp"></TextView>
+
             <TextView
+                android:id="@+id/minorder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/minorder"
-                android:text="40"
-                android:textColor="@color/black"
-                android:fontFamily="@font/interfont"
-                android:textFontWeight="800"
-                android:textSize="22sp"
                 android:layout_marginHorizontal="2dp"
-                >
-            </TextView>
+                android:fontFamily="@font/interfont"
+                android:text="..."
+                android:textColor="@color/black"
+                android:textFontWeight="800"
+                android:textSize="22sp"></TextView>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            >
+            android:layout_gravity="end">
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Orders"
                     android:fontFamily="@font/interfont"
+                    android:text="Orders"
+                    android:textColor="@color/black"
                     android:textFontWeight="400"
-                    android:textSize="14sp"
-                    android:textColor="@color/black">
-                </TextView>
+                    android:textSize="14sp"></TextView>
+
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    app:srcCompat="@drawable/people_alt"
                     android:layout_marginLeft="2dp"
-                    >
-                </ImageView>
+                    app:srcCompat="@drawable/people_alt"></ImageView>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
