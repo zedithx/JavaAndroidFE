@@ -111,6 +111,8 @@
         <activity android:name=".activities.IndivOrdersActivity"
             android:exported="true"></activity>
         <activity android:name=".activities.MerchantDepositActivity"
+        android:exported="true"></activity>
+        <activity android:name=".activities.LoginSetupActivity"
             android:exported="true"></activity>
     </application>
 

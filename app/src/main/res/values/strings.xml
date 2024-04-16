@@ -108,8 +108,11 @@
     <string name="expired">Listing has expired.\nNo new orders will be accepted</string>
     <string name="finalise_group_order">Finalise Group Order</string>
     <string name="manage_orders">Manage Orders</string>
+    <string name="variation">Variation</string>
+    <string name="total_amount">Total Amount</string>
     <string name="scan_to_deposit">Scan To Deposit</string>
     <string name="mark_as_deposited">Mark As Deposited</string>
+
 
 
 </resources>

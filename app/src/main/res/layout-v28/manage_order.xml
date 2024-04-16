@@ -57,8 +57,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
                 android:layout_alignParentTop="true"
+                android:layout_margin="15dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -276,6 +276,7 @@
                                 android:id="@+id/expiryCard"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="30dp"
                                 android:visibility="gone"
                                 app:cardCornerRadius="20dp"
                                 app:cardElevation="0dp"
@@ -347,6 +348,7 @@
 
                                         <TextView
                                             style="@style/H4"
+                                            android:id="@+id/finalise_group_order_text"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_alignParentStart="true"
@@ -397,13 +399,6 @@
                                             android:text="Ready For Collection"
                                             android:textColor="@color/darkgray" />
 
-                                        <Switch
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_alignParentEnd="true"
-                                            android:checked="false"
-                                            android:clickable="false"
-                                            android:theme="@style/red_switch_theme" />
                                     </RelativeLayout>
 
                                 </LinearLayout>
@@ -418,7 +413,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
-                                    android:visibility="gone">
+                                    android:visibility="visible">
 
                                     <ImageView
                                         android:id="@+id/progress_bar"
@@ -478,7 +473,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_alignParentStart="true"
                                                 android:text="Dispatched Items"
-                                                android:textColor="@color/lightred" />
+                                                android:textColor="@color/darkgray" />
 
                                             <Switch
                                                 android:layout_width="wrap_content"
@@ -503,15 +498,8 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_alignParentStart="true"
                                                 android:text="Ready For Collection"
-                                                android:textColor="@color/lightred" />
+                                                android:textColor="@color/darkgray" />
 
-                                            <Switch
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_alignParentEnd="true"
-                                                android:checked="false"
-                                                android:clickable="false"
-                                                android:theme="@style/red_switch_theme" />
                                         </RelativeLayout>
 
                                     </LinearLayout>
@@ -529,7 +517,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
-                                    android:visibility="gone">
+                                    android:visibility="visible">
 
                                     <ImageView
                                         android:id="@+id/progress_bar_2"
@@ -555,6 +543,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_alignParentStart="true"
+
                                                 android:text="@string/finalise_group_order"
                                                 android:textColor="@color/lightred" />
 
@@ -611,37 +600,30 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_alignParentStart="true"
                                                 android:text="Ready For Collection"
-                                                android:textColor="@color/lightred" />
-
-                                            <Switch
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_alignParentEnd="true"
-                                                android:checked="false"
-                                                android:clickable="false"
-                                                android:theme="@style/red_switch_theme" />
+                                                android:textColor="@color/darkgray" />
                                         </RelativeLayout>
                                     </LinearLayout>
                                 </LinearLayout>
                             </RelativeLayout>
-                            <!--Ready state-->
-                            <RelativeLayout
+                            <!--To-Deposit state-->
+                            <LinearLayout
+                                android:id="@+id/options_layout_3"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="visible">
 
                                 <LinearLayout
-                                    android:id="@+id/options_layout_3"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:visibility="gone">
+                                    android:orientation="horizontal">
 
                                     <ImageView
                                         android:id="@+id/progress_bar_3"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="35dp"
-                                        android:src="@drawable/order_prog_bar_3" />
+                                        android:src="@drawable/deposit" />
 
                                     <LinearLayout
                                         android:id="@+id/toggleLayoutParent_3"
@@ -705,15 +687,6 @@
                                                 android:layout_alignParentStart="true"
                                                 android:text="Ready For Collection"
                                                 android:textColor="@color/lightred" />
-
-                                            <Switch
-                                                android:id="@+id/ready_switch"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_alignParentEnd="true"
-                                                android:checked="false"
-                                                android:clickable="true"
-                                                android:theme="@style/red_switch_theme" />
                                         </RelativeLayout>
 
                                         <LinearLayout
@@ -723,12 +696,97 @@
 
                                             <TextView
                                                 android:layout_width="wrap_content"
-                                                android:layout_height="75dp"
-                                                android:text="Toggle On when the items are ready to be collected at the locker." />
+                                                android:layout_height="wrap_content"
+                                                android:text="Scan the Locker QR code and deposit items for collection." />
                                         </LinearLayout>
                                     </LinearLayout>
                                 </LinearLayout>
-                            </RelativeLayout>
+                            </LinearLayout>
+                            <!-- After deposited items-->
+                            <LinearLayout
+                                android:id="@+id/options_layout_4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="visible">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="35dp"
+                                        android:src="@drawable/order_prog_bar_3" />
+
+                                    <LinearLayout
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="10dp"
+                                        android:orientation="vertical">
+
+                                        <RelativeLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content">
+
+                                            <TextView
+                                                style="@style/H4"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentStart="true"
+                                                android:text="@string/finalise_group_order"
+                                                android:textColor="@color/lightred" />
+
+                                            <Switch
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentEnd="true"
+                                                android:checked="true"
+                                                android:clickable="false"
+                                                android:theme="@style/red_switch_theme" />
+                                        </RelativeLayout>
+
+                                        <RelativeLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="15dp">
+
+                                            <TextView
+                                                style="@style/H4"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentStart="true"
+                                                android:text="Dispatched Items"
+                                                android:textColor="@color/lightred" />
+
+                                            <Switch
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentEnd="true"
+                                                android:checked="true"
+                                                android:clickable="false"
+                                                android:theme="@style/red_switch_theme" />
+                                        </RelativeLayout>
+
+                                        <RelativeLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="20dp">
+
+                                            <TextView
+                                                style="@style/H4"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentStart="true"
+                                                android:text="Ready For Collection"
+                                                android:textColor="@color/lightred" />
+                                        </RelativeLayout>
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+
                         </LinearLayout>
                     </RelativeLayout>
                 </LinearLayout>
@@ -755,11 +813,12 @@
                         app:cardBackgroundColor="@color/lightred">
 
                         <TextView
-                            style="@style/H3"
+                            style="@style/H4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:layout_marginVertical="9dp"
+                            android:layout_marginHorizontal="0dp"
+                            android:layout_marginVertical="14dp"
                             android:text="View Locker QR Code" />
                     </androidx.cardview.widget.CardView>
                 </com.google.android.material.card.MaterialCardView>
@@ -768,10 +827,9 @@
                     android:id="@+id/view_indiv_orders"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp"
                     android:layout_marginVertical="20dp"
                     android:clickable="true"
-                    >
+                    app:cardCornerRadius="20dp">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/card"
@@ -780,12 +838,13 @@
                         app:cardBackgroundColor="@color/lightred">
 
                         <TextView
-                            style="@style/H3"
+                            style="@style/H4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:layout_marginVertical="9dp"
-                            android:text="View Individual Orders" />
+                            android:layout_marginVertical="14dp"
+                            android:layout_marginHorizontal="0dp"
+                            android:text="View Individual Orders"
+                            android:textColor="@color/white" />
                     </androidx.cardview.widget.CardView>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>

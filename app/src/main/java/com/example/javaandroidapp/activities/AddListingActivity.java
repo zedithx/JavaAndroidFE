@@ -5,7 +5,9 @@ import static android.app.ProgressDialog.show;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.health.connect.datatypes.HeightRecord;
@@ -78,6 +80,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import io.getstream.chat.android.ui.common.state.messages.Edit;
+
 public class AddListingActivity extends AppCompatActivity {
     ImageButton addImageButton;
     ImageButton addVariantButton;
@@ -117,7 +121,7 @@ public class AddListingActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        Users.getUser(db, fbUser, new CallbackAdapter(){
+        Users.getUser(db, fbUser, new CallbackAdapter() {
             @Override
             public void getUser(User new_user) {
                 user = new_user;
@@ -184,7 +188,7 @@ public class AddListingActivity extends AppCompatActivity {
                 //generate new variant edit text and add the text to button
                 TextView newVariantName = new TextView(getApplicationContext());
                 LinearLayout.LayoutParams newVariantNameParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                newVariantNameParams.setMargins(0,30, 0, 0);
+                newVariantNameParams.setMargins(0, 30, 0, 0);
                 newVariantName.setLayoutParams(newVariantNameParams);
                 newVariantName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
                 newVariantName.setText("Variation Name:");
@@ -203,7 +207,7 @@ public class AddListingActivity extends AppCompatActivity {
                 newVariantNameInput.setTextSize(14);
                 TextView newVariantAdditionalPrice = new TextView(getApplicationContext());
                 LinearLayout.LayoutParams newVariantPriceParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                newVariantPriceParams.setMargins(0,15, 0, 0);
+                newVariantPriceParams.setMargins(0, 15, 0, 0);
                 newVariantAdditionalPrice.setLayoutParams(newVariantPriceParams);
                 newVariantAdditionalPrice.setTextSize(15);
                 newVariantAdditionalPrice.setText("Additional Price:");
@@ -244,6 +248,7 @@ public class AddListingActivity extends AppCompatActivity {
                     }
                 }, year, month, day
                 );
+                newDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 newDatePickerDialog.show();
             }
         });
@@ -268,39 +273,90 @@ public class AddListingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 addListingButton.setVisibility(View.GONE);
                 loadSpinner.setVisibility(View.VISIBLE);
+                boolean variantNameEmpty = false;
+                boolean variantPriceEmpty = false;
+                for (EditText input : variantNameInputs) {
+                    if (TextUtils.isEmpty(input.getText())){
+                        variantNameEmpty = true;
+                    }
+                }
+                for (EditText input : variantAdditionalPriceInputs){
+                    if (TextUtils.isEmpty(input.getText())){
+                        variantPriceEmpty = true;
+                    }
+                }
 
-                Images.addImages(uriArrList, storageRef, new CallbackAdapter() {
-                    @Override
-                    public void getArrayListOfString(ArrayList<String> imageList) {
-                        // if null it will just return empty variant list
-                        for (EditText input: variantNameInputs) {
-                            if (input.getText() != null) {
-                                variantNameList.add(input.getText().toString());
-                            }
-                        }
-                        for (EditText input: variantAdditionalPriceInputs) {
-                            if (input.getText() != null) {
-                                variantAdditionalPriceList.add(Double.valueOf(input.getText().toString()));
-                            }
-                        }
-                        String datetime = addDate.getText().toString() + " " + addTime.getText().toString();
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy HH:mm");
-                        LocalDate parsedDateTime = LocalDate.parse(datetime, formatter);
-                        Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-                        Listings.addListing(db, user, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
-                                Integer.parseInt(minOrder.getText().toString()), parsedDate, imageList, description.getText().toString(),
-                                Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), variantNameList, variantAdditionalPriceList, new CallbackAdapter() {
-                            @Override
-                            public void onResult(boolean isSuccess) {
-                                if (isSuccess) {
-                                    Toast.makeText(getApplicationContext(), "Added Listing!", Toast.LENGTH_LONG).show();
-                                    Intent Main = new Intent(AddListingActivity.this, TransitionLandingActivity.class);
-                                    startActivity(Main);
+                if (uriArrList.isEmpty()) {
+                    addListingButton.setVisibility(View.VISIBLE);
+                    loadSpinner.setVisibility(View.GONE);
+                    Toast.makeText(AddListingActivity.this, "Please add at least one listing image.", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(productName.getText())) {
+                    addListingButton.setVisibility(View.VISIBLE);
+                    loadSpinner.setVisibility(View.GONE);
+                    Toast.makeText(AddListingActivity.this, "Please input listing name", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(oldPrice.getText())) {
+                    addListingButton.setVisibility(View.VISIBLE);
+                    loadSpinner.setVisibility(View.GONE);
+                    Toast.makeText(AddListingActivity.this, "Please add valid original price.", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(newPrice.getText())) {
+                    addListingButton.setVisibility(View.VISIBLE);
+                    loadSpinner.setVisibility(View.GONE);
+                    Toast.makeText(AddListingActivity.this, "Please add valid discounted price.", Toast.LENGTH_SHORT).show();
+                } else if (variantNameEmpty) {
+                    addListingButton.setVisibility(View.VISIBLE);
+                    loadSpinner.setVisibility(View.GONE);
+                    Toast.makeText(AddListingActivity.this, "Please add at least one variant.", Toast.LENGTH_SHORT).show();
+                } else if (variantPriceEmpty) {
+                    addListingButton.setVisibility(View.VISIBLE);
+                    loadSpinner.setVisibility(View.GONE);
+                    Toast.makeText(AddListingActivity.this, "Please add additional variant price.", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(minOrder.getText())) {
+                    addListingButton.setVisibility(View.VISIBLE);
+                    loadSpinner.setVisibility(View.GONE);
+                    Toast.makeText(AddListingActivity.this, "Please input valid minimum order amount", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(addDate.getText())) {
+                    addListingButton.setVisibility(View.VISIBLE);
+                    loadSpinner.setVisibility(View.GONE);
+                    Toast.makeText(AddListingActivity.this, "Please input valid expiry date.", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(addTime.getText())) {
+                    addListingButton.setVisibility(View.VISIBLE);
+                    loadSpinner.setVisibility(View.GONE);
+                    Toast.makeText(AddListingActivity.this, "Please add valid expiry time.", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    Images.addImages(uriArrList, storageRef, new CallbackAdapter() {
+                        @Override
+                        public void getArrayListOfString(ArrayList<String> imageList) {
+                            // if null it will just return empty variant list
+                            for (EditText input : variantNameInputs) {
+                                if (input.getText() != null) {
+                                    variantNameList.add(input.getText().toString());
                                 }
                             }
-                        });
-                    }
-                });
+                            for (EditText input : variantAdditionalPriceInputs) {
+                                if (input.getText() != null) {
+                                    variantAdditionalPriceList.add(Double.valueOf(input.getText().toString()));
+                                }
+                            }
+                            String datetime = addDate.getText().toString() + " " + addTime.getText().toString();
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy HH:mm");
+                            LocalDate parsedDateTime = LocalDate.parse(datetime, formatter);
+                            Date parsedDate = Date.from(parsedDateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+                            Listings.addListing(db, user, Double.parseDouble(newPrice.getText().toString()), productName.getText().toString(),
+                                    Integer.parseInt(minOrder.getText().toString()), parsedDate, imageList, description.getText().toString(),
+                                    Double.parseDouble(oldPrice.getText().toString()), category.getSelectedItem().toString(), variantNameList, variantAdditionalPriceList, new CallbackAdapter() {
+                                        @Override
+                                        public void onResult(boolean isSuccess) {
+                                            if (isSuccess) {
+                                                Toast.makeText(getApplicationContext(), "Added Listing!", Toast.LENGTH_LONG).show();
+                                                Intent Main = new Intent(AddListingActivity.this, TransitionLandingActivity.class);
+                                                startActivity(Main);
+                                            }
+                                        }
+                                    });
+                        }
+                    });
+                }
 
             }
         });
@@ -324,7 +380,7 @@ public class AddListingActivity extends AppCompatActivity {
         RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(60, 60);
         buttonParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         buttonParams.addRule(RelativeLayout.ALIGN_PARENT_END);
-        buttonParams.setMargins(0,10, 0, 0);
+        buttonParams.setMargins(0, 10, 0, 0);
         removeButton.setLayoutParams(buttonParams);
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -16,13 +16,13 @@
             android:id="@+id/listingCardImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/test_kangol" />
+            android:background="@color/lightgray" />
         <TextView
             android:id="@+id/listingCardText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:text="@string/product_name"
+            android:text="Loading Product..."
             />
     </androidx.cardview.widget.CardView>
 </com.google.android.material.card.MaterialCardView>

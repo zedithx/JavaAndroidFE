@@ -7,8 +7,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -47,6 +49,7 @@ public class MerchantDepositActivity extends AppCompatActivity {
         ImageView listingImage = findViewById(R.id.listingImage);
         TextView currentOrder = findViewById(R.id.currentOrder);
         TextView minOrder = findViewById(R.id.minOrder);
+        ProgressBar loadingSpinner = findViewById(R.id.loadingSpinner);
 
         ImageView qrcode = findViewById(R.id.qr_code);
         //add attribute and change to depositedStatus
@@ -73,7 +76,9 @@ public class MerchantDepositActivity extends AppCompatActivity {
                         new ImageLoadTask(((ArrayList<String>) listing.getImageList()).get(0), listingImage).execute();
                         // get collection status and set qrcode
                         deliveryStatus = listing.getDeliveryStatus();
+                        loadingSpinner.setVisibility(View.GONE);
                         qrcode.setImageBitmap(QRCode.createQR(listingDetails.getUid()));
+                        qrcode.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -87,7 +92,9 @@ public class MerchantDepositActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent Main = new Intent(MerchantDepositActivity.this, ManageOrderActivity.class);
+                Main.putExtra("listing", listingDetails);
+                startActivity(Main);
             }
         });
         if (deliveryStatus.equals("Dispatched")){
@@ -103,11 +110,19 @@ public class MerchantDepositActivity extends AppCompatActivity {
                 }
             });
         }
-
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent main = new Intent(MerchantDepositActivity.this, ManageOrderActivity.class);
+                main.putExtra("listing", listingDetails);
+                startActivity(main);
+            }
+        });
         backToMyPageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent Main = new Intent(MerchantDepositActivity.this, ManageOrderActivity.class);
+                Main.putExtra("listing", listingDetails);
                 startActivity(Main);
             }
         });

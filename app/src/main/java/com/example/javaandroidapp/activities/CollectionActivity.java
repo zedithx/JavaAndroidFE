@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,6 +56,7 @@ public class CollectionActivity extends AppCompatActivity {
         TextView orderVariant = findViewById(R.id.order_variant);
         TextView orderAmount = findViewById(R.id.order_amount);
         ImageView productImage = findViewById(R.id.product_image);
+        ProgressBar loadingSpinner = findViewById(R.id.loadingSpinner);
         ImageView qrcode = findViewById(R.id.qr_code);
         collectionStatus = orderDetails.getCollectionStatus();
         DocumentReference docRef = db.collection("listings").document(orderDetails.getListingId());
@@ -82,7 +84,9 @@ public class CollectionActivity extends AppCompatActivity {
                     DocumentSnapshot doc = task.getResult();
                     if(doc.exists()){
                         collectionStatus = doc.getBoolean("collectionStatus");
+                        loadingSpinner.setVisibility(View.GONE);
                         qrcode.setImageBitmap(QRCode.createQR(orderDetails.getUid()));
+                        qrcode.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -90,13 +94,15 @@ public class CollectionActivity extends AppCompatActivity {
         if (collectionStatus == true){
             overlay.setVisibility(View.VISIBLE);
             collectionBtn.setClickable(false);
-            collectionCard.setBackgroundColor(Color.GRAY);
+            collectionCard.setCardBackgroundColor(Color.LTGRAY);
             orderDetails.setCollectionStatus();
         }
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent back = new Intent(CollectionActivity.this, ViewOrderDetailsActivity.class);
+                back.putExtra("Order", orderDetails);
+                startActivity(back);
             }
         });
         if (collectionStatus == false){
@@ -105,8 +111,8 @@ public class CollectionActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     overlay.setVisibility(View.VISIBLE);
                     collectionBtn.setClickable(false);
-                    collectionCard.setBackgroundColor(Color.GRAY);
                     orderDetails.setCollectionStatus();
+                    collectionCard.setCardBackgroundColor(Color.LTGRAY);
                     orderDocRef.update("collectionStatus", true);
 
                 }

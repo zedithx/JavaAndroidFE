@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.modals.User;
 import com.example.javaandroidapp.utils.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,7 +31,7 @@ public class LogInActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
-        if (fbUser != null) {
+        if (fbUser != null && fbUser.isEmailVerified()) {
             Intent signedIn = new Intent(LogInActivity.this, TransitionLandingActivity.class);
             startActivity(signedIn);
         }
@@ -66,9 +67,21 @@ public class LogInActivity extends AppCompatActivity {
                     public void onResult(boolean isSuccess) {
                         if (isSuccess) {
                             if (mAuth.getCurrentUser().isEmailVerified()) {
-                                Intent Main = new Intent(LogInActivity.this, SplashScreenActivity.class);
-                                startActivity(Main);
-                            } else {
+                                Users.getUser(db, mAuth.getCurrentUser(), new CallbackAdapter(){
+                                    @Override
+                                    public void getUser(User new_user) {
+                                        if (new_user.getName().equals("Default user")){
+                                            Intent Main = new Intent(LogInActivity.this, LoginSetupActivity.class);
+                                            startActivity(Main);
+                                        }
+                                        else {
+                                            Intent Main = new Intent(LogInActivity.this, SplashScreenActivity.class);
+                                            startActivity(Main);
+                                        }
+                                    }
+                                });
+                            }
+                            else {
                                 Toast.makeText(getApplicationContext(), "Your email is not verified! Please verify it first.", Toast.LENGTH_LONG).show();
                                 mAuth.signOut();
                             }

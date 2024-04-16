@@ -34,6 +34,7 @@ import com.example.javaandroidapp.utils.Categories;
 import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.utils.ChatSystem;
+import com.example.javaandroidapp.utils.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,6 +42,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
 import java.util.*;
+
+import io.getstream.chat.android.models.User;
 
 public class LandingActivity extends AppCompatActivity {
     private List<CategoryModel> categories = new ArrayList<>();
@@ -55,6 +58,13 @@ public class LandingActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
         ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), fbUser.getUid());
+        Users.getUser(db, fbUser, new CallbackAdapter() {
+            @Override
+            public void getUser(com.example.javaandroidapp.modals.User user_acc) {
+                User user = new User.Builder().withId(fbUser.getUid()).withName(user_acc.getName()).withImage(user_acc.getProfileImage()).build();
+            }
+        });
+
         if (fbUser == null) {
             Intent notSignedIn = new Intent(LandingActivity.this, LogInActivity.class);
             startActivity(notSignedIn);

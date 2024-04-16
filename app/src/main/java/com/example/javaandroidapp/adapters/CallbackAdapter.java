@@ -13,7 +13,7 @@ import java.util.List;
 import io.getstream.chat.android.models.Channel;
 import io.getstream.chat.java.exceptions.StreamException;
 
-public class CallbackAdapter implements Callbacks{
+abstract public class CallbackAdapter implements Callbacks{
     @Override
     public void onResult(boolean isSuccess) {
 

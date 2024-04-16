@@ -245,36 +245,34 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/viewOrder"
                 android:layout_width="match_parent"
-                app:cardCornerRadius="8dp"
+                app:cardCornerRadius="20dp"
                 android:layout_marginTop="30dp"
                 android:backgroundTint="@color/lightred"
                 android:layout_height="wrap_content">
                 <TextView
+                    style="@style/H4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/interfont"
-                    android:textFontWeight="400"
-                    android:textSize="14sp"
-                    android:paddingVertical="10dp"
+                    android:paddingVertical="14dp"
+                    android:layout_marginHorizontal="0dp"
                     android:text="@string/payment_vieworderbutton"
                     android:textColor="@color/white"/>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:id="@+id/backHome"
-                app:cardCornerRadius="8dp"
+                app:cardCornerRadius="20dp"
                 android:layout_marginTop="15dp"
                 android:backgroundTint="@color/lightred"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    style="@style/H4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textFontWeight="400"
-                    android:fontFamily="@font/interfont"
-                    android:textSize="14sp"
-                    android:paddingVertical="10dp"
+                    android:paddingVertical="14dp"
+                    android:layout_marginHorizontal="0dp"
                     android:text="@string/payment_homebutton"
                     android:textColor="@color/white"/>
             </androidx.cardview.widget.CardView>

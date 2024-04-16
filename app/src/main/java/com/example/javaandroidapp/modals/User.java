@@ -11,7 +11,6 @@ public class User {
     @DocumentId
     private String uid;
     private String name;
-    private Integer phoneNumber;
     private String address;
     private List<DocumentReference> orders;
     private List<DocumentReference> saved;
@@ -67,10 +66,6 @@ public class User {
         return this.userRef;
     }
 
-    public int getPhoneNumber() {
-        return this.phoneNumber;
-    }
-
     public String getAddress() {
         return this.address;
     }
@@ -81,10 +76,6 @@ public class User {
 
     public void setProfileImage(String profileImage) {
         this.profileimage = profileImage;
-    }
-
-    public void setPhoneNumber(Integer phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public void setAddress(String address) {

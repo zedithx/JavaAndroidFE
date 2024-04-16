@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +44,14 @@ public class LandingSavedActivity  extends AppCompatActivity {
                 startActivity(Main);
             }
         });
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent main = new Intent(LandingSavedActivity.this, TransitionLandingActivity.class);
+                startActivity(main);
+            }
+        });
+
         // Okay to do this since it embraces singleton design principle
         // initialise adapters to bind the listings to
         RecyclerView listingRecyclerSavedView = findViewById(R.id.listingRecyclerSavedView);

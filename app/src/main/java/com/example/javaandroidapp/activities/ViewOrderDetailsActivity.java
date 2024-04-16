@@ -20,10 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
 import com.example.javaandroidapp.adapters.Callbacks;
 import com.example.javaandroidapp.modals.Listing;
@@ -41,6 +43,7 @@ import com.google.firebase.firestore.model.Document;
 import org.checkerframework.checker.units.qual.A;
 import org.w3c.dom.Text;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -120,6 +123,17 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
                 unprocessedText.setText("Waiting For Group Order To Finalise");
                 setOrderStatusTypeface(orderStatuses, 0);
                 break;
+            case "FulfilledMinOrder":
+                processProgress.setVisibility(View.VISIBLE);
+                processProgress.setImageResource(R.drawable.process_progress_1);
+                unprocessedIcon.setImageResource(R.drawable.error);
+                collectionPageBtn.setVisibility(View.GONE);
+                backToMyPageBtn.setStrokeWidth(0);
+                backToMyPageCard.setCardBackgroundColor(Color.RED);
+                backToMyPageText.setTextColor(Color.WHITE);
+                unprocessedText.setText("Minimum amount Fulfilled. Waiting for Group Order To Finalise");
+                setOrderStatusTypeface(orderStatuses, 0);
+                break;
             case "Finalised":
                 processProgress.setVisibility(View.VISIBLE);
                 processProgress.setImageResource(R.drawable.progress_process_2);
@@ -183,7 +197,15 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent back = new Intent(ViewOrderDetailsActivity.this, LandingOrdersActivity.class);
+                startActivity(back);
+            }
+        });
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent main = new Intent(ViewOrderDetailsActivity.this, LandingOrdersActivity.class);
+                startActivity(main);
             }
         });
 
@@ -207,8 +229,8 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
                         sellerName.setText(document.getString("createdBy"));
                         variantTextView.setText("Variant: " + orderDetails.getVariant());
 //                        expiryTextView.setText(document.getString("expiryCountdown"));
-                        new ImageLoadTask(((ArrayList<String>) document.get("imageList")).get(0), productImage).execute();
-
+//                        new ImageLoadTask(((ArrayList<String>) document.get("imageList")).get(0), productImage).execute();
+                        Glide.with(ViewOrderDetailsActivity.this).load(((ArrayList<String>)document.get("imageList")).get(0)).into(productImage);
                     }
                 }
             }
