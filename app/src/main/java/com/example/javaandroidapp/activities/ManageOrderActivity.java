@@ -229,23 +229,25 @@ public class ManageOrderActivity extends AppCompatActivity {
                                         if (listingSnapshot != null) {
                                             // I get the array of orderReference
                                             ArrayList<DocumentReference> ordersList = (ArrayList<DocumentReference>) listingSnapshot.getData().get("orders");
-                                            Log.d("ordersList", "ordersList" + ordersList);
+//                                            Log.d("ordersList", "ordersList" + ordersList);
                                             // Check if the ordersList is not null and not empty before looping through it
                                             if (ordersList != null && !ordersList.isEmpty()) {
                                                 // iterate through the order object
                                                 for (DocumentReference orderRef : ordersList) {
+                                                    orderRef.update("delivery", "Finalised");
                                                     orderRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                            Log.d("orderRef", "orderRef" + orderRef.getId());
+//                                                            Log.d("orderRef", "orderRef" + orderRef.getId());
                                                             if (task.isSuccessful()) {
                                                                 DocumentSnapshot orderSnapshot = task.getResult();
-                                                                if (orderSnapshot != null) {
+                                                                if (orderSnapshot.exists()) {
+
                                                                     //use order.clientSecret to capture amount
                                                                     captureIntent(orderSnapshot.getString("paymentId"));
                                                                     //get user object for device token for fcm
                                                                     DocumentReference userRef = (DocumentReference) orderSnapshot.getData().get("user");
-                                                                    Log.d("userRef", "userRef" + userRef.getId());
+//                                                                    Log.d("userRef", "userRef" + userRef.getId());
                                                                     userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -253,7 +255,7 @@ public class ManageOrderActivity extends AppCompatActivity {
                                                                                 DocumentSnapshot userSnapshot = task.getResult();
                                                                                 if (userSnapshot != null) {
                                                                                     String deviceToken = (String) userSnapshot.getData().get("userIdToken");
-                                                                                    Log.d("userIdToken", "userIdToken" +  deviceToken);
+//                                                                                    Log.d("userIdToken", "userIdToken" +  deviceToken);
                                                                                     //now we have userIdToken
                                                                                     //we need to use this to generate notif
                                                                                     // Get OauthToken
