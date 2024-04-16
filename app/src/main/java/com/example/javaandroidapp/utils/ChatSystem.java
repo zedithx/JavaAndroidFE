@@ -28,13 +28,14 @@ public class ChatSystem {
     public static ChatClient client;
     public boolean signedIn;
 
-    private ChatSystem(Context context, String uid) {
+    private ChatSystem(Context context, com.example.javaandroidapp.modals.User new_user) {
         String apiKey = "4n8ad58drzz3";
         StreamStatePluginFactory statePluginFactory = new StreamStatePluginFactory(new StatePluginConfig(), context);
         this.client = new ChatClient.Builder(apiKey, context).withPlugins(statePluginFactory).build();
-        io.getstream.chat.android.models.User user = new io.getstream.chat.android.models.User.Builder().withId(uid).build();
+        io.getstream.chat.android.models.User user = new io.getstream.chat.android.models.User.Builder().withId(new_user.getUid()).
+                withImage(new_user.getProfileImage()).withName(new_user.getName()).build();
         if (this.client.fetchCurrentUser().execute().getOrNull() == null) {
-            this.client.connectUser(user, getToken(uid)).enqueue();
+            this.client.connectUser(user, getToken(new_user.getUid())).enqueue();
         }
     }
     public static synchronized ChatSystem getInstance() {
@@ -44,9 +45,9 @@ public class ChatSystem {
         return chatSystem;
     }
 
-    public static synchronized ChatSystem getInstance(Context context, String uid) {
+    public static synchronized ChatSystem getInstance(Context context, com.example.javaandroidapp.modals.User user) {
         if (chatSystem == null) {
-            chatSystem = new ChatSystem(context, uid);
+            chatSystem = new ChatSystem(context, user);
         }
         return chatSystem;
     }

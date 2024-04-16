@@ -27,12 +27,18 @@ import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.example.javaandroidapp.R;
+import com.example.javaandroidapp.adapters.CallbackAdapter;
 import com.example.javaandroidapp.adapters.Callbacks;
 import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.modals.Order;
+import com.example.javaandroidapp.modals.User;
+import com.example.javaandroidapp.utils.ChatSystem;
+import com.example.javaandroidapp.utils.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,18 +51,31 @@ import org.w3c.dom.Text;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class ViewOrderDetailsActivity extends AppCompatActivity {
+import io.getstream.chat.android.models.Channel;
+import io.getstream.chat.java.exceptions.StreamException;
 
+public class ViewOrderDetailsActivity extends AppCompatActivity {
+    Listing listing;
+    String sellerUserId;
+    ChatSystem chatSystem;
 
     @Override
     protected void onCreate(Bundle savedStateInstance) {
         super.onCreate(savedStateInstance);
         setContentView(R.layout.view_order_details);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
+        FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = fbUser.getUid();
+        //init chat system
+        Users.getUser(db, fbUser, new CallbackAdapter() {
+            @Override
+            public void getUser(com.example.javaandroidapp.modals.User user_acc) {
+                chatSystem = ChatSystem.getInstance(getApplicationContext(), user_acc);
+            }
+        });
         Order orderDetails = (Order) getIntent().getSerializableExtra("Order");
         ImageView processProgress = findViewById(R.id.process_progress);
         RelativeLayout productDetailsLayout = findViewById(R.id.product_details_layout);
@@ -67,10 +86,14 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
         ImageView unprocessedIcon = findViewById(R.id.unprocessed_icon);
         TextView unprocessedText = findViewById(R.id.unprocessed_text);
         ArrayList<TextView> orderStatuses = new ArrayList<>();
+        //Order progress statuses
         orderStatuses.add(findViewById(R.id.order_status_1));
         orderStatuses.add(findViewById(R.id.order_status_2));
         orderStatuses.add(findViewById(R.id.order_status_3));
         orderStatuses.add(findViewById(R.id.order_status_4));
+        //chat btn
+        ImageView chatBtn = findViewById(R.id.chatBtn);
+        //back btn
         ImageButton backBtn = findViewById(R.id.backBtn);
         MaterialCardView collectionPageBtn = findViewById(R.id.collection_btn);
         MaterialCardView backToMyPageBtn = findViewById(R.id.back_to_my_page_btn);
@@ -188,6 +211,32 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
                 backToMyPageText.setTextColor(Color.WHITE);
                 unprocessedText.setText("Order Expired. Payment will be refunded.");
         }
+        chatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> list = new ArrayList<>();
+                //get person uid
+                list.add(uid);
+                Users.getUserFromId(db, listing.getCreatedById(), new CallbackAdapter(){
+                    @Override
+                    public void getUser(User new_user) {
+                    sellerUserId = new_user.getUid();
+                    }
+                });
+                list.add(sellerUserId);
+                try {
+                    chatSystem.createChannel(list, new CallbackAdapter() {
+                        @Override
+                        public void getChannel(Channel channel) {
+                            startActivity(ChatActivity.newIntent(ViewOrderDetailsActivity.this, channel));
+                        }
+                    });
+                }
+                catch (StreamException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         productDetailsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,12 +274,13 @@ public class ViewOrderDetailsActivity extends AppCompatActivity {
 
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        orderName.setText(document.getString("name"));
-                        sellerName.setText(document.getString("createdBy"));
+                        listing = document.toObject(Listing.class);
+                        orderName.setText(listing.getName());
+                        sellerName.setText(listing.getCreatedBy());
                         variantTextView.setText("Variant: " + orderDetails.getVariant());
 //                        expiryTextView.setText(document.getString("expiryCountdown"));
 //                        new ImageLoadTask(((ArrayList<String>) document.get("imageList")).get(0), productImage).execute();
-                        Glide.with(ViewOrderDetailsActivity.this).load(((ArrayList<String>)document.get("imageList")).get(0)).into(productImage);
+                        Glide.with(ViewOrderDetailsActivity.this).load((listing.getImageList()).get(0)).into(productImage);
                     }
                 }
             }

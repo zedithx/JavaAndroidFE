@@ -141,7 +141,7 @@
                     <EditText
                         android:id="@+id/addDescription"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:gravity="start"
                         android:hint="Provide description for buyers"
@@ -241,7 +241,7 @@
                     <TextView
                         style="@style/H3"
                         android:layout_marginTop="20dp"
-                        android:text="Variations (If any)"
+                        android:text="Variations (Put at least 1)"
                         android:textColor="@color/lightred" />
 
                     <TextView
