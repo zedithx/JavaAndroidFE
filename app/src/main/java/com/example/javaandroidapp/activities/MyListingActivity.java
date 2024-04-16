@@ -224,32 +224,6 @@ public class MyListingActivity extends AppCompatActivity {
         textParams.setMargins(25, 10, 25, 0);
         cardTitle.setLayoutParams(textParams);
 
-        // Horizontal Layout for chat number and chat icon
-        LinearLayout chatNumLayout = new LinearLayout(this);
-        chatNumLayout.setOrientation(LinearLayout.HORIZONTAL);
-        chatNumLayout.setLayoutParams(textParams);
-
-        // number of chats of Product displayed on each card
-        int chats = 3;
-        TextView chatNumText = new TextView(this);
-        chatNumText.setTextColor(Color.RED);
-        chatNumText.setLayoutParams(textParams);
-        chatNumText.setTextSize(15);
-        chatNumText.setText("" + chats);
-        chatNumText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-
-        // Chat icon image beside chat number displayed on card
-        ImageView chatIcon = new ImageView(this);
-        chatIcon.setImageResource(R.drawable.red_chatbox);
-        LinearLayout.LayoutParams chatIconParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        chatIcon.setPadding(5, 0, 0, 0);
-        chatIcon.setLayoutParams(chatIconParams);
-        chatIcon.setScaleX((float) 0.7);
-        chatIcon.setScaleY((float) 0.7);
-        chatNumLayout.addView(chatNumText);
-        chatNumLayout.addView(chatIcon);
-
         // Horizontal Layout for order num text and icon
         LinearLayout numOrderLayout = new LinearLayout(this);
         numOrderLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -291,7 +265,6 @@ public class MyListingActivity extends AppCompatActivity {
         imgLayout.addView(cardImg);
         layout.addView(imgLayout);
         layout.addView(cardTitle);
-        layout.addView(chatNumLayout);
         layout.addView(numOrderLayout);
         layout.addView(expiryText);
         card.addView(layout);

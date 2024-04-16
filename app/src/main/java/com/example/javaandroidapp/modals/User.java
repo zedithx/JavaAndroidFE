@@ -11,7 +11,6 @@ public class User {
     @DocumentId
     private String uid;
     private String name;
-    private String address;
     private List<DocumentReference> orders;
     private List<DocumentReference> saved;
     private List<DocumentReference> listings;
@@ -66,9 +65,6 @@ public class User {
         return this.userRef;
     }
 
-    public String getAddress() {
-        return this.address;
-    }
 
     public String getName() { return this.name; }
 
@@ -78,9 +74,6 @@ public class User {
         this.profileimage = profileImage;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public void setName(String name) {
         this.name = name;

@@ -6,11 +6,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +41,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONException;
@@ -47,11 +50,16 @@ import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 public class ManageOrderActivity extends AppCompatActivity {
     public boolean minFulfilled;
+    Dictionary<String, Integer> variationQty = new Hashtable<>();
+    Dictionary<String, Double> variationCost = new Hashtable<>();
     String SECRET_KEY;
     ApplicationInfo applicationInfo;
 
@@ -116,6 +124,47 @@ public class ManageOrderActivity extends AppCompatActivity {
         MaterialCardView getQrCode = findViewById(R.id.get_qr_code);
         String deliveryStatus = listing.getDeliveryStatus();
         boolean minFulfilled = false;
+        ArrayList<String> variationNames = listing.getVariationNames();
+        LinearLayout variationCostLayout = findViewById(R.id.variation_cost_layout);
+        //initialise hashmap of variantNames
+        for (String variantName : variationNames) {
+            variationQty.put(variantName, 0);
+            variationCost.put(variantName, 0.0);
+        }
+        db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot querySnapshot = task.getResult();
+                    if (!querySnapshot.isEmpty()) {
+                        for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+                            String orderVariant = queryDocumentSnapshot.getString("variant");
+                            int qty = queryDocumentSnapshot.getDouble("quantity").intValue();
+                            int total_amount = queryDocumentSnapshot.getDouble("paidAmount").intValue();
+                            variationQty.put(orderVariant, variationQty.get(orderVariant) + qty);
+                            variationCost.put(orderVariant, variationCost.get(orderVariant) + total_amount);
+                        }
+                        Enumeration<String> keys = variationCost.keys();
+                        int totalOrders = 0;
+                        while (keys.hasMoreElements()) {
+                            LayoutInflater inflater = getLayoutInflater();
+                            View relativeLayout = inflater.inflate(R.layout.relative_layout_var_amt, variationCostLayout, false);
+                            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            layoutParams.setMargins(25, 0, 25, 0);
+                            relativeLayout.setLayoutParams(layoutParams);
+                            TextView newVarText = relativeLayout.findViewById(R.id.var);
+                            TextView newVarCost = relativeLayout.findViewById(R.id.var_amt);
+                            String variantName = keys.nextElement();
+                            newVarText.setText(variationQty.get(variantName)+ "x " + variantName);
+                            newVarCost.setText(String.format("S$%.2f", variationCost.get(variantName)));
+                            variationCostLayout.addView(relativeLayout);
+                        }
+                    }
+                }
+            }
+        });
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,7 +265,6 @@ public class ManageOrderActivity extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
-                            //TODO - once finalised I need to get all ids and notify them
                             buttonView.setClickable(false);
                             docRef.update("deliveryStatus", "Finalised");
                             listing.setDeliveryStatus("Finalised");

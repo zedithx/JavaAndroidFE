@@ -65,77 +65,86 @@
             <RelativeLayout
                 android:id="@+id/product_details_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="90dp"
                 android:layout_marginVertical="15dp"
                 android:clickable="true">
 
-                <LinearLayout
-                    android:id="@+id/listing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:clipChildren="false"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="8dp">
-
-                        <ImageView
-                            android:id="@+id/product_image"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@color/lightgray"
-                            android:elevation="8dp"
-                            android:scaleType="centerCrop" />
-                    </androidx.cardview.widget.CardView>
-
                     <LinearLayout
+                        android:id="@+id/listing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="14dp"
-                        android:orientation="vertical">
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/orderName"
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="5dp"
+                            android:clipChildren="false"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="8dp">
+
+                            <ImageView
+                                android:id="@+id/product_image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/lightgray"
+                                android:elevation="8dp"
+                                android:scaleType="centerCrop" />
+                        </androidx.cardview.widget.CardView>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:lines="1"
-                            android:text="NaN"
-                            android:textSize="18sp"
-                            android:textStyle="bold"></TextView>
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="14dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/seller"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="NaN"
-                            android:textSize="12sp"></TextView>
+                            <TextView
+                                android:id="@+id/orderName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:text="NaN"
+                                android:textSize="16sp"
+                                android:textStyle="bold"></TextView>
 
-                        <TextView
-                            android:id="@+id/order_variant"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/interfont"
-                            android:text="Variant: NaN"
-                            android:textSize="12sp"></TextView>
+                            <TextView
+                                android:id="@+id/seller"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="NaN"
+                                android:textSize="12sp"></TextView>
 
-                        <!--                        <TextView-->
-                        <!--                            android:id="@+id/date"-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:fontFamily="@font/interfont"-->
-                        <!--                            android:text="NaN Days left"-->
-                        <!--                            android:textSize="12sp"></TextView>-->
+                            <TextView
+                                android:id="@+id/order_variant"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/interfont"
+                                android:text="Variant: NaN"
+                                android:textSize="12sp"></TextView>
+
+                            <!--                        <TextView-->
+                            <!--                            android:id="@+id/date"-->
+                            <!--                            android:layout_width="wrap_content"-->
+                            <!--                            android:layout_height="wrap_content"-->
+                            <!--                            android:fontFamily="@font/interfont"-->
+                            <!--                            android:text="NaN Days left"-->
+                            <!--                            android:textSize="12sp"></TextView>-->
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/chatBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:src="@drawable/red_chatbox" />
             </RelativeLayout>
 
 

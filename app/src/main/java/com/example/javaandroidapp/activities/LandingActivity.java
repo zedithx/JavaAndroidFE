@@ -57,11 +57,11 @@ public class LandingActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = mAuth.getCurrentUser();
-        ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), fbUser.getUid());
         Users.getUser(db, fbUser, new CallbackAdapter() {
             @Override
             public void getUser(com.example.javaandroidapp.modals.User user_acc) {
                 User user = new User.Builder().withId(fbUser.getUid()).withName(user_acc.getName()).withImage(user_acc.getProfileImage()).build();
+                ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), user_acc);
             }
         });
 

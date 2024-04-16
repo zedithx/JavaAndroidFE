@@ -1,6 +1,7 @@
 package com.example.javaandroidapp.activities;
 
 import static com.example.javaandroidapp.activities.ViewProductActivity.df;
+import static com.example.javaandroidapp.activities.ViewProductActivity.fbUser;
 import static com.example.javaandroidapp.activities.ViewProductActivity.productDescription;
 import static com.example.javaandroidapp.modals.Listing.createListingWithDocumentSnapshot;
 import static com.example.javaandroidapp.modals.Listing.createListingWithDocumentSnapshot;
@@ -70,6 +71,7 @@ public class SellerListingActivity extends AppCompatActivity {
     String apiKey;
     String sellerName;
     String sellerUserId;
+    ChatSystem chatSystem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +94,14 @@ public class SellerListingActivity extends AppCompatActivity {
         ImageView profilePic = findViewById(R.id.profile_pic);
         ownerTextView.setText(listingExtra.getCreatedBy());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), uid);
-
+        fbUser = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = fbUser.getUid();
+        Users.getUser(db, fbUser, new CallbackAdapter() {
+                    @Override
+                    public void getUser(com.example.javaandroidapp.modals.User user_acc) {
+                        chatSystem = ChatSystem.getInstance(getApplicationContext(), user_acc);
+                    }
+                });
         db.collection("users").whereEqualTo("name", listingExtra.getCreatedBy()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

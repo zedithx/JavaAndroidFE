@@ -50,13 +50,15 @@ import io.getstream.chat.java.exceptions.StreamException;
 public class IndivOrdersActivity extends AppCompatActivity {
     String sellerUserId;
     Dictionary<String, Integer> variationDict = new Hashtable<>();
+    ChatSystem chatSystem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Listing listing = (Listing) getIntent().getSerializableExtra("listing");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = fbUser.getUid();
         setContentView(R.layout.view_indiv_orders);
 
         ImageButton backBtn = findViewById(R.id.backBtn);
@@ -76,9 +78,9 @@ public class IndivOrdersActivity extends AppCompatActivity {
 
         listingName.setText(listing.getName());
         int minOrderNum = listing.getMinOrder().intValue();
-//        int currOrderNum = listing.getCurrentOrder().intValue();
+        int curOrderNum = listing.getCurrentOrder().intValue();
         minOrder.setText("" + minOrderNum);
-//        currentOrder.setText("" + currOrderNum);
+        currentOrder.setText("" + curOrderNum);
         String expiryCountdown = listing.getExpiryCountdown();
         Date expiryDate = listing.getExpiry();
         if (expiryDate.after(new Date())) {
@@ -93,8 +95,12 @@ public class IndivOrdersActivity extends AppCompatActivity {
         for (String variantName : variationNames) {
             variationDict.put(variantName, 0);
         }
-
-        ChatSystem chatSystem = ChatSystem.getInstance(getApplicationContext(), uid);
+        Users.getUser(db, fbUser, new CallbackAdapter() {
+                    @Override
+                    public void getUser(com.example.javaandroidapp.modals.User user_acc) {
+                        chatSystem = ChatSystem.getInstance(getApplicationContext(), user_acc);
+                    }
+                });
         db.collection("orders").whereEqualTo("listingId", listing.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -113,9 +119,7 @@ public class IndivOrdersActivity extends AppCompatActivity {
                             variation.setText(orderVariant);
                             int amount = queryDocumentSnapshot.getDouble("quantity").intValue();
                             amt.setText("" + amount);
-
-                            int prev = variationDict.put(orderVariant, variationDict.get(orderVariant) + amount);
-                            Log.d("print dict", "" + orderVariant + ": "+ variationDict.get(orderVariant) + ", prev: " + prev);
+                            variationDict.put(orderVariant, variationDict.get(orderVariant) + amount);
 
                             DocumentReference docRef = (DocumentReference) queryDocumentSnapshot.get("user");
                             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -173,7 +177,6 @@ public class IndivOrdersActivity extends AppCompatActivity {
                             totalOrders += variationDict.get(variantName);
                             variationAmtLayout.addView(relativeLayout);
                         }
-                        currentOrder.setText("" + totalOrders);
                     }
                 }
             }

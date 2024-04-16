@@ -216,6 +216,39 @@
                         </LinearLayout>
                     </RelativeLayout>
 
+<!--              Put the total Amount here       -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginTop="20dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:text="@string/variation"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:text="Total Cost"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+                        <LinearLayout
+                            android:id="@+id/variation_cost_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+                    </LinearLayout>
+
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/orderFulfilledCard"
                         android:layout_width="match_parent"
