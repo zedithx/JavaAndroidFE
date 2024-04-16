@@ -149,7 +149,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:backgroundTint="@color/lightred"
-            android:text="@string/login_value"
+            android:text="@string/text_below_logo_signup"
             android:textFontWeight="500"
             android:textSize="20sp">
         </Button>
