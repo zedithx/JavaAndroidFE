@@ -119,9 +119,7 @@ public class IndivOrdersActivity extends AppCompatActivity {
                             variation.setText(orderVariant);
                             int amount = queryDocumentSnapshot.getDouble("quantity").intValue();
                             amt.setText("" + amount);
-
-                            int prev = variationDict.put(orderVariant, variationDict.get(orderVariant) + amount);
-                            Log.d("print dict", "" + orderVariant + ": "+ variationDict.get(orderVariant) + ", prev: " + prev);
+                            variationDict.put(orderVariant, variationDict.get(orderVariant) + amount);
 
                             DocumentReference docRef = (DocumentReference) queryDocumentSnapshot.get("user");
                             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
