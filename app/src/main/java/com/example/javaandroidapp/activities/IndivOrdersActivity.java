@@ -179,7 +179,6 @@ public class IndivOrdersActivity extends AppCompatActivity {
                             totalOrders += variationDict.get(variantName);
                             variationAmtLayout.addView(relativeLayout);
                         }
-                        currentOrder.setText("" + totalOrders);
                     }
                 }
             }

@@ -216,7 +216,6 @@ public class ManageOrderActivity extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
-                            //TODO - once finalised I need to get all ids and notify them
                             buttonView.setClickable(false);
                             docRef.update("deliveryStatus", "Finalised");
                             listing.setDeliveryStatus("Finalised");
