@@ -1,6 +1,7 @@
 package com.example.javaandroidapp.adapters;
 
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,9 +25,11 @@ import com.example.javaandroidapp.activities.ViewOrderDetailsActivity;
 import com.example.javaandroidapp.modals.Listing;
 import com.example.javaandroidapp.modals.Order;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder>{
+    static DecimalFormat df = new DecimalFormat("#.00");
     private List<Order> orders;
     public interface OnItemClickListener {
         void onItemClick(Order data);
@@ -120,7 +123,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                     orderStatusView.setTextColor(Color.rgb(0, 150, 0));
                     orderStatusView.setTypeface(orderStatusView.getTypeface(), Typeface.BOLD);
             }
-            orderPaidAmountView.setText(String.format("$%s", String.valueOf(orderPaidAmount)));
+            orderPaidAmountView.setText(String.format("$%s", df.format(orderPaidAmount)));
         }
     }
 }
