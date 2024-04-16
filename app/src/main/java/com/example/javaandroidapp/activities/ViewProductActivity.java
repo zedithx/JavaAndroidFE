@@ -140,8 +140,9 @@ public class ViewProductActivity extends AppCompatActivity {
                     if (!doc.isEmpty()) {
                         DocumentSnapshot docSnapshot = doc.getDocuments().get(0);
                         String profilePicStringURL = docSnapshot.getString("profileImage");
+                        Log.d("profilePic", "profilePic" + profilePicStringURL);
                         if (profilePicStringURL.length() > 0) {
-                            new ImageLoadTask(profilePicStringURL, ownerImg).execute();
+                            Glide.with(ownerImg).load(profilePicStringURL).into(ownerImg);
                         }
                     }
                 }
