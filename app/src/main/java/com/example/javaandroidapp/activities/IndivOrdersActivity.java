@@ -78,9 +78,9 @@ public class IndivOrdersActivity extends AppCompatActivity {
 
         listingName.setText(listing.getName());
         int minOrderNum = listing.getMinOrder().intValue();
-//        int currOrderNum = listing.getCurrentOrder().intValue();
+        int curOrderNum = listing.getCurrentOrder().intValue();
         minOrder.setText("" + minOrderNum);
-//        currentOrder.setText("" + currOrderNum);
+        currentOrder.setText("" + curOrderNum);
         String expiryCountdown = listing.getExpiryCountdown();
         Date expiryDate = listing.getExpiry();
         if (expiryDate.after(new Date())) {
