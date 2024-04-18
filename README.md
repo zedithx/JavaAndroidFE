@@ -14,13 +14,17 @@ eliminate all these issues as the delivery location at a singular location. Thes
 </br>
 
 As part of an extension of our mobile app, we created a hardware locker which is integrated into our app. This allows the seller to scan a QR code to unlock and place items inside
-an assigned locker. Buyers will then be notified of this and they can similarly scan the same QR code to unlock the locker and retrieve the items purchased. This way, trust and
-convenience is achieved for both buyers as well as sellers of our app.
+an assigned locker. Buyers will then be notified of this and they can similarly scan the same QR code to unlock the assigned locker and retrieve the items purchased. This way, trust and convenience is achieved for both buyers as well as merchants of our app.
 
 <div align="center">
   <img src="./readMeImages/locker.jpeg" width="50%" height="auto" alt="locker image">
 </div>
 </br>
+
+Check out the below video for more details on our Android application done in Java language. 
+
+<div></div>
+
 
 This app was done for a school project entering our second year. We only had about 5 weeks to learn app development from scratch and execute this project.
 
