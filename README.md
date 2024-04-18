@@ -22,10 +22,11 @@ an assigned locker. Buyers will then be notified of this and they can similarly 
 </br>
 
 Check out the below video for more details on our Android application done in Java language.
-[Bulkify_vid_group30.mp4](..%2F..%2FDownloads%2FBulkify_vid_group30.mp4)
+[![Watch the video](https://img.youtube.com/vi/ccrcRkjByKM/maxresdefault.jpg)](https://youtu.be/ccrcRkjByKM)
 
-This app was done for a school project entering our second year. We only had about 5 weeks to learn app development from scratch and execute this project.
+This app was done for a school project entering our second year for the 50.001 module "Introduction To Information Systems And Programming". We only had about 5 weeks to learn app development from scratch and execute this project.
 
+We also achieved 3rd place out of 30 teams in the course, judged by Singtel Engineers.
 Check out here to view our full report!
 * To be updated when we upload it
 
