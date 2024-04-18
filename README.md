@@ -26,10 +26,10 @@ Check out the below video for more details on our Android application done in Ja
 
 <p align="center">
   <a href="https://youtu.be/ccrcRkjByKM">
-    <img src="https://img.youtube.com/vi/ccrcRkjByKM/hqdefault.jpg" alt="Watch the video">
+    <img width="80%" height="auto" src="https://img.youtube.com/vi/ccrcRkjByKM/hqdefault.jpg" alt="Watch the video">
   </a>
 </p>
-</br>
+
 </br>
 This app was done for a school project entering our second year for the 50.001 module "Introduction To Information Systems And Programming". We only had about 5 weeks to learn app development from scratch and execute this project.
 
