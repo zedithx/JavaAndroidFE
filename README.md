@@ -22,7 +22,12 @@ an assigned locker. Buyers will then be notified of this and they can similarly 
 </br>
 
 Check out the below video for more details on our Android application done in Java language.
-[![Watch the video](https://img.youtube.com/vi/ccrcRkjByKM/hqdefault.jpg)](https://youtu.be/ccrcRkjByKM)
+</br>
+
+<div align="center">
+  [![Watch the video](https://img.youtube.com/vi/ccrcRkjByKM/hqdefault.jpg)](https://youtu.be/ccrcRkjByKM)
+</div>
+</br>
 </br>
 This app was done for a school project entering our second year for the 50.001 module "Introduction To Information Systems And Programming". We only had about 5 weeks to learn app development from scratch and execute this project.
 
