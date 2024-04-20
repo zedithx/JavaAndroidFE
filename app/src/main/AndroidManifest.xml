@@ -17,13 +17,27 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <!--        Env variables -->
+<!--        For stripes -->
         <meta-data
             android:name = "secretKey"
             android:value = "${SECRET_KEY}"/>
         <meta-data
             android:name = "publishKey"
             android:value = "${PUBLISH_KEY}"/>
-<!--        For firebase cloud messaging service-->
+<!--        For chatSystem -->
+        <meta-data
+            android:name = "chatSecretKey"
+            android:value = "${CHAT_SECRET_KEY}"/>
+        <meta-data
+            android:name = "chatApiSecret"
+            android:value = "${CHAT_API_SECRET}"/>
+<!--        For algolia -->
+        <meta-data
+            android:name = "algoliaAppId"
+            android:value = "${ALG_APP_ID}"/>
+        <meta-data
+            android:name = "algoliaApiKey"
+            android:value = "${ALG_API_KEY}"/>
         <service
             android:name=".utils.MyFirebaseMessagingService"
             android:exported="true">

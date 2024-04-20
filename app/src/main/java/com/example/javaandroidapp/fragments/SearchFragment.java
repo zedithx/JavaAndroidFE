@@ -49,7 +49,7 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     // Clicking should return the view of all products
-                    AlgoliaHelper.searchListingID(suggestionTextquery.getText().toString(), new CallbackAdapter(){
+                    AlgoliaHelper.searchListingID(getActivity().getApplicationContext(), suggestionTextquery.getText().toString(), new CallbackAdapter(){
                         @Override
                         public void getListOfString(List<String> listings_query) {
                             Intent Main = new Intent(getActivity(), SearchActivity.class);
@@ -84,7 +84,7 @@ public class SearchFragment extends Fragment {
                 // As the user types, fetch and display query suggestions
                 String query = s.toString();
                 //Update my fragment by passing the query into the algolia helper
-                querySuggestion(query, new CallbackAdapter() {
+                querySuggestion(getActivity().getApplicationContext(),query, new CallbackAdapter() {
                     @Override
                     public void getListOfString(List<String> strings) {
                         for (int i=0; i<strings.size(); i++){

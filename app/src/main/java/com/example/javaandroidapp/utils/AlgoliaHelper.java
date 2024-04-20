@@ -5,6 +5,10 @@ package com.example.javaandroidapp.utils;
 //import com.algolia.search.SearchIndex;
 //import com.algolia.search.models.indexing.Query;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+
 import androidx.annotation.Nullable;
 
 import com.algolia.search.saas.AlgoliaException;
@@ -22,8 +26,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlgoliaHelper {
-    public static void querySuggestion(String item, Callbacks callback) {
-        Client client = new Client("2E5RB96ERX", "d488826decadd6593821cefdabd53fa2");
+    static ApplicationInfo applicationInfo;
+    static String algAppId;
+    static String algApiKey;
+    public static void querySuggestion(Context context, String item, Callbacks callback) {
+        try {
+            applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (applicationInfo != null){
+            algAppId = applicationInfo.metaData.getString("algoliaAppId");
+            algApiKey = applicationInfo.metaData.getString("algoliaApiKey");
+        }
+        Client client = new Client(algAppId, algApiKey);
         Index index = client.getIndex("Bulkify_query_suggestions");
         index.searchAsync(new Query(item), new CompletionHandler() {
             @Override
@@ -51,8 +68,18 @@ public class AlgoliaHelper {
         });
     }
 
-    public static void searchListingID(String item, Callbacks callback) {
-        Client client = new Client("2E5RB96ERX", "d488826decadd6593821cefdabd53fa2");
+    public static void searchListingID(Context context, String item, Callbacks callback) {
+        try {
+            applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (applicationInfo != null){
+            algAppId = applicationInfo.metaData.getString("algoliaAppId");
+            algApiKey = applicationInfo.metaData.getString("algoliaApiKey");
+        }
+        Client client = new Client(algAppId, algApiKey);
         Index index = client.getIndex("Bulkify");
         index.searchAsync(new Query(item), new CompletionHandler() {
             @Override

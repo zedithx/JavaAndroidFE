@@ -1,6 +1,8 @@
 package com.example.javaandroidapp.utils;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.example.javaandroidapp.adapters.Callbacks;
@@ -27,9 +29,21 @@ public class ChatSystem {
 
     public static ChatClient client;
     public boolean signedIn;
+    ApplicationInfo applicationInfo;
+    String apiKey;
+    String apiSecret;
 
     private ChatSystem(Context context, com.example.javaandroidapp.modals.User new_user) {
-        String apiKey = "4n8ad58drzz3";
+        try {
+            applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (applicationInfo != null){
+            apiKey = applicationInfo.metaData.getString("chatSecretKey");
+            apiSecret = applicationInfo.metaData.getString("chatApiSecret");
+        }
         StreamStatePluginFactory statePluginFactory = new StreamStatePluginFactory(new StatePluginConfig(), context);
         this.client = new ChatClient.Builder(apiKey, context).withPlugins(statePluginFactory).build();
         io.getstream.chat.android.models.User user = new io.getstream.chat.android.models.User.Builder().withId(new_user.getUid()).
@@ -53,7 +67,7 @@ public class ChatSystem {
     }
 
     public String getToken(String uid) {
-        return User.createToken("4cr5hf963b2u9vde9uv32un2pjweaqkwupsau6q4cwwqxa88khzp3r5tdskxeb5c", uid, null, null);
+        return User.createToken(apiSecret, uid, null, null);
     }
 
     public static void createChannel(List<String> listOfUsers, Callbacks callback) throws StreamException {
