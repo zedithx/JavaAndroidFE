@@ -30,7 +30,6 @@ public class User {
 
     public User(String name, String userIdToken) {
         this.name = name;
-        //TODO - add profile pic
         this.saved  = new ArrayList<>();
         this.orders = new ArrayList<>();
         this.listings = new ArrayList<>();

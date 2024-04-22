@@ -58,8 +58,8 @@ import java.util.Map;
 
 public class ManageOrderActivity extends AppCompatActivity {
     public boolean minFulfilled;
-    Dictionary<String, Integer> variationQty = new Hashtable<>();
-    Dictionary<String, Double> variationCost = new Hashtable<>();
+    Hashtable<String, Integer> variationQty = new Hashtable<>();
+    Hashtable<String, Double> variationCost = new Hashtable<>();
     String SECRET_KEY;
     ApplicationInfo applicationInfo;
 
