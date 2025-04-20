@@ -34,8 +34,7 @@ Check out the below video for more details on our Android application done in Ja
 This app was done for a school project entering our second year for the 50.001 module "Introduction To Information Systems And Programming". We only had about 5 weeks to learn app development from scratch and execute this project.</br></br>
 
 We also achieved 3rd place out of 30 teams in the course, judged by Singtel Engineers.
-Check out here to view our full report!
-* To be updated when we upload it
+[Check out here to view our full report!](https://docs.google.com/document/d/1AD_8vEJnemgTxQl7hL1u9RISF8uE_6zw9O_9eysm26I/edit?usp=sharing)
 
 
 ## Team Details
